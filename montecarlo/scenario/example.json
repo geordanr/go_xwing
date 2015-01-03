@@ -1,0 +1,16 @@
+{
+    "NumAttackDice": 4,
+    "NumAttackerFocus": 1,
+    "NumDefenseDice": 3,
+    "NumDefenderFocus": 2,
+    "NumDefenderEvade": 0,
+    "DefenderModifiesAttackDice": [],
+    "AttackerModifiesAttackDice": [
+        "Howlrunner",
+        "Offensive Focus"
+    ],
+    "AttackerModifiesDefenseDice": [],
+    "DefenderModifiesDefenseDice": [
+        "Defensive Focus"
+    ]
+}
