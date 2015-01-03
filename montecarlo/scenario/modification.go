@@ -1,8 +1,8 @@
 package scenario
 
 import (
-    "github.com/geordanr/xwing/dice"
-    "github.com/geordanr/xwing/dice/filters"
+    "github.com/geordanr/go_xwing/dice"
+    "github.com/geordanr/go_xwing/dice/filters"
 )
 
 type Modification interface {

@@ -2,7 +2,7 @@ package filters
 
 import (
     "testing"
-    "github.com/geordanr/xwing/dice"
+    "github.com/geordanr/go_xwing/dice"
 )
 
 func filterHelper(t *testing.T, filter func(dice.Result) bool, name string, good, bad []dice.Result) {

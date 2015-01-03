@@ -2,7 +2,7 @@ package scenario
 
 import (
     "testing"
-    "github.com/geordanr/xwing/dice"
+    "github.com/geordanr/go_xwing/dice"
 )
 
 func TestCompareResults_hitsCancelBeforeCrits(t *testing.T) {

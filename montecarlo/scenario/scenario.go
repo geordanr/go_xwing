@@ -3,7 +3,7 @@ package scenario
 import (
     // "fmt"
     "math"
-    "github.com/geordanr/xwing/dice"
+    "github.com/geordanr/go_xwing/dice"
 )
 
 type Scenario struct {

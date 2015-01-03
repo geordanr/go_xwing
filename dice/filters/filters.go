@@ -1,6 +1,6 @@
 package filters
 
-import "github.com/geordanr/xwing/dice"
+import "github.com/geordanr/go_xwing/dice"
 
 func Blanks(result dice.Result) bool {
     return result == dice.BLANK

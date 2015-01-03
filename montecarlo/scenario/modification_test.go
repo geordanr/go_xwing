@@ -2,7 +2,7 @@ package scenario
 
 import (
     "testing"
-    "github.com/geordanr/xwing/dice"
+    "github.com/geordanr/go_xwing/dice"
 )
 
 func TestUseOffensiveFocus_withoutFocuses(t *testing.T) {

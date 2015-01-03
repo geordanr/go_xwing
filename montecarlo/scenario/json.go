@@ -2,7 +2,7 @@ package scenario
 
 import (
     "encoding/json"
-    "github.com/geordanr/xwing/dice"
+    "github.com/geordanr/go_xwing/dice"
 )
 
 type scenarioJSON struct {
