@@ -437,3 +437,27 @@ func TestChiraneau_withoutFocusResult (t *testing.T) {
 	t.Errorf("Should still have no focus results")
     }
 }
+
+func TestHeavyLaserCannon (t *testing.T) {
+    attackResults := dice.RollAttackDice(4)
+    defenseResults := dice.RollDefenseDice(1)
+    attackResults[0].SetResult(dice.BLANK)
+    attackResults[1].SetResult(dice.HIT)
+    attackResults[2].SetResult(dice.CRIT)
+    attackResults[3].SetResult(dice.HIT)
+    scenario := Scenario {
+	AttackResults: &attackResults,
+	DefenseResults: &defenseResults,
+    }
+    scenario.AttackerModifiesAttackDice = append(scenario.AttackerModifiesAttackDice, Modifications["Heavy Laser Cannon"])
+
+    scenario.Run()
+
+    if scenario.AttackResults.Crits() != 0 {
+	t.Errorf("Should have no crits")
+    }
+
+    if scenario.AttackResults.Hits() != 3 {
+	t.Errorf("Should have three hits")
+    }
+}

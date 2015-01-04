@@ -1,12 +1,14 @@
 package scenario
 
 import (
+    "fmt"
     "github.com/geordanr/go_xwing/dice"
     "github.com/geordanr/go_xwing/dice/filters"
 )
 
 type Modification interface {
     Modify(*Scenario) *Scenario
+    String() string
 }
 
 // Attacker modifications
@@ -19,6 +21,7 @@ func (offensiveFocus) Modify(scenario *Scenario) *Scenario {
     }
     return scenario
 }
+func (offensiveFocus) String() string { return "Offensive Focus" }
 
 type targetLock struct {}
 func (targetLock) Modify(scenario *Scenario) *Scenario {
@@ -29,6 +32,7 @@ func (targetLock) Modify(scenario *Scenario) *Scenario {
     }
     return scenario
 }
+func (targetLock) String() string { return "Target Lock" }
 
 type howlrunner struct {}
 func (howlrunner) Modify(scenario *Scenario) *Scenario {
@@ -39,6 +43,7 @@ func (howlrunner) Modify(scenario *Scenario) *Scenario {
     }
     return scenario
 }
+func (howlrunner) String() string { return "Howlrunner" }
 
 type marksmanship struct {}
 func (marksmanship) Modify(scenario *Scenario) *Scenario {
@@ -48,12 +53,21 @@ func (marksmanship) Modify(scenario *Scenario) *Scenario {
     }
     return scenario
 }
+func (marksmanship) String() string { return "Marksmanship" }
 
 type chiraneau struct {}
 func (chiraneau) Modify(scenario *Scenario) *Scenario {
     scenario.AttackResults.ConvertUpto(1, dice.FOCUS, dice.CRIT)
     return scenario
 }
+func (chiraneau) String() string { return "Chiraneau" }
+
+type heavyLaserCannon struct {}
+func (heavyLaserCannon) Modify(scenario *Scenario) *Scenario {
+    scenario.AttackResults.ConvertAll(dice.CRIT, dice.HIT)
+    return scenario
+}
+func (heavyLaserCannon) String() string { return "Heavy Laser Cannon" }
 
 // Defender modifications
 
@@ -65,6 +79,7 @@ func (defensiveFocus) Modify(scenario *Scenario) *Scenario {
     }
     return scenario
 }
+func (defensiveFocus) String() string { return "Defensive Focus" }
 
 type useEvadeToken struct {}
 func (useEvadeToken) Modify(scenario *Scenario) *Scenario {
@@ -82,6 +97,7 @@ func (useEvadeToken) Modify(scenario *Scenario) *Scenario {
 
     return scenario
 }
+func (useEvadeToken) String() string { return "Use Evade Token" }
 
 type c3po struct {
     Guess uint8
@@ -97,6 +113,9 @@ func (threepio c3po) Modify(scenario *Scenario) *Scenario {
     }
     return scenario
 }
+func (threepio c3po) String() string {
+    return fmt.Sprintf("C-3PO (guess %d)", threepio.Guess)
+}
 
 // Modifications map
 var Modifications map[string]Modification = map[string]Modification{
@@ -111,4 +130,5 @@ var Modifications map[string]Modification = map[string]Modification{
     "C-3PO (guess 2)": c3po{Guess: 2},
     "C-3PO (guess 3)": c3po{Guess: 3},
     "Chiraneau": new(chiraneau),
+    "Heavy Laser Cannon": new(heavyLaserCannon),
 }

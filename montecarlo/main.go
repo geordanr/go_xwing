@@ -25,14 +25,41 @@ type simResults struct {
     CritStddev float64
 }
 
+func dieOrDice(n int) (s string) {
+    s = "die"
+    if n > 1 {
+	s = "dice"
+    }
+    return
+}
+
 // Simulate runs the scenario in the JSON iteration times and returns the results.
 func SimulateJSON(scenarioJSON []byte, iterations uint) (res simResults) {
-    log.Printf("Running %d iterations...", iterations)
+    s, err := scenario.ScenarioFromJSON(scenarioJSON)
+    if err != nil {
+	log.Fatal(err)
+    }
+    log.Printf("Running %d iterations of:\n", iterations)
+    log.Printf("\t%d attack %s", len(*s.AttackResults), dieOrDice(len(*s.AttackResults)))
+    for i := range(s.DefenderModifiesAttackDice) {
+	log.Printf("\t... %s\n", s.DefenderModifiesAttackDice[i])
+    }
+    for i := range(s.AttackerModifiesAttackDice) {
+	log.Printf("\t... %s\n", s.AttackerModifiesAttackDice[i])
+    }
+
+    log.Printf("\t%d defense %s", len(*s.DefenseResults), dieOrDice(len(*s.DefenseResults)))
+    for i := range(s.AttackerModifiesDefenseDice) {
+	log.Printf("\t... %s\n", s.AttackerModifiesDefenseDice[i])
+    }
+    for i := range(s.DefenderModifiesDefenseDice) {
+	log.Printf("\t... %s\n", s.DefenderModifiesDefenseDice[i])
+    }
 
     stats := new(stats)
     var i uint
     for i = 0; i < iterations; i++ {
-	s, err := scenario.ScenarioFromJSON(scenarioJSON)
+	s, err = scenario.ScenarioFromJSON(scenarioJSON)
 	if err != nil {
 	    log.Fatal(err)
 	}
@@ -72,6 +99,6 @@ func main() {
 
     res := SimulateJSON(data, uint(*numIterations))
 
-    fmt.Printf("Hits: %-.2f (stddev=%-.2f)\n", res.HitAverage, res.HitStddev)
-    fmt.Printf("Crits: %-.2f (stddev=%-.2f)\n", res.CritAverage, res.CritStddev)
+    fmt.Printf("Hits: %-.3f (stddev=%-.3f)\n", res.HitAverage, res.HitStddev)
+    fmt.Printf("Crits: %-.3f (stddev=%-.3f)\n", res.CritAverage, res.CritStddev)
 }
