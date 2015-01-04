@@ -25,3 +25,7 @@ func Crits(result dice.Result) bool {
 func Evades(result dice.Result) bool {
     return result == dice.EVADE
 }
+
+func Everything(result dice.Result) bool {
+    return true
+}

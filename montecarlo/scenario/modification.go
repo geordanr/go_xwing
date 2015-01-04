@@ -74,6 +74,16 @@ func (heavyLaserCannon) Modify(scenario *Scenario) *Scenario {
 }
 func (heavyLaserCannon) String() string { return "Heavy Laser Cannon" }
 
+type hanSolo struct {}
+func (hanSolo) Modify(scenario *Scenario) *Scenario {
+    // reroll only if below average
+    if scenario.AttackResults.Hits() + scenario.AttackResults.Crits() < uint8(len(*scenario.AttackResults)) {
+	scenario.AttackResults.Reroll(filters.Everything)
+    }
+    return scenario
+}
+func (hanSolo) String() string { return "Han Solo" }
+
 // Defender modifications
 
 type defensiveFocus struct {}
@@ -154,4 +164,5 @@ var Modifications map[string]Modification = map[string]Modification{
     "C-3PO (guess 3)": c3po{Guess: 3},
     "Chiraneau": new(chiraneau),
     "Heavy Laser Cannon": new(heavyLaserCannon),
+    "Han Solo": new(hanSolo),
 }

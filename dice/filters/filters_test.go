@@ -53,3 +53,9 @@ func TestEvades(t *testing.T) {
     bad := []dice.Result{dice.FOCUS, dice.HIT, dice.CRIT, dice.BLANK}
     filterHelper(t, Evades, "Evades", good, bad)
 }
+
+func TestEverything(t *testing.T) {
+    good := []dice.Result{dice.EVADE, dice.FOCUS, dice.HIT, dice.CRIT, dice.BLANK}
+    bad := []dice.Result{}
+    filterHelper(t, Everything, "Everything", good, bad)
+}

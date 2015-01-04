@@ -101,4 +101,7 @@ func main() {
 
     fmt.Printf("Hits: %-.3f (stddev=%-.3f)\n", res.HitAverage, res.HitStddev)
     fmt.Printf("Crits: %-.3f (stddev=%-.3f)\n", res.CritAverage, res.CritStddev)
+    totalDamage := res.HitAverage + res.CritAverage
+    totalStddev := res.HitStddev + res.CritStddev
+    fmt.Printf("Total damage: %-.3f (50%% of the time: %-.3f-%-.3f)\n", totalDamage, math.Max(0, totalDamage - 0.67449 * totalStddev), totalDamage + 0.67449 * totalStddev)
 }
