@@ -39,21 +39,21 @@ func SimulateJSON(scenarioJSON []byte, iterations uint) (res simResults) {
     if err != nil {
 	log.Fatal(err)
     }
-    log.Printf("Running %d iterations of:\n", iterations)
-    log.Printf("\t%d attack %s", len(*s.AttackResults), dieOrDice(len(*s.AttackResults)))
+    fmt.Printf("Running %d iterations of:\n", iterations)
+    fmt.Printf("\t%d attack %s, %d focus token(s)\n", len(*s.AttackResults), dieOrDice(len(*s.AttackResults)), s.NumAttackerFocus)
     for i := range(s.DefenderModifiesAttackDice) {
-	log.Printf("\t... %s\n", s.DefenderModifiesAttackDice[i])
+	fmt.Printf("\t... %s\n", s.DefenderModifiesAttackDice[i])
     }
     for i := range(s.AttackerModifiesAttackDice) {
-	log.Printf("\t... %s\n", s.AttackerModifiesAttackDice[i])
+	fmt.Printf("\t... %s\n", s.AttackerModifiesAttackDice[i])
     }
 
-    log.Printf("\t%d defense %s", len(*s.DefenseResults), dieOrDice(len(*s.DefenseResults)))
+    fmt.Printf("\t%d defense %s, %d focus token(s), %d evade token(s)\n", len(*s.DefenseResults), dieOrDice(len(*s.DefenseResults)), s.NumDefenderFocus, s.NumDefenderEvade)
     for i := range(s.AttackerModifiesDefenseDice) {
-	log.Printf("\t... %s\n", s.AttackerModifiesDefenseDice[i])
+	fmt.Printf("\t... %s\n", s.AttackerModifiesDefenseDice[i])
     }
     for i := range(s.DefenderModifiesDefenseDice) {
-	log.Printf("\t... %s\n", s.DefenderModifiesDefenseDice[i])
+	fmt.Printf("\t... %s\n", s.DefenderModifiesDefenseDice[i])
     }
 
     stats := new(stats)

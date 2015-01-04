@@ -34,16 +34,21 @@ func (targetLock) Modify(scenario *Scenario) *Scenario {
 }
 func (targetLock) String() string { return "Target Lock" }
 
-type howlrunner struct {}
-func (howlrunner) Modify(scenario *Scenario) *Scenario {
+type offensiveReroll struct {
+    numToReroll uint
+    name string
+}
+func (o offensiveReroll) Modify(scenario *Scenario) *Scenario {
     if scenario.NumAttackerFocus > 0 {
-	scenario.AttackResults.RerollUpto(1, filters.Blanks)
+	scenario.AttackResults.RerollUpto(o.numToReroll, filters.Blanks)
     } else {
-	scenario.AttackResults.RerollUpto(1, filters.BlanksAndFocuses)
+	scenario.AttackResults.RerollUpto(o.numToReroll, filters.BlanksAndFocuses)
     }
     return scenario
 }
-func (howlrunner) String() string { return "Howlrunner" }
+func (o offensiveReroll) String() string {
+    return fmt.Sprintf("%s", o.name)
+}
 
 type marksmanship struct {}
 func (marksmanship) Modify(scenario *Scenario) *Scenario {
@@ -117,11 +122,29 @@ func (threepio c3po) String() string {
     return fmt.Sprintf("C-3PO (guess %d)", threepio.Guess)
 }
 
+type defensiveReroll struct {
+    numToReroll uint
+    name string
+}
+func (o defensiveReroll) Modify(scenario *Scenario) *Scenario {
+    if scenario.NumDefenderFocus > 0 {
+	scenario.DefenseResults.RerollUpto(o.numToReroll, filters.Blanks)
+    } else {
+	scenario.DefenseResults.RerollUpto(o.numToReroll, filters.BlanksAndFocuses)
+    }
+    return scenario
+}
+func (o defensiveReroll) String() string {
+    return fmt.Sprintf("%s", o.name)
+}
+
 // Modifications map
 var Modifications map[string]Modification = map[string]Modification{
     "Offensive Focus": new(offensiveFocus),
     "Target Lock": new(targetLock),
-    "Howlrunner": new(howlrunner),
+    "Howlrunner": offensiveReroll{name: "Howlrunner", numToReroll: 1},
+    "Predator (low PS)": offensiveReroll{name: "Predator (low PS)", numToReroll: 2},
+    "Predator (high PS)": offensiveReroll{name: "Predator (high PS)", numToReroll: 1},
     "Defensive Focus": new(defensiveFocus),
     "Use Evade Token": new(useEvadeToken),
     "Marksmanship": new(marksmanship),
