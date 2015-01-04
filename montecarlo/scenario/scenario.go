@@ -39,19 +39,19 @@ func (scenario *Scenario) Run() (*Scenario) {
 }
 
 // CompareResults returns the number of hits and crits that made it through.
-func (scenario Scenario) CompareResults() (hits, crits uint8) {
-    hits = scenario.AttackResults.Hits()
-    crits = scenario.AttackResults.Crits()
-    evades := scenario.DefenseResults.Evades()
+func (scenario Scenario) CompareResults() (hits, crits uint) {
+    hits = uint(scenario.AttackResults.Hits())
+    crits = uint(scenario.AttackResults.Crits())
+    evades := uint(scenario.DefenseResults.Evades())
     // fmt.Printf("Compare: hits=%d, crits=%d, evades=%d\n", hits, crits, evades)
     // Spend evade results on hits first
-    evadesSpentOnHits := uint8(math.Min(float64(hits), float64(evades)))
+    evadesSpentOnHits := uint(math.Min(float64(hits), float64(evades)))
     // fmt.Printf("Evades spent on hits: %d\n", evadesSpentOnHits)
     hits -= evadesSpentOnHits
     evades -= evadesSpentOnHits
     // fmt.Printf("Hits now %d\nEvades now %d\n", hits, evades)
     // Then crits
-    crits = uint8(math.Max(0, float64(crits - evades)))
+    crits = uint(math.Max(0, float64(crits - evades)))
     // fmt.Printf("Crits now %d\n", crits)
     return hits, crits
 }
