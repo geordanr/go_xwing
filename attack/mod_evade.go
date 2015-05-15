@@ -6,7 +6,7 @@ import (
 
 type useEvadeToken struct {}
 func (useEvadeToken) Modify(atk *Attack) *Attack {
-    if atk.Defender.EvadeTokens > 0 {
+    if atk.Defender.EvadeTokens > 0 && (atk.AttackResults.Hits() + atk.AttackResults.Crits()) > (atk.DefenseResults.Evades()) {
 	atk.Defender.EvadeTokens--
 	evadeDie := new(dice.DefenseDie)
 	evadeDie.SetResult(dice.EVADE)

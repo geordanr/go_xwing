@@ -2,59 +2,78 @@ package main
 
 import (
     "fmt"
-    "math"
     "math/rand"
     "time"
     "github.com/geordanr/go_xwing/attack"
-    "github.com/geordanr/go_xwing/histogram"
+    "github.com/geordanr/go_xwing/combat"
     "github.com/geordanr/go_xwing/ship"
 )
 
-type stats struct {
-    hitSum uint
-    hitSumSquares uint
-    critSum uint
-    critSumSquares uint
-}
-
-type simResults struct {
-    HitAverage float64
-    HitStddev float64
-    HitHistogram histogram.IntHistogram
-    CritAverage float64
-    CritStddev float64
-    CritHistogram histogram.IntHistogram
-}
-
 func main() {
     rand.Seed(time.Now().UnixNano())
-    iterations := 10000
+    cbt := combat.New(threeAccBvsFel)
+    _, results := cbt.Simulate(1000)
 
-    stats := new(stats)
-    res := new(simResults)
-    res.HitHistogram = make(histogram.IntHistogram)
-    res.CritHistogram = make(histogram.IntHistogram)
-    for i := 0; i < iterations; i++ {
-	hits, crits := gunner()
-	res.HitHistogram[int(hits)]++
-	res.CritHistogram[int(crits)]++
+    for ship, res := range(*results) {
+	fmt.Println(ship.Name)
+	fmt.Println("---")
+	fmt.Printf("Hits: %-.3f (stddev=%-.3f)\n", res.HitAverage, res.HitStddev)
+	fmt.Println(res.HitHistogram)
+	fmt.Printf("Crits: %-.3f (stddev=%-.3f)\n", res.CritAverage, res.CritStddev)
+	fmt.Println(res.CritHistogram)
+    }
+}
 
-	stats.hitSum += hits
-	stats.hitSumSquares += hits * hits
-	stats.critSum += crits
-	stats.critSumSquares += crits * crits
+func threeAccBvsFel() []attack.Attack{
+    fel := ship.ShipFactory["TIE Interceptor"]()
+    fel.Name = "Soontir Fel"
+    fel.Agility++
+    fel.FocusTokens = 2
+    fel.EvadeTokens = 1
+
+    bwings := make([]ship.Ship, 4)
+    for i := range(bwings) {
+	bwings[i] = ship.ShipFactory["B-Wing"]()
+	bwings[i].Name = fmt.Sprintf("B-Wing %d", i + 1)
+	bwings[i].FocusTokens = 1
     }
 
-    res.HitAverage = float64(stats.hitSum) /  float64(iterations)
-    res.HitStddev = math.Sqrt((float64(stats.hitSumSquares) / float64(iterations)) - math.Pow(res.HitAverage, 2))
+    attacks := make([]attack.Attack, len(bwings) + 1)
 
-    res.CritAverage = float64(stats.critSum) /  float64(iterations)
-    res.CritStddev = math.Sqrt((float64(stats.critSumSquares) / float64(iterations)) - math.Pow(res.CritAverage, 2))
-    fmt.Printf("Hits: %-.3f (stddev=%-.3f)\n", res.HitAverage, res.HitStddev)
-    fmt.Println(res.HitHistogram)
-    fmt.Printf("Crits: %-.3f (stddev=%-.3f)\n", res.CritAverage, res.CritStddev)
-    fmt.Println(res.CritHistogram)
+    attacks[0] = attack.Attack{
+	Attacker: &fel,
+	NumAttackDice: 4,
+	AttackerModifications: []attack.Modification{
+	    attack.Modifications["Offensive Focus"],
+	},
+	Defender: &bwings[0],
+	NumDefenseDice: 1,
+	DefenderModifications: []attack.Modification{
+	    attack.Modifications["Defensive Focus"],
+	},
+    }
+
+    for i := 0; i < len(bwings); i++ {
+	attacks[i+1] = attack.Attack{
+	    Attacker: &bwings[i],
+	    NumAttackDice: 3,
+	    AttackerModifications: []attack.Modification{
+		attack.Modifications["Offensive Focus"],
+		// attack.Modifications["Accuracy Corrector"],
+	    },
+	    Defender: &fel,
+	    NumDefenseDice: 1,
+	    DefenderModifications: []attack.Modification{
+		attack.Modifications["Defensive Focus"],
+		attack.Modifications["Use Evade Token"],
+	    },
+	}
+    }
+
+    return attacks
 }
+
+
 
 func gunner() (hits, crits uint) {
     atk := attack.Attack{
@@ -68,7 +87,7 @@ func gunner() (hits, crits uint) {
 	},
 
 	Defender: &ship.Ship{FocusTokens: 1},
-	NumDefenseDice: 0,
+	NumDefenseDice: 3,
 	DefenderModifications: []attack.Modification{
 	    attack.Modifications["Defensive Focus"],
 	},

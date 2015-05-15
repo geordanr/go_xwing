@@ -1,8 +1,11 @@
 package ship
 
 type Ship struct {
-    Shields uint
+    Name string
+    Attack uint
+    Agility uint
     Hull uint
+    Shields uint
     FocusTokens uint
     EvadeTokens uint
     canAttack bool
@@ -41,4 +44,29 @@ func (ship *Ship) SufferDamage(nDamage uint) {
 	    break
 	}
     }
+}
+
+/////////////////////////////////////////////////
+
+var ShipFactory map[string]func() Ship = map[string]func() Ship{
+    "B-Wing": func () Ship {
+	return Ship{
+	    Name: "B-Wing",
+	    Attack: 3,
+	    Agility: 1,
+	    Hull: 3,
+	    Shields: 5,
+	    canAttack: true,
+	}
+    },
+    "TIE Interceptor": func () Ship {
+	return Ship{
+	    Name: "TIE Interceptor",
+	    Attack: 3,
+	    Agility: 3,
+	    Hull: 3,
+	    Shields: 0,
+	    canAttack: true,
+	}
+    },
 }
