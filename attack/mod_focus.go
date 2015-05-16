@@ -17,7 +17,7 @@ func (offensiveFocus) ModifiesDefenseResults() bool { return false }
 
 type defensiveFocus struct {}
 func (defensiveFocus) Modify(atk *Attack) *Attack {
-    if atk.DefenseResults.Focuses() > 0 && atk.Defender.SpendFocus() {
+    if atk.DefenseResults.Focuses() > 0 && (atk.AttackResults.Hits() + atk.AttackResults.Crits()) > (atk.DefenseResults.Evades()) && atk.Defender.SpendFocus() {
 	atk.DefenseResults.ConvertAll(dice.FOCUS, dice.EVADE)
     }
     return atk
