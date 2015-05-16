@@ -25,7 +25,7 @@ func (h IntHistogram) String() (str string) {
     for k, _ := range(h) { keys = append(keys, int(k)) }
     sort.Ints(keys)
     for _, k := range(keys) {
-	str += fmt.Sprintf("%-02d: %s\n", k, strings.Repeat("#", int(50 * n[k])))
+	str += fmt.Sprintf("%2d (%6.2f%%): %s\n", k, 100*n[k], strings.Repeat("#", int(50 * n[k])))
     }
     return
 }

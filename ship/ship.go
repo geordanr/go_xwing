@@ -1,5 +1,7 @@
 package ship
 
+import "fmt"
+
 type Ship struct {
     Name string
     Attack uint
@@ -9,6 +11,10 @@ type Ship struct {
     FocusTokens uint
     EvadeTokens uint
     canAttack bool
+}
+
+func (ship *Ship) String() string {
+    return fmt.Sprintf("<Ship name='%s' %d/%d/%d/%d focus=%d evade=%s>", ship.Name, ship.Attack, ship.Agility, ship.Hull, ship.Shields, ship.FocusTokens, ship.EvadeTokens)
 }
 
 func (ship *Ship) SpendFocus() bool {

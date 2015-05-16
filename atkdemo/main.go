@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "math/rand"
+    "strings"
     "time"
     "github.com/geordanr/go_xwing/attack"
     "github.com/geordanr/go_xwing/combat"
@@ -11,35 +12,43 @@ import (
 
 func main() {
     rand.Seed(time.Now().UnixNano())
-    cbt := combat.New(threeAccBvsFel)
-    _, results := cbt.Simulate(1000)
+    _, results := combat.Simulate(twoAccBvsFel, 1000)
 
-    for ship, res := range(*results) {
-	fmt.Println(ship.Name)
-	fmt.Println("---")
-	fmt.Printf("Hits: %-.3f (stddev=%-.3f)\n", res.HitAverage, res.HitStddev)
+    for shipName, res := range(*results) {
+	fmt.Println(shipName)
+	fmt.Println(strings.Repeat("-", len(shipName)))
+	fmt.Printf("Hits Landed: %-.3f (stddev=%-.3f)\n", res.HitAverage, res.HitStddev)
 	fmt.Println(res.HitHistogram)
-	fmt.Printf("Crits: %-.3f (stddev=%-.3f)\n", res.CritAverage, res.CritStddev)
+	fmt.Printf("Crits Landed: %-.3f (stddev=%-.3f)\n", res.CritAverage, res.CritStddev)
 	fmt.Println(res.CritHistogram)
+	fmt.Printf("Hull Remaining: %-.3f (stddev=%-.3f)\n", res.HullAverage, res.HullStddev)
+	fmt.Println(res.HullHistogram)
+	fmt.Printf("Shields Remaining: %-.3f (stddev=%-.3f)\n", res.ShieldAverage, res.ShieldStddev)
+	fmt.Println(res.ShieldHistogram)
     }
 }
 
-func threeAccBvsFel() []attack.Attack{
+// Tanked up StealthFel vs. two Accuracy Corrector B-Wings
+func twoAccBvsFel() []attack.Attack{
+    // StealthFel
     fel := ship.ShipFactory["TIE Interceptor"]()
     fel.Name = "Soontir Fel"
     fel.Agility++
     fel.FocusTokens = 2
     fel.EvadeTokens = 1
 
-    bwings := make([]ship.Ship, 4)
+    // Accuracy-Corrected B-Wings
+    bwings := make([]ship.Ship, 2)
     for i := range(bwings) {
 	bwings[i] = ship.ShipFactory["B-Wing"]()
 	bwings[i].Name = fmt.Sprintf("B-Wing %d", i + 1)
 	bwings[i].FocusTokens = 1
     }
 
+    // Create attack list
     attacks := make([]attack.Attack, len(bwings) + 1)
 
+    // Soontir shoots first
     attacks[0] = attack.Attack{
 	Attacker: &fel,
 	NumAttackDice: 4,
@@ -53,13 +62,14 @@ func threeAccBvsFel() []attack.Attack{
 	},
     }
 
+    // Then the B-Wings
     for i := 0; i < len(bwings); i++ {
 	attacks[i+1] = attack.Attack{
 	    Attacker: &bwings[i],
 	    NumAttackDice: 3,
 	    AttackerModifications: []attack.Modification{
 		attack.Modifications["Offensive Focus"],
-		// attack.Modifications["Accuracy Corrector"],
+		attack.Modifications["Accuracy Corrector"],
 	    },
 	    Defender: &fel,
 	    NumDefenseDice: 1,
