@@ -2,8 +2,10 @@
 
 A second attempt at this Go stuff, as an experiment in code organization.  (No claim is made on whether this organization is good...)
 
-Also, testing.
+## Installing
 
-## Running stuff
+    go get github.com/geordanr/go_xwing
 
-    go run atkdemo/main.go
+## Running
+
+    go run $GOPATH/src/github.com/geordanr/go_xwing/atkdemo/main.go
