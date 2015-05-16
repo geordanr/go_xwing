@@ -12,9 +12,11 @@ func TestUseEvadeToken_withoutEvadeToken(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
     atk := Attack{
 	Attacker: &attacker,
@@ -48,9 +50,11 @@ func TestUseEvadeToken_withEvadeTokens(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
 	EvadeTokens: 2,
     }
     atk := Attack{
@@ -86,9 +90,11 @@ func TestUseEvadeToken_spendWhenNecessary(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
 	EvadeTokens: 2,
     }
     atk := Attack{

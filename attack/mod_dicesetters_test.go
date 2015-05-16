@@ -12,9 +12,11 @@ func TestAttackDiceSetter(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
 
     setter := AttackDiceSetter{
@@ -52,9 +54,11 @@ func TestDefenseDiceSetter(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
 
     setter := DefenseDiceSetter{

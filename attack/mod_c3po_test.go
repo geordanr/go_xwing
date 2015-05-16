@@ -12,9 +12,11 @@ func TestC3PO_guessNoneAndBeWrong(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
     atk := Attack{
 	Attacker: &attacker,
@@ -44,9 +46,11 @@ func TestC3PO_guessNoneAndBeRight(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
     atk := Attack{
 	Attacker: &attacker,
@@ -76,9 +80,11 @@ func TestC3PO_guessOneAndBeWrong(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
     atk := Attack{
 	Attacker: &attacker,
@@ -108,9 +114,11 @@ func TestC3PO_guessOneAndBeRight(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
     atk := Attack{
 	Attacker: &attacker,

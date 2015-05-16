@@ -12,9 +12,11 @@ func TestUseOffensiveFocus_withoutFocuses(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
     atk := Attack{
 	Attacker: &attacker,
@@ -53,10 +55,12 @@ func TestUseOffensiveFocus_withFocuses(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
 	FocusTokens: 2,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
     atk := Attack{
 	Attacker: &attacker,
@@ -95,9 +99,11 @@ func TestUseDefensiveFocus_withoutFocuses(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
     }
     atk := Attack{
 	Attacker: &attacker,
@@ -127,9 +133,11 @@ func TestUseDefensiveFocus_withFocuses(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
 	FocusTokens: 2,
     }
     atk := Attack{
@@ -168,9 +176,11 @@ func TestUseDefensiveFocus_withFocusesIfNeeded(t *testing.T) {
 
     attacker := ship.Ship{
 	Name: "Attacker",
+	Hull: 1,
     }
     defender := ship.Ship{
 	Name: "Defender",
+	Hull: 1,
 	FocusTokens: 2,
     }
     atk := Attack{
