@@ -101,3 +101,53 @@ func TestExecute(t *testing.T) {
     assert.EqualValues(defender.Shields, 0)
 
 }
+
+func TestZeroEvade(t *testing.T) {
+	assert := assert.New(t)
+
+	attacker := ship.Ship{
+		Name: "Attacker",
+		Hull: 3,
+		Shields: 2,
+		FocusTokens: 1,
+	}
+	defender := ship.Ship{
+		Name: "Defender",
+		Hull: 4,
+		Shields: 1,
+		EvadeTokens: 0,
+	}
+	atk := Attack{
+		Attacker: &attacker,
+		NumAttackDice: 3,
+		AttackerModifications: []Modification{
+			AttackDiceSetter{
+				desiredResults: []dice.Result{
+					dice.BLANK,
+					dice.BLANK,
+					dice.BLANK,
+				},
+			},
+			Modifications["Accuracy Corrector"],
+		},
+
+		Defender: &defender,
+		NumDefenseDice: 3,
+		DefenderModifications: []Modification{
+			DefenseDiceSetter{
+				desiredResults: []dice.Result{
+					dice.BLANK,
+					dice.BLANK,
+					dice.BLANK,
+				},
+			},
+		},
+	}
+
+	hits, crits := atk.Execute()
+
+	assert.EqualValues(hits, 2)
+	assert.EqualValues(crits, 0)
+
+}
+
