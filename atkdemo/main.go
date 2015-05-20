@@ -31,55 +31,37 @@ func main() {
 // Tanked up StealthFel vs. two Accuracy Corrector B-Wings
 func twoAccBvsFel() []attack.Attack{
     // StealthFel
-    fel := ship.ShipFactory["TIE Interceptor"]()
+	fel := combat.ModifiedShip{}
+    fel.Ship = ship.ShipFactory["TIE Interceptor"]()
     fel.Name = "Soontir Fel"
-    fel.Agility++
-    fel.FocusTokens = 2
+    fel.Agility=4 //stealth device
+    fel.FocusTokens = 2 //turtled
     fel.EvadeTokens = 1
-
-    // Accuracy-Corrected B-Wings
-    bwings := make([]ship.Ship, 2)
-    for i := range(bwings) {
-	bwings[i] = ship.ShipFactory["B-Wing"]()
-	bwings[i].Name = fmt.Sprintf("B-Wing %d", i + 1)
-	bwings[i].FocusTokens = 1
-    }
-
-    // Create attack list
-    attacks := make([]attack.Attack, len(bwings) + 1)
-
-    // Soontir shoots first
-    attacks[0] = attack.Attack{
-	Attacker: &fel,
-	NumAttackDice: 4,
-	AttackerModifications: []attack.Modification{
-	    attack.Modifications["Offensive Focus"],
-	},
-	Defender: &bwings[0],
-	NumDefenseDice: 1,
-	DefenderModifications: []attack.Modification{
-	    attack.Modifications["Defensive Focus"],
-	},
-    }
-
-    // Then the B-Wings
-    for i := 0; i < len(bwings); i++ {
-	attacks[i+1] = attack.Attack{
-	    Attacker: &bwings[i],
-	    NumAttackDice: 3,
-	    AttackerModifications: []attack.Modification{
+	fel.AttackerModifications = []attack.Modification{
 		attack.Modifications["Offensive Focus"],
-		attack.Modifications["Accuracy Corrector"],
-	    },
-	    Defender: &fel,
-	    NumDefenseDice: 1,
-	    DefenderModifications: []attack.Modification{
+	}
+	fel.DefenderModifications =  []attack.Modification{
 		attack.Modifications["Defensive Focus"],
 		attack.Modifications["Use Evade Token"],
-	    },
 	}
+
+
+	soontirList := make([]combat.ModifiedShip,1)
+	soontirList[0] = fel
+
+    // Accuracy-Corrected B-Wings
+    bwings := make([]combat.ModifiedShip, 2)
+    for i := range(bwings) {
+		bwings[i].Ship = ship.ShipFactory["B-Wing"]()
+		bwings[i].Name = fmt.Sprintf("B-Wing %d", i + 1)
+		bwings[i].FocusTokens = 1
+		bwings[i].AttackerModifications = []attack.Modification{
+			attack.Modifications["Offensive Focus"],
+			attack.Modifications["Accuracy Corrector"],
+		}
     }
 
+	attacks := combat.ListVersusList( soontirList, bwings)
     return attacks
 }
 

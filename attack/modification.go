@@ -9,6 +9,9 @@ type Modification interface {
     ModifiesDefenseResults() bool
 }
 
+//TODO: upgrade the values of the below map to be configurable json input as opposed to hard coded bits of rules
+//this can put the task of defining out all the special offensive and defensive abilities onto the community via web rules editor
+
 var Modifications map[string]Modification = map[string]Modification{
     "Offensive Focus": new(offensiveFocus),
     "Target Lock": new(targetLock),
@@ -20,13 +23,17 @@ var Modifications map[string]Modification = map[string]Modification{
     "Han Solo": new(hanSolo),
     "Heavy Laser Cannon": new(heavyLaserCannon),
     "Accuracy Corrector": new(accuracyCorrector),
-
     "Defensive Focus": new(defensiveFocus),
     "Use Evade Token": new(useEvadeToken),
     "C-3PO (guess 0)": c3po{Guess: 0},
     "C-3PO (guess 1)": c3po{Guess: 1},
     "C-3PO (guess 2)": c3po{Guess: 2},
     "C-3PO (guess 3)": c3po{Guess: 3},
+//    "StealthDevice" : new(stealthDevice),
+    //Advanced Targetting Computer
+    //Luke Skywalker
+    //Serisu
+    //...
 }
 
 // For testing
