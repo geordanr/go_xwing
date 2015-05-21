@@ -48,6 +48,7 @@ func TestListVersusList(t *testing.T) {
 		attack.Modifications["Offensive Focus"],
 		attack.Modifications["Accuracy Corrector"],
 	}
+	listTwo[1]= bwingTwo
 
 	attacks := ListVersusList( listOne, listTwo)
 	if  len(attacks) != 3  {
