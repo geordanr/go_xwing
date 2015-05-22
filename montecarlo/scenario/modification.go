@@ -74,6 +74,19 @@ func (heavyLaserCannon) Modify(scenario *Scenario) *Scenario {
 }
 func (heavyLaserCannon) String() string { return "Heavy Laser Cannon" }
 
+type lukeSkywalker struct {}
+func (lukeSkywalker) Modify( scenario *Scenario) *Scenario {
+    if scenario.DefenseResults.Focuses() > 0 {
+        scenario.DefenseResults.ConvertUpto( 1 , dice.FOCUS, dice.EVADE  )
+    }
+    return scenario
+}
+func (lukeSkywalker) String() string { return "Luke Skywalker"}
+func (lukeSkywalker) ModifiesAttackResults() bool { return false }
+func (lukeSkywalker) ModifiesDefenseResults() bool { return true }
+
+
+
 type hanSolo struct {}
 func (hanSolo) Modify(scenario *Scenario) *Scenario {
     // reroll only if below average
@@ -165,4 +178,5 @@ var Modifications map[string]Modification = map[string]Modification{
     "Chiraneau": new(chiraneau),
     "Heavy Laser Cannon": new(heavyLaserCannon),
     "Han Solo": new(hanSolo),
+    "Luke Skywalker": new(lukeSkywalker),
 }

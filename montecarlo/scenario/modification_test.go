@@ -414,6 +414,67 @@ func TestChiraneau_withFocusResult (t *testing.T) {
     }
 }
 
+func TestLukeSkywalker( t * testing.T ) {
+    attackResults := dice.RollAttackDice(3)
+    attackResults[0].SetResult(dice.HIT)
+    attackResults[1].SetResult(dice.HIT)
+    attackResults[2].SetResult(dice.HIT)
+
+    defenseResults := dice.RollDefenseDice(2)
+    defenseResults[0].SetResult(dice.BLANK)
+    defenseResults[1].SetResult(dice.BLANK)
+
+    scenario := Scenario {
+        AttackResults: &attackResults,
+        DefenseResults: &defenseResults,
+    }
+
+
+    m := Modifications["Luke Skywalker"]
+    if m == nil {
+        t.Errorf("Nil luke skywalker modification!")
+    }
+
+    scenario.DefenderModifiesDefenseDice = append(scenario.DefenderModifiesDefenseDice, m )
+
+    scenario.Run()
+
+    if scenario.DefenseResults.Focuses() > 0 {
+        t.Errorf("Should have no focuses")
+    }
+    if scenario.DefenseResults.Evades() > 0 {
+        t.Errorf("Should have no evades")
+    }
+
+    defenseResults[0].SetResult(dice.FOCUS)
+    defenseResults[1].SetResult(dice.BLANK)
+
+    scenario.Run()
+
+    if scenario.DefenseResults.Focuses() > 0 {
+        t.Errorf("Should have no focuses")
+    }
+    if scenario.DefenseResults.Evades() != 1 {
+        t.Errorf("Should have evade")
+    }
+
+
+    defenseResults[0].SetResult(dice.FOCUS)
+    defenseResults[1].SetResult(dice.FOCUS)
+
+
+    scenario.Run()
+
+    if scenario.DefenseResults.Focuses() != 1 {
+        t.Errorf("Should have only one focus")
+    }
+    if scenario.DefenseResults.Evades() != 1 {
+        t.Errorf("Should have only one evade")
+    }
+
+
+}
+
 func TestChiraneau_withoutFocusResult (t *testing.T) {
     attackResults := dice.RollAttackDice(4)
     defenseResults := dice.RollDefenseDice(1)
