@@ -3,7 +3,6 @@ package attack
 import (
     "fmt"
     "github.com/geordanr/go_xwing/dice/filters"
-    "github.com/geordanr/go_xwing/dice"
 )
 
 type targetLock struct {}
@@ -36,19 +35,6 @@ func (o offensiveReroll) String() string {
 }
 func (offensiveReroll) ModifiesAttackResults() bool { return true }
 func (offensiveReroll) ModifiesDefenseResults() bool { return false }
-
-type lukeSkywalker struct {}
-func (lukeSkywalker) Modify( atk *Attack) *Attack {
-    fmt.Fprintln("in luke skywalker modify")
-    if atk.DefenseResults.Focuses() > 0 {
-        atk.DefenseResults.ConvertUpto( 1 , dice.FOCUS, dice.EVADE  )
-    }
-    return atk
-}
-func (lukeSkywalker) String() string { return "Luke Skywalker"}
-func (lukeSkywalker) ModifiesAttackResults() bool { return false }
-func (lukeSkywalker) ModifiesDefenseResults() bool { return true }
-
 
 type hanSolo struct {}
 func (hanSolo) Modify(atk *Attack) *Attack {
