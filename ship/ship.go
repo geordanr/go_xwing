@@ -55,24 +55,25 @@ func (ship *Ship) SufferDamage(nDamage uint) {
 /////////////////////////////////////////////////
 
 var ShipFactory map[string]func() Ship = map[string]func() Ship{
-    "B-Wing": func () Ship {
-	return Ship{
-	    Name: "B-Wing",
-	    Attack: 3,
-	    Agility: 1,
-	    Hull: 3,
-	    Shields: 5,
-	    canAttack: true,
-	}
-    },
-    "TIE Interceptor": func () Ship {
-	return Ship{
-	    Name: "TIE Interceptor",
-	    Attack: 3,
-	    Agility: 3,
-	    Hull: 3,
-	    Shields: 0,
-	    canAttack: true,
-	}
-    },
+	"E-Wing": func () Ship { return Ship{ Name: " E-Wing", Attack: 3, Agility: 3, Hull: 2, Shields: 3, canAttack: true,}},
+	"M3-A Syck Interceptor": func () Ship { return Ship{ Name: " M3-A Syck Interceptor", Attack: 2, Agility: 3, Hull: 3, Shields: 0, canAttack: true,}},
+	"Star Viper": func () Ship { return Ship{ Name: " Star Viper", Attack: 3, Agility: 3, Hull: 4, Shields: 1, canAttack: true,}},
+	"X-Wing": func () Ship { return Ship{ Name: " X-Wing", Attack: 3, Agility: 2, Hull: 3, Shields: 2, canAttack: true,}},
+	"VT-49 Decimator": func () Ship { return Ship{ Name: " VT-49 Decimator", Attack: 3, Agility: 0, Hull: 12, Shields: 6, canAttack: true,}},
+	"TIE Advanced": func () Ship { return Ship{ Name: " TIE Advanced", Attack: 2, Agility: 3, Hull: 3, Shields: 2, canAttack: true,}},
+	"HWK-290": func () Ship { return Ship{ Name: " HWK-290", Attack: 1, Agility: 2, Hull: 4, Shields: 1, canAttack: true,}},
+	"B-Wing": func () Ship { return Ship{ Name: " B-Wing", Attack: 3, Agility: 1, Hull: 3, Shields: 5, canAttack: true,}},
+	"Lambda-Class Shuttle": func () Ship { return Ship{ Name: " Lambda-Class Shuttle", Attack: 3, Agility: 1, Hull: 5, Shields: 5, canAttack: true,}},
+	"Aggressor": func () Ship { return Ship{ Name: " Aggressor", Attack: 3, Agility: 3, Hull: 4, Shields: 4, canAttack: true,}},
+	"Firespray-31": func () Ship { return Ship{ Name: " Firespray-31", Attack: 3, Agility: 2, Hull: 6, Shields: 4, canAttack: true,}},
+	"TIE Phantom": func () Ship { return Ship{ Name: " TIE Phantom", Attack: 4, Agility: 2, Hull: 2, Shields: 2, canAttack: true,}},
+	"Y-Wing": func () Ship { return Ship{ Name: " Y-Wing", Attack: 2, Agility: 1, Hull: 5, Shields: 3, canAttack: true,}},
+	"YT-1300": func () Ship { return Ship{ Name: " YT-1300", Attack: 3, Agility: 1, Hull: 8, Shields: 5, canAttack: true,}},
+	"TIE Interceptor": func () Ship { return Ship{ Name: " TIE Interceptor", Attack: 3, Agility: 3, Hull: 3, Shields: 0, canAttack: true,}},
+	"TIE Bomber": func () Ship { return Ship{ Name: " TIE Bomber", Attack: 2, Agility: 3, Hull: 6, Shields: 0, canAttack: true,}},
+	"TIE Fighter": func () Ship { return Ship{ Name: " TIE Fighter", Attack: 2, Agility: 3, Hull: 3, Shields: 0, canAttack: true,}},
+	"YT-2400 Freighter": func () Ship { return Ship{ Name: " YT-2400 Freighter", Attack: 2, Agility: 2, Hull: 5, Shields: 5, canAttack: true,}},
+	"Z-95 Headhunter": func () Ship { return Ship{ Name: " Z-95 Headhunter", Attack: 2, Agility: 2, Hull: 2, Shields: 2, canAttack: true,}},
+	"A-Wing": func () Ship { return Ship{ Name: " A-Wing", Attack: 2, Agility: 3, Hull: 2, Shields: 2, canAttack: true,}},
+	"TIE Defender": func () Ship { return Ship{ Name: " TIE Defender", Attack: 3, Agility: 3, Hull: 3, Shields: 3, canAttack: true,}},
 }
