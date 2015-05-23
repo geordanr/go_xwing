@@ -56,7 +56,8 @@ func (atk *Attack) compareResults() (hits, crits uint) {
 // Execute rolls and modifies dice using specified strategies, and assigns damage.
 func (atk *Attack) Execute() (uint, uint) {
     // Should we bother to attack (attacker or defender is dead)
-    if !atk.Attacker.IsAlive() || !atk.Defender.IsAlive() {
+    // Or attacker cannot attack
+    if !atk.Attacker.IsAlive() || !atk.Defender.IsAlive() || !atk.Attacker.CanAttack() {
 	// fmt.Printf("Someone is dead: %s or %s\n", atk.Attacker, atk.Defender)
 	return uint(0), uint(0)
     }
