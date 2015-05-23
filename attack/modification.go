@@ -29,6 +29,8 @@ var Modifications map[string]Modification = map[string]Modification{
     "C-3PO (guess 1)": c3po{Guess: 1},
     "C-3PO (guess 2)": c3po{Guess: 2},
     "C-3PO (guess 3)": c3po{Guess: 3},
+    "Gunner": new(gunner),
+    "Luke Skywalker": new(lukeSkywalker),
 //    "StealthDevice" : new(stealthDevice),
     //Advanced Targetting Computer
     //Luke Skywalker
@@ -54,6 +56,25 @@ func (mod AttackDiceSetter) Modify(atk *Attack) *Attack {
 func (AttackDiceSetter) String() string { return "Attack Die Setter" }
 func (AttackDiceSetter) ModifiesAttackResults() bool { return true }
 func (AttackDiceSetter) ModifiesDefenseResults() bool { return false }
+
+// GunnerAttackDiceSetter is used to force specific attack dice results on gunner rolls.  Should be the first gunner attack modification.
+type GunnerAttackDiceSetter struct {
+    desiredResults []dice.Result
+}
+func (mod GunnerAttackDiceSetter) Modify(atk *Attack) *Attack {
+    if atk.IsGunnerAttack {
+	results := make(dice.Results, len(mod.desiredResults))
+	for i, result := range(mod.desiredResults) {
+	    results[i] = new(dice.AttackDie)
+	    results[i].SetResult(result)
+	}
+	atk.AttackResults = &results
+    }
+    return atk
+}
+func (GunnerAttackDiceSetter) String() string { return "Gunner Attack Die Setter" }
+func (GunnerAttackDiceSetter) ModifiesAttackResults() bool { return true }
+func (GunnerAttackDiceSetter) ModifiesDefenseResults() bool { return false }
 
 // DefenseDiceSetter is used to force specific attack dice results.  Should be the first defense modification.
 type DefenseDiceSetter struct {
