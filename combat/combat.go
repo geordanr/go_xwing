@@ -1,7 +1,6 @@
 package combat
 
 import (
-    "math"
     "github.com/geordanr/go_xwing/attack"
     "github.com/geordanr/go_xwing/ship"
     "github.com/geordanr/go_xwing/histogram"
@@ -11,43 +10,6 @@ type Combat struct {
     attacks []attack.Attack
     results map[ship.Ship]simResult
 }
-
-type stats struct {
-    HitSum uint
-    HitSumSquares uint
-
-    CritSum uint
-    CritSumSquares uint
-
-    HullSum uint
-    HullSumSquares uint
-
-    ShieldSum uint
-    ShieldSumSquares uint
-}
-
-type simResult struct {
-    HitAverage float64
-    HitStddev float64
-    HitHistogram histogram.IntHistogram
-
-    CritAverage float64
-    CritStddev float64
-    CritHistogram histogram.IntHistogram
-
-    HullAverage float64
-    HullStddev float64
-    HullHistogram histogram.IntHistogram
-
-    ShieldAverage float64
-    ShieldStddev float64
-    ShieldHistogram histogram.IntHistogram
-}
-
-// Maps ship name to statistics
-type statsByShipName map[string]*stats
-type resultsByShipName map[string]*simResult
-
 // New takes a function that returns a list of Attacks and constructs a Combat from it.
 func New(atkFactory func() []attack.Attack) *Combat {
     cbt := Combat{
@@ -96,19 +58,7 @@ func Simulate(atkFactory func() []attack.Attack, iterations int) (*statsByShipNa
 
     for combatant, res := range(combatResults) {
 	st := combatStats[combatant]
-
-	res.HitAverage = float64(st.HitSum) /  float64(iterations)
-	res.HitStddev = math.Sqrt((float64(st.HitSumSquares) / float64(iterations)) - math.Pow(res.HitAverage, 2))
-
-	res.CritAverage = float64(st.CritSum) /  float64(iterations)
-	res.CritStddev = math.Sqrt((float64(st.CritSumSquares) / float64(iterations)) - math.Pow(res.CritAverage, 2))
-
-	res.HullAverage = float64(st.HullSum) /  float64(iterations)
-	res.HullStddev = math.Sqrt((float64(st.HullSumSquares) / float64(iterations)) - math.Pow(res.HullAverage, 2))
-
-	res.ShieldAverage = float64(st.ShieldSum) /  float64(iterations)
-	res.ShieldStddev = math.Sqrt((float64(st.ShieldSumSquares) / float64(iterations)) - math.Pow(res.ShieldAverage, 2))
-
+	st.ComputeStandardDeviations(res)
     }
 
     return &combatStats, &combatResults
@@ -128,6 +78,7 @@ func (cbt *Combat) Execute(combatStats *statsByShipName, combatResults *resultsB
 
 	hits, crits := atk.Execute()
 
+	(*combatStats)[atk.Attacker.Name].Iterations++
 	(*combatStats)[atk.Attacker.Name].HitSum += hits
 	(*combatStats)[atk.Attacker.Name].HitSumSquares += hits * hits
 	(*combatStats)[atk.Attacker.Name].CritSum += crits

@@ -37,3 +37,10 @@ func (h IntHistogram) ToStrMap() map[string]int {
     }
     return r
 }
+
+func (this *IntHistogram) Add(that IntHistogram) *IntHistogram {
+    for k, v := range(that) {
+	(*this)[k] += v
+    }
+    return this
+}
