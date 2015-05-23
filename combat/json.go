@@ -116,3 +116,60 @@ func makeList(l []modifiedShipJSONSchema) []ModifiedShip {
     }
     return ret
 }
+
+type combinedSimResults struct {
+    Stats *stats
+    Results *jsonableSimResult
+}
+
+type jsonableSimResult struct {
+    HitAverage float64
+    HitStddev float64
+    HitHistogram map[string]int
+
+    CritAverage float64
+    CritStddev float64
+    CritHistogram map[string]int
+
+    HullAverage float64
+    HullStddev float64
+    HullHistogram map[string]int
+
+    ShieldAverage float64
+    ShieldStddev float64
+    ShieldHistogram map[string]int
+}
+
+func SimResultsToJSON(shipStats *statsByShipName, shipResults *resultsByShipName) ([]byte, error) {
+    res := make(map[string]combinedSimResults, len(*shipStats))
+    for name, s := range(*shipStats) {
+	shipResult := (*shipResults)[name]
+	j := jsonableSimResult{
+	    HitAverage: shipResult.HitAverage,
+	    HitStddev: shipResult.HitStddev,
+	    HitHistogram: shipResult.HitHistogram.ToStrMap(),
+
+	    CritAverage: shipResult.CritAverage,
+	    CritStddev: shipResult.CritStddev,
+	    CritHistogram: shipResult.CritHistogram.ToStrMap(),
+
+	    HullAverage: shipResult.HullAverage,
+	    HullStddev: shipResult.HullStddev,
+	    HullHistogram: shipResult.HullHistogram.ToStrMap(),
+
+	    ShieldAverage: shipResult.ShieldAverage,
+	    ShieldStddev: shipResult.ShieldStddev,
+	    ShieldHistogram: shipResult.ShieldHistogram.ToStrMap(),
+	}
+	res[name] = combinedSimResults{
+	    Stats: s,
+	    Results: &j,
+	}
+    }
+    bytes, err := json.Marshal(res)
+    if err != nil {
+	return nil, err
+    }
+    return bytes, nil
+
+}
