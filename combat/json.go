@@ -8,6 +8,7 @@ import (
 )
 
 type listVsListJSONSchema struct {
+    Iterations int
     ListOne []modifiedShipJSONSchema
     ListTwo []modifiedShipJSONSchema
 }
@@ -31,22 +32,44 @@ type statOverrideJSONSchema struct {
     EvadeTokens *uint
 }
 
-func AttacksFromJSONPath(path string) ([]attack.Attack, error) {
+func SimulateFromJSON(b []byte) (*statsByShipName, *resultsByShipName, error) {
+    attacks, iterations, err := AttacksFromJSON(b)
+    if err != nil {
+	return nil, nil, err
+    }
+
+    atkFactory := func () []attack.Attack {
+	return attacks
+    }
+
+    s, r := Simulate(atkFactory, iterations)
+    return s, r, nil
+}
+
+func SimulateFromJSONPath(path string) (*statsByShipName, *resultsByShipName, error) {
     data, err := ioutil.ReadFile(path)
     if err != nil {
-	return nil, err
+	return nil, nil, err
+    }
+    return SimulateFromJSON(data)
+}
+
+func AttacksFromJSONPath(path string) ([]attack.Attack, int, error) {
+    data, err := ioutil.ReadFile(path)
+    if err != nil {
+	return nil, 0, err
     }
     return AttacksFromJSON(data)
 }
 
-func AttacksFromJSON(b []byte) ([]attack.Attack, error) {
+func AttacksFromJSON(b []byte) ([]attack.Attack, int, error) {
     var l listVsListJSONSchema
     if err := json.Unmarshal(b, &l); err != nil {
-	return nil, err
+	return nil, 0, err
     }
     listOne := makeList(l.ListOne)
     listTwo := makeList(l.ListTwo)
-    return ListVersusList(listOne, listTwo), nil
+    return ListVersusList(listOne, listTwo), l.Iterations, nil
 }
 
 func makeList(l []modifiedShipJSONSchema) []ModifiedShip {

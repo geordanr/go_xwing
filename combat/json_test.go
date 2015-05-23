@@ -5,7 +5,6 @@ import (
     "runtime"
     "testing"
     "github.com/stretchr/testify/assert"
-    "github.com/geordanr/go_xwing/attack"
 )
 
 func TestAttacksFromJSONPath(t *testing.T) {
@@ -13,10 +12,12 @@ func TestAttacksFromJSONPath(t *testing.T) {
 
     _, thisfile, _, _ := runtime.Caller(0)
     thisdir := filepath.Dir(thisfile)
-    attacks, err := AttacksFromJSONPath(filepath.Join(thisdir, "sample.json"))
+    attacks, iterations, err := AttacksFromJSONPath(filepath.Join(thisdir, "sample.json"))
     if err != nil {
 	t.Fatal(err)
     }
+
+    assert.EqualValues(1000, iterations)
 
     assert.EqualValues(3, len(attacks))
 
@@ -51,23 +52,31 @@ func TestAttacksFromJSONPath(t *testing.T) {
     assert.EqualValues("Defensive Focus", attacks[2].DefenderModifications[1].String())
 }
 
-func attackHelper(t *testing.T, jsonpath string) (func() []attack.Attack) {
-    attacks, err := AttacksFromJSONPath(jsonpath)
+func TestSimulateFromJSONPath(t *testing.T) {
+    var prs bool
+
+    assert := assert.New(t)
+
+    _, thisfile, _, _ := runtime.Caller(0)
+    thisdir := filepath.Dir(thisfile)
+    shipStats, shipResults, err := SimulateFromJSONPath(filepath.Join(thisdir, "sample.json"))
     if err != nil {
 	t.Fatal(err)
     }
 
-    f := func () []attack.Attack {
-	return attacks
-    }
+    _, prs = (*shipStats)["Soontir Fel"]
+    assert.True(prs)
+    _, prs = (*shipResults)["Soontir Fel"]
+    assert.True(prs)
 
-    return f
-}
+    _, prs = (*shipStats)["Blue Squad"]
+    assert.True(prs)
+    _, prs = (*shipResults)["Blue Squad"]
+    assert.True(prs)
 
-func SimulateFromJSON(t *testing.T) {
-    _, thisfile, _, _ := runtime.Caller(0)
-    thisdir := filepath.Dir(thisfile)
-    jsonpath := filepath.Join(thisdir, "sample.json")
+    _, prs = (*shipStats)["Green Squad"]
+    assert.True(prs)
+    _, prs = (*shipResults)["Green Squad"]
+    assert.True(prs)
 
-    Simulate(attackHelper(t, jsonpath), 1000)
 }
