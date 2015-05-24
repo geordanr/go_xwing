@@ -13,8 +13,8 @@ func (gunner) String() string { return "Gunner" }
 func (gunner) ModifiesAttackResults() bool { return true }
 func (gunner) ModifiesDefenseResults() bool { return false }
 
-type lukeSkywalker struct {}
-func (lukeSkywalker) Modify(atk *Attack) *Attack {
+type lukeSkywalkerCrew struct {}
+func (lukeSkywalkerCrew) Modify(atk *Attack) *Attack {
     if atk.IsGunnerAttack {
 	if atk.AttackResults.Focuses() > 0 {
 	    atk.AttackResults.ConvertUpto(1, dice.FOCUS, dice.HIT)
@@ -24,6 +24,6 @@ func (lukeSkywalker) Modify(atk *Attack) *Attack {
     }
     return atk
 }
-func (lukeSkywalker) String() string { return "Luke Skywalker" }
-func (lukeSkywalker) ModifiesAttackResults() bool { return true }
-func (lukeSkywalker) ModifiesDefenseResults() bool { return false }
+func (lukeSkywalkerCrew) String() string { return "Luke Skywalker (Crew)" }
+func (lukeSkywalkerCrew) ModifiesAttackResults() bool { return true }
+func (lukeSkywalkerCrew) ModifiesDefenseResults() bool { return false }

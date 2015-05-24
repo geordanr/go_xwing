@@ -151,7 +151,7 @@ func TestLukeSkywalker_firstHitLands(t *testing.T) {
 	Attacker: &attacker,
 	NumAttackDice: 1,
 	AttackerModifications: []Modification{
-	    Modifications["Luke Skywalker"],
+	    Modifications["Luke Skywalker (Crew)"],
 	    AttackDiceSetter{
 		desiredResults: []dice.Result{
 		    dice.CRIT,
@@ -206,7 +206,7 @@ func TestLukeSkywalker_firstHitMisses(t *testing.T) {
 		    dice.CRIT,
 		},
 	    },
-	    Modifications["Luke Skywalker"],
+	    Modifications["Luke Skywalker (Crew)"],
 	},
 
 	Defender: &defender,
