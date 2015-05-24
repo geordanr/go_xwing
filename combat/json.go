@@ -7,8 +7,12 @@ import (
     "github.com/geordanr/go_xwing/ship"
 )
 
-type listVsListJSONSchema struct {
+type iterationsJSONSchema struct {
     Iterations int
+}
+
+type listVsListJSONSchema struct {
+    iterationsJSONSchema
     ListOne []modifiedShipJSONSchema
     ListTwo []modifiedShipJSONSchema
 }
@@ -33,12 +37,18 @@ type statOverrideJSONSchema struct {
 }
 
 func SimulateFromJSON(b []byte) (*statsByShipName, *resultsByShipName, error) {
-    attacks, iterations, err := AttacksFromJSON(b)
-    if err != nil {
+    // Just need to parse out iterations first
+    var iter iterationsJSONSchema
+    if err := json.Unmarshal(b, &iter); err != nil {
 	return nil, nil, err
     }
+    iterations := iter.Iterations
 
     atkFactory := func () []attack.Attack {
+	attacks, _, err := AttacksFromJSON(b)
+	if err != nil {
+	    return nil
+	}
 	return attacks
     }
 

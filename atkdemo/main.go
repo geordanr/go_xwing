@@ -1,8 +1,10 @@
 package main
 
 import (
+    "flag"
     "fmt"
     "math/rand"
+    "os"
     "strings"
     "time"
     "github.com/geordanr/go_xwing/attack"
@@ -12,9 +14,22 @@ import (
 
 func main() {
     rand.Seed(time.Now().UnixNano())
-    _, results := combat.Simulate(twoAccBvsFel, 1000)
 
-    for shipName, res := range(*results) {
+    jsonpath := flag.String("jsonpath", "", "Path to JSON file to parse")
+    flag.Parse()
+
+    if *jsonpath == "" {
+	fmt.Println("Specify the path to the JSON file to parse.")
+	os.Exit(1)
+    }
+
+    rand.Seed(time.Now().UnixNano())
+    _, shipResults, err := combat.SimulateFromJSONPath(*jsonpath)
+    if err != nil {
+	panic(err)
+    }
+
+    for shipName, res := range(*shipResults) {
 	fmt.Println(shipName)
 	fmt.Println(strings.Repeat("-", len(shipName)))
 	fmt.Printf("Hits Landed: %-.3f (stddev=%-.3f)\n", res.HitAverage, res.HitStddev)

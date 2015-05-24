@@ -20,24 +20,31 @@
     ],
     "ListTwo": [
         {
-            "Name": "Blue Squad",
+            "Name": "Blue Squadron Pilot 1",
             "ShipType": "B-Wing",
             "StatOverrides": {
                 "FocusTokens": 1
             },
+            "AttackerModifications": [
+                "Offensive Focus",
+                "Accuracy Corrector"
+            ],
             "DefenderModifications": [
                 "Defensive Focus"
             ]
         },
         {
-            "Name": "Green Squad",
-            "ShipType": "A-Wing",
+            "Name": "Blue Squadron Pilot 2",
+            "ShipType": "B-Wing",
             "StatOverrides": {
-                "EvadeTokens": 1,
-                "Hull": 2
+                "FocusTokens": 1
             },
             "AttackerModifications": [
-                "Target Lock"
+                "Offensive Focus",
+                "Accuracy Corrector"
+            ],
+            "DefenderModifications": [
+                "Defensive Focus"
             ]
         }
     ]

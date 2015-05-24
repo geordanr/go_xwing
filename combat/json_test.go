@@ -17,7 +17,7 @@ func TestAttacksFromJSONPath(t *testing.T) {
 	t.Fatal(err)
     }
 
-    assert.EqualValues(1000, iterations)
+    assert.EqualValues(10000, iterations)
 
     assert.EqualValues(3, len(attacks))
 
