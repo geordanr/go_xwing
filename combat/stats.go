@@ -59,6 +59,7 @@ func (st stats) ComputeStandardDeviations(res *simResult) {
 }
 
 func (this *stats) Add(that stats) *stats {
+    this.Iterations += that.Iterations
     this.HitSum += that.HitSum
     this.HitSumSquares += that.HitSumSquares
     this.CritSum += that.CritSum
@@ -71,9 +72,13 @@ func (this *stats) Add(that stats) *stats {
 }
 
 func (this *simResult) AddHistograms(that simResult) *simResult {
+    if this.HitHistogram == nil { this.HitHistogram = make(histogram.IntHistogram) }
     this.HitHistogram.Add(that.HitHistogram)
+    if this.CritHistogram == nil { this.CritHistogram = make(histogram.IntHistogram) }
     this.CritHistogram.Add(that.CritHistogram)
+    if this.HullHistogram == nil { this.HullHistogram = make(histogram.IntHistogram) }
     this.HullHistogram.Add(that.HullHistogram)
+    if this.ShieldHistogram == nil { this.ShieldHistogram = make(histogram.IntHistogram) }
     this.ShieldHistogram.Add(that.ShieldHistogram)
     return this
 }
