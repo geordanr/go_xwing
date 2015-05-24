@@ -31,6 +31,7 @@ var Modifications map[string]Modification = map[string]Modification{
     "C-3PO (guess 3)": c3po{Guess: 3},
     "Gunner": new(gunner),
     "Luke Skywalker (Crew)": new(lukeSkywalkerCrew),
+    "Lando (Crew)": new(lukeSkywalkerCrew),
 //    "StealthDevice" : new(stealthDevice),
     //Advanced Targetting Computer
     //Luke Skywalker
