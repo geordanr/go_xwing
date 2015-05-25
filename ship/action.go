@@ -2,9 +2,15 @@ package ship
 
 import "github.com/geordanr/go_xwing/dice"
 
+// Actions are functions performed once per combat before attacks are executed.
+// Useful for things that cannot be represented by simple changes to ship stats.
 type Action interface {
     Perform(*Ship)
     String() string
+}
+
+var Actions map[string]Action = map[string]Action{
+    "Lando (Crew)": new(landoCrew),
 }
 
 ////////////////////////////
@@ -17,7 +23,3 @@ func (landoCrew) Perform(s *Ship) {
     s.FocusTokens += uint(landoResults.Focuses())
 }
 func (landoCrew) String() string { return "Lando (Crew)" }
-
-var Actions map[string]Action = map[string]Action{
-    "Lando (Crew)": new(landoCrew),
-}
