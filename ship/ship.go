@@ -10,6 +10,7 @@ type Ship struct {
     Shields uint
     FocusTokens uint
     EvadeTokens uint
+    Actions []Action
     cannotAttack bool // default zero value means we can attack
 }
 
@@ -53,6 +54,12 @@ func (ship *Ship) SufferDamage(nDamage uint) {
 	} else {
 	    break
 	}
+    }
+}
+
+func (s *Ship) PerformActions() {
+    for _, action := range(s.Actions) {
+	action.Perform(s)
     }
 }
 

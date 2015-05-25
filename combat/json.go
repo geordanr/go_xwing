@@ -23,6 +23,7 @@ type modifiedShipJSONSchema struct {
     StatOverrides statOverrideJSONSchema
     AttackerModifications []string
     DefenderModifications []string
+    Actions []string
 }
 
 // Uses pointers so we can tell the difference between an unspecified
@@ -122,6 +123,11 @@ func makeList(l []modifiedShipJSONSchema) []ModifiedShip {
 	newship.DefenderModifications = make([]attack.Modification, len(s.DefenderModifications))
 	for j, mod := range(s.DefenderModifications) {
 	    newship.DefenderModifications[j] = attack.Modifications[mod]
+	}
+
+	newship.Actions = make([]ship.Action, len(s.Actions))
+	for j, action := range(s.Actions) {
+	    newship.Actions[j] = ship.Actions[action]
 	}
     }
     return ret
