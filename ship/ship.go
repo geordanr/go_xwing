@@ -63,7 +63,7 @@ var ShipFactory map[string]func() Ship = map[string]func() Ship{
 	"M3-A Syck Interceptor": func () Ship { return Ship{ Name: " M3-A Syck Interceptor", Attack: 2, Agility: 3, Hull: 3, Shields: 0, }},
 	"Star Viper": func () Ship { return Ship{ Name: " Star Viper", Attack: 3, Agility: 3, Hull: 4, Shields: 1, }},
 	"X-Wing": func () Ship { return Ship{ Name: " X-Wing", Attack: 3, Agility: 2, Hull: 3, Shields: 2, }},
-	"VT-49 Decimator": func () Ship { return Ship{ Name: " VT-49 Decimator", Attack: 3, Agility: 0, Hull: 12, Shields: 6, }},
+	"VT-49 Decimator": func () Ship { return Ship{ Name: " VT-49 Decimator", Attack: 3, Agility: 0, Hull: 12, Shields: 4, }},
 	"TIE Advanced": func () Ship { return Ship{ Name: " TIE Advanced", Attack: 2, Agility: 3, Hull: 3, Shields: 2, }},
 	"HWK-290": func () Ship { return Ship{ Name: " HWK-290", Attack: 1, Agility: 2, Hull: 4, Shields: 1, }},
 	"B-Wing": func () Ship { return Ship{ Name: " B-Wing", Attack: 3, Agility: 1, Hull: 3, Shields: 5, }},
