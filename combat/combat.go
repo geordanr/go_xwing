@@ -12,10 +12,11 @@ type Combat struct {
     combatants map[string]*ship.Ship
 }
 // New takes a function that returns a list of Attacks and constructs a Combat from it.
-func New(atkFactory func() []attack.Attack) *Combat {
-    cbt := Combat{
-	attacks: atkFactory(),
-    }
+func New(atkFactory func() ([]attack.Attack, error)) (*Combat, error) {
+    attacks, err := atkFactory()
+    if err != nil { return nil, err }
+
+    cbt := Combat{attacks: attacks}
 
     cbt.combatants = make(map[string]*ship.Ship)
     for _, atk := range(cbt.attacks) {
@@ -28,18 +29,19 @@ func New(atkFactory func() []attack.Attack) *Combat {
 	}
     }
 
-    return &cbt
+    return &cbt, nil
 }
 
 func (cbt Combat) Results() map[*ship.Ship]simResult {
     return cbt.results
 }
 // Simulate creates a combat from the given attack factory and runs it the specified number of times.
-func Simulate(atkFactory func() []attack.Attack, iterations int) (*statsByShipName, *resultsByShipName) {
+func Simulate(atkFactory func() ([]attack.Attack, error), iterations int) (*statsByShipName, *resultsByShipName, error) {
 
     // Collect ships for stats map
     // Create a combat to analyze the combatants
-    cbt := New(atkFactory)
+    cbt, err := New(atkFactory)
+    if err != nil { return nil, nil, err }
     combatStats := make(statsByShipName)
     combatResults := make(resultsByShipName)
     for name := range(cbt.combatants) {
@@ -53,7 +55,7 @@ func Simulate(atkFactory func() []attack.Attack, iterations int) (*statsByShipNa
 
     for i := 0; i < iterations; i++ {
 	// Create a fresh combat
-	cbt = New(atkFactory)
+	cbt, err = New(atkFactory)
 	cbt.Execute(&combatStats, &combatResults)
     }
 
@@ -62,7 +64,7 @@ func Simulate(atkFactory func() []attack.Attack, iterations int) (*statsByShipNa
 	st.ComputeStandardDeviations(res)
     }
 
-    return &combatStats, &combatResults
+    return &combatStats, &combatResults, nil
 }
 
 // Execute executes all attacks in combat, returns stats per ship.

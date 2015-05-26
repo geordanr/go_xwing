@@ -34,8 +34,8 @@ func TestLandoCrew(t *testing.T) {
 	    },
 	}
 
-	cbt := New(func () []attack.Attack {
-	    return ListVersusList(listOne, listTwo)
+	cbt, _ := New(func () ([]attack.Attack, error) {
+	    return ListVersusList(listOne, listTwo), nil
 	})
 
 	combatStats := make(statsByShipName)

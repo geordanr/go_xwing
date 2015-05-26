@@ -11,6 +11,11 @@ This is a monte carlo simulator for simulating a single round of combat in X-Win
 ## Installing
 
     go get github.com/geordanr/go_xwing
+    go get ./...
+
+## Running Tests
+
+    go test ./...
 
 ## Running
 

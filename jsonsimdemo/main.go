@@ -30,10 +30,9 @@ func main() {
 
     rand.Seed(time.Now().UnixNano())
     shipStats, shipResults, err := combat.SimulateFromJSONPath(*jsonpath)
+    if err != nil { panic(err) }
     data, err := combat.SimResultsToJSON(shipStats, shipResults)
-    if err != nil {
-	panic(err)
-    }
+    if err != nil { panic(err) }
 
     fmt.Println(string(data))
 }

@@ -2,6 +2,7 @@ package combat
 
 import (
     "encoding/json"
+    "fmt"
     "io/ioutil"
     "github.com/geordanr/go_xwing/attack"
     "github.com/geordanr/go_xwing/ship"
@@ -45,16 +46,16 @@ func SimulateFromJSON(b []byte) (*statsByShipName, *resultsByShipName, error) {
     }
     iterations := iter.Iterations
 
-    atkFactory := func () []attack.Attack {
+    atkFactory := func () ([]attack.Attack, error) {
 	attacks, _, err := AttacksFromJSON(b)
 	if err != nil {
-	    return nil
+	    return nil, err
 	}
-	return attacks
+	return attacks, nil
     }
 
-    s, r := Simulate(atkFactory, iterations)
-    return s, r, nil
+    s, r, err := Simulate(atkFactory, iterations)
+    return s, r, err
 }
 
 func SimulateFromJSONPath(path string) (*statsByShipName, *resultsByShipName, error) {
@@ -78,17 +79,27 @@ func AttacksFromJSON(b []byte) ([]attack.Attack, int, error) {
     if err := json.Unmarshal(b, &l); err != nil {
 	return nil, 0, err
     }
-    listOne := makeList(l.ListOne)
-    listTwo := makeList(l.ListTwo)
+    listOne, err := makeList(l.ListOne)
+    if err != nil {
+	return nil, 0, err
+    }
+    listTwo, err := makeList(l.ListTwo)
+    if err != nil {
+	return nil, 0, err
+    }
     return ListVersusList(listOne, listTwo), l.Iterations, nil
 }
 
-func makeList(l []modifiedShipJSONSchema) []ModifiedShip {
+func makeList(l []modifiedShipJSONSchema) ([]ModifiedShip, error) {
     ret := make([]ModifiedShip, len(l))
     for i, s := range(l) {
 	ret[i] = ModifiedShip{}
 	newship := &ret[i]
-	newship.Ship = ship.ShipFactory[s.ShipType]()
+	shipfactory, prs := ship.ShipFactory[s.ShipType]
+	if !prs {
+	    return nil, fmt.Errorf("Unrecognized ship %s", s.ShipType)
+	}
+	newship.Ship = shipfactory()
 	newship.Name = s.Name
 
 	if s.StatOverrides.Attack != nil {
@@ -117,20 +128,29 @@ func makeList(l []modifiedShipJSONSchema) []ModifiedShip {
 
 	newship.AttackerModifications = make([]attack.Modification, len(s.AttackerModifications))
 	for j, mod := range(s.AttackerModifications) {
-	    newship.AttackerModifications[j] = attack.Modifications[mod]
+	    newship.AttackerModifications[j], prs = attack.Modifications[mod]
+	    if !prs {
+		return nil, fmt.Errorf("Unrecognized attack modifier %s", mod)
+	    }
 	}
 
 	newship.DefenderModifications = make([]attack.Modification, len(s.DefenderModifications))
 	for j, mod := range(s.DefenderModifications) {
-	    newship.DefenderModifications[j] = attack.Modifications[mod]
+	    newship.DefenderModifications[j], prs = attack.Modifications[mod]
+	    if !prs {
+		return nil, fmt.Errorf("Unrecognized defense modifier %s", mod)
+	    }
 	}
 
 	newship.Actions = make([]ship.Action, len(s.Actions))
 	for j, action := range(s.Actions) {
-	    newship.Actions[j] = ship.Actions[action]
+	    newship.Actions[j], prs = ship.Actions[action]
+	    if !prs {
+		return nil, fmt.Errorf("Unrecognized action %s", action)
+	    }
 	}
     }
-    return ret
+    return ret, nil
 }
 
 type combinedSimResults struct {
