@@ -20,6 +20,23 @@
     ],
     "ListTwo": [
         {
+            "Name": "Eaden Vrill",
+            "ShipType": "YT-2400 Freighter",
+            "StatOverrides": {
+                "FocusTokens": 1
+            },
+            "Actions": [
+                "Lando (Crew)"
+            ],
+            "AttackerModifications": [
+                "Offensive Focus"
+            ],
+            "DefenderModifications": [
+                "Use Evade Token",
+                "Defensive Focus"
+            ]
+        },
+        {
             "Name": "Blue Squadron Pilot 1",
             "ShipType": "B-Wing",
             "StatOverrides": {
