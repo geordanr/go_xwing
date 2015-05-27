@@ -29,6 +29,7 @@ func main() {
     rand.Seed(time.Now().UnixNano())
     router := web.New(Context{}).
 	Middleware(web.LoggerMiddleware).
+	Middleware(corsMiddleware).
 	Get("/", (*Context).Root).
 	Get("/api/v1/ships", (*Context).Ships).
 	Get("/api/v1/actions", (*Context).Actions).
@@ -37,6 +38,11 @@ func main() {
 	Error((*Context).Error)
 
     http.ListenAndServe("localhost:8080", router)
+}
+
+func corsMiddleware(rw web.ResponseWriter, req *web.Request, next web.NextMiddlewareFunc) {
+    rw.Header().Set("Access-Control-Allow-Origin", "*")
+    next(rw, req)
 }
 
 func (*Context) Root(rw web.ResponseWriter, req *web.Request) {
