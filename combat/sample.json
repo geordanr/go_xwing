@@ -1,0 +1,44 @@
+{
+    "Iterations": 10000,
+    "ListOne": [
+        {
+            "Name": "Soontir Fel",
+            "ShipType": "TIE Interceptor",
+            "StatOverrides": {
+                "Agility": 4,
+                "FocusTokens": 2,
+                "EvadeTokens": 1
+            },
+            "AttackerModifications": [
+                "Offensive Focus"
+            ],
+            "DefenderModifications": [
+                "Use Evade Token",
+                "Defensive Focus"
+            ]
+        }
+    ],
+    "ListTwo": [
+        {
+            "Name": "Blue Squad",
+            "ShipType": "B-Wing",
+            "StatOverrides": {
+                "FocusTokens": 1
+            },
+            "DefenderModifications": [
+                "Defensive Focus"
+            ]
+        },
+        {
+            "Name": "Green Squad",
+            "ShipType": "A-Wing",
+            "StatOverrides": {
+                "EvadeTokens": 1,
+                "Hull": 2
+            },
+            "AttackerModifications": [
+                "Target Lock"
+            ]
+        }
+    ]
+}

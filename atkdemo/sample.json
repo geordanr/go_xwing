@@ -1,0 +1,68 @@
+{
+    "Iterations": 10000,
+    "ListOne": [
+        {
+            "Name": "Soontir Fel",
+            "ShipType": "TIE Interceptor",
+            "StatOverrides": {
+                "Agility": 4,
+                "FocusTokens": 2,
+                "EvadeTokens": 1
+            },
+            "AttackerModifications": [
+                "Offensive Focus"
+            ],
+            "DefenderModifications": [
+                "Use Evade Token",
+                "Defensive Focus"
+            ]
+        }
+    ],
+    "ListTwo": [
+        {
+            "Name": "Eaden Vrill",
+            "ShipType": "YT-2400 Freighter",
+            "StatOverrides": {
+                "FocusTokens": 1
+            },
+            "Actions": [
+                "Lando (Crew)"
+            ],
+            "AttackerModifications": [
+                "Offensive Focus"
+            ],
+            "DefenderModifications": [
+                "Use Evade Token",
+                "Defensive Focus"
+            ]
+        },
+        {
+            "Name": "Blue Squadron Pilot 1",
+            "ShipType": "B-Wing",
+            "StatOverrides": {
+                "FocusTokens": 1
+            },
+            "AttackerModifications": [
+                "Offensive Focus",
+                "Accuracy Corrector"
+            ],
+            "DefenderModifications": [
+                "Defensive Focus"
+            ]
+        },
+        {
+            "Name": "Blue Squadron Pilot 2",
+            "ShipType": "B-Wing",
+            "StatOverrides": {
+                "FocusTokens": 1
+            },
+            "AttackerModifications": [
+                "Offensive Focus",
+                "Accuracy Corrector"
+            ],
+            "DefenderModifications": [
+                "Defensive Focus"
+            ]
+        }
+    ]
+}

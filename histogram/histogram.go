@@ -29,3 +29,18 @@ func (h IntHistogram) String() (str string) {
     }
     return
 }
+
+func (h IntHistogram) ToStrMap() map[string]int {
+    r := make(map[string]int)
+    for k, v := range(h) {
+	r[fmt.Sprintf("%d", k)] = v
+    }
+    return r
+}
+
+func (this *IntHistogram) Add(that IntHistogram) *IntHistogram {
+    for k, v := range(that) {
+	(*this)[k] += v
+    }
+    return this
+}

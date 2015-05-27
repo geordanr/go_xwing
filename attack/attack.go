@@ -17,6 +17,9 @@ type Attack struct {
     NumDefenseDice uint8
     DefenderModifications []Modification
     DefenseResults *dice.Results
+
+    UseGunner bool
+    IsGunnerAttack bool
 }
 
 // Copy creates a copy of the attack, with nil results.
@@ -56,11 +59,24 @@ func (atk *Attack) compareResults() (hits, crits uint) {
 // Execute rolls and modifies dice using specified strategies, and assigns damage.
 func (atk *Attack) Execute() (uint, uint) {
     // Should we bother to attack (attacker or defender is dead)
-    if !atk.Attacker.IsAlive() || !atk.Defender.IsAlive() {
+    // Or attacker cannot attack
+    if !atk.Attacker.IsAlive() || !atk.Defender.IsAlive() || !atk.Attacker.CanAttack() {
 	// fmt.Printf("Someone is dead: %s or %s\n", atk.Attacker, atk.Defender)
 	return uint(0), uint(0)
     }
 
+    hits, crits := atk.performAttack()
+
+    if atk.UseGunner && hits + crits == 0 {
+	atk.IsGunnerAttack = true
+	hits, crits = atk.performAttack()
+    }
+
+    return hits, crits
+}
+
+// performAttack is a helper function, for potential followup attacks.
+func (atk *Attack) performAttack() (uint, uint) {
     // Attacker rolls attack dice
     atkResults := dice.RollAttackDice(atk.NumAttackDice)
     atk.AttackResults = &atkResults
@@ -99,4 +115,5 @@ func (atk *Attack) Execute() (uint, uint) {
     atk.Defender.SufferDamage(hits + crits) // treating both as 1 damage for now
 
     return hits, crits
+
 }
