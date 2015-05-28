@@ -44,3 +44,16 @@ func (lukeSkywalkerPilot) String() string { return "Luke Skywalker" }
 func (lukeSkywalkerPilot) ModifiesAttackResults() bool { return false }
 func (lukeSkywalkerPilot) ModifiesDefenseResults() bool { return true }
 
+
+type autothrusters struct {}
+func (autothrusters) Modify( atk *Attack) *Attack {
+    if atk.DefenseResults.Blanks() > 0 {
+        atk.DefenseResults.ConvertUpto(1, dice.BLANK, dice.EVADE)
+    }
+    return atk
+}
+
+func (autothrusters) String() string { return "Autothrusters" }
+func (autothrusters) ModifiesAttackResults() bool { return false }
+func (autothrusters) ModifiesDefenseResults() bool { return true }
+

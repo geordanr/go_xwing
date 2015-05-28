@@ -1,6 +1,7 @@
 package attack
 import (
 	"testing"
+	"github.com/stretchr/testify/assert"
 	"github.com/geordanr/go_xwing/dice"
 	"github.com/geordanr/go_xwing/ship"
 )
@@ -91,4 +92,74 @@ func TestLukeSkywalker( t * testing.T ) {
 	}
 
 
+}
+
+func TestAutothrusters_withBlanks(t *testing.T) {
+    assert := assert.New(t)
+
+    attacker := ship.Ship{
+	Name: "Attacker",
+	Hull: 1,
+    }
+    defender := ship.Ship{
+	Name: "Defender",
+	Hull: 1,
+    }
+
+    atk := Attack{
+	Attacker: &attacker,
+
+	Defender: &defender,
+	NumDefenseDice: 4,
+	DefenderModifications: []Modification{
+	    DefenseDiceSetter{
+		desiredResults: []dice.Result{
+		    dice.BLANK,
+		    dice.BLANK,
+		    dice.FOCUS,
+		    dice.EVADE,
+		},
+	    },
+	    Modifications["Autothrusters"],
+	},
+    }
+
+    atk.Execute()
+    assert.EqualValues(2, atk.DefenseResults.Evades())
+    assert.EqualValues(1, atk.DefenseResults.Blanks())
+    assert.EqualValues(1, atk.DefenseResults.Focuses())
+}
+
+func TestAutothrusters_withoutBlanks(t *testing.T) {
+    assert := assert.New(t)
+
+    attacker := ship.Ship{
+	Name: "Attacker",
+	Hull: 1,
+    }
+    defender := ship.Ship{
+	Name: "Defender",
+	Hull: 1,
+    }
+
+    atk := Attack{
+	Attacker: &attacker,
+
+	Defender: &defender,
+	NumDefenseDice: 1,
+	DefenderModifications: []Modification{
+	    DefenseDiceSetter{
+		desiredResults: []dice.Result{
+		    dice.FOCUS,
+		    dice.EVADE,
+		},
+	    },
+	    Modifications["Autothrusters"],
+	},
+    }
+
+    atk.Execute()
+    assert.EqualValues(1, atk.DefenseResults.Evades())
+    assert.EqualValues(0, atk.DefenseResults.Blanks())
+    assert.EqualValues(1, atk.DefenseResults.Focuses())
 }
