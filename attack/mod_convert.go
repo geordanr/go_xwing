@@ -29,3 +29,18 @@ func (accuracyCorrector) Modify(atk *Attack) *Attack {
 func (accuracyCorrector) String() string { return "Accuracy Corrector" }
 func (accuracyCorrector) ModifiesAttackResults() bool { return true }
 func (accuracyCorrector) ModifiesDefenseResults() bool { return false }
+
+
+type lukeSkywalkerPilot struct {}
+
+func (lukeSkywalkerPilot) Modify( atk *Attack) *Attack {
+    if atk.DefenseResults.Focuses() > 0 {
+        atk.DefenseResults.ConvertUpto(1, dice.FOCUS, dice.EVADE)
+    }
+    return atk
+}
+
+func (lukeSkywalkerPilot) String() string { return "Luke Skywalker" }
+func (lukeSkywalkerPilot) ModifiesAttackResults() bool { return false }
+func (lukeSkywalkerPilot) ModifiesDefenseResults() bool { return true }
+
