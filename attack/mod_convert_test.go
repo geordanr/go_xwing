@@ -163,3 +163,75 @@ func TestAutothrusters_withoutBlanks(t *testing.T) {
     assert.EqualValues(0, atk.DefenseResults.Blanks())
     assert.EqualValues(1, atk.DefenseResults.Focuses())
 }
+
+func TestManglerCannon(t *testing.T) {
+    assert := assert.New(t)
+
+    attacker := ship.Ship{
+	Name: "Attacker",
+	Hull: 1,
+    }
+    defender := ship.Ship{
+	Name: "Defender",
+	Hull: 1,
+    }
+
+    atk := Attack{
+	Attacker: &attacker,
+	AttackerModifications: []Modification{
+	    AttackDiceSetter{
+		desiredResults: []dice.Result{
+		    dice.BLANK,
+		    dice.HIT,
+		    dice.CRIT,
+		    dice.FOCUS,
+		},
+	    },
+	    Modifications["Mangler Cannon"],
+	},
+
+	Defender: &defender,
+    }
+
+    atk.Execute()
+    assert.EqualValues(0, atk.AttackResults.Hits())
+    assert.EqualValues(2, atk.AttackResults.Crits())
+    assert.EqualValues(1, atk.AttackResults.Blanks())
+    assert.EqualValues(1, atk.AttackResults.Focuses())
+}
+
+func TestHeavyLaserCannon(t *testing.T) {
+    assert := assert.New(t)
+
+    attacker := ship.Ship{
+	Name: "Attacker",
+	Hull: 1,
+    }
+    defender := ship.Ship{
+	Name: "Defender",
+	Hull: 1,
+    }
+
+    atk := Attack{
+	Attacker: &attacker,
+	AttackerModifications: []Modification{
+	    AttackDiceSetter{
+		desiredResults: []dice.Result{
+		    dice.BLANK,
+		    dice.HIT,
+		    dice.CRIT,
+		    dice.FOCUS,
+		},
+	    },
+	    Modifications["Heavy Laser Cannon"],
+	},
+
+	Defender: &defender,
+    }
+
+    atk.Execute()
+    assert.EqualValues(2, atk.AttackResults.Hits())
+    assert.EqualValues(0, atk.AttackResults.Crits())
+    assert.EqualValues(1, atk.AttackResults.Blanks())
+    assert.EqualValues(1, atk.AttackResults.Focuses())
+}

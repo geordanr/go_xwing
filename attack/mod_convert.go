@@ -57,3 +57,12 @@ func (autothrusters) String() string { return "Autothrusters" }
 func (autothrusters) ModifiesAttackResults() bool { return false }
 func (autothrusters) ModifiesDefenseResults() bool { return true }
 
+
+type manglerCannon struct {}
+func (manglerCannon) Modify(atk *Attack) *Attack {
+    atk.AttackResults.ConvertUpto(1, dice.HIT, dice.CRIT)
+    return atk
+}
+func (manglerCannon) String() string { return "Mangler Cannon" }
+func (manglerCannon) ModifiesAttackResults() bool { return true }
+func (manglerCannon) ModifiesDefenseResults() bool { return false }
