@@ -34,6 +34,8 @@ var Modifications map[string]Modification = map[string]Modification{
     "Luke Skywalker (Crew)": new(lukeSkywalkerCrew),
     "Autothrusters": new(autothrusters),
     "Mangler Cannon": new(manglerCannon),
+    "Lone Wolf (Offense)": new(offensiveLoneWolf),
+    "Lone Wolf (Defense)": new(defensiveLoneWolf),
 }
 
 // For testing

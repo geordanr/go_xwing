@@ -65,3 +65,23 @@ func (o defensiveReroll) String() string {
 }
 func (defensiveReroll) ModifiesAttackResults() bool { return false }
 func (defensiveReroll) ModifiesDefenseResults() bool { return true }
+
+
+type offensiveLoneWolf struct {}
+func (offensiveLoneWolf) Modify(atk *Attack) *Attack {
+    atk.AttackResults.RerollUpto(1, filters.Blanks)
+    return atk
+}
+func (offensiveLoneWolf) String() string { return "Lone Wolf (Offense)" }
+func (offensiveLoneWolf) ModifiesAttackResults() bool { return true }
+func (offensiveLoneWolf) ModifiesDefenseResults() bool { return false }
+
+
+type defensiveLoneWolf struct {}
+func (defensiveLoneWolf) Modify(atk *Attack) *Attack {
+    atk.DefenseResults.RerollUpto(1, filters.Blanks)
+    return atk
+}
+func (defensiveLoneWolf) String() string { return "Lone Wolf (Defense)" }
+func (defensiveLoneWolf) ModifiesAttackResults() bool { return false }
+func (defensiveLoneWolf) ModifiesDefenseResults() bool { return true }
