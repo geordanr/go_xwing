@@ -18,6 +18,12 @@ func (state *GameState) EnqueueAttack(atk interfaces.Attack) {
 	state.attackQueue = append(state.attackQueue, atk)
 }
 
+func (state *GameState) DequeueAttack() {
+	if len(state.attackQueue) > 0 {
+		state.attackQueue = state.attackQueue[1:]
+	}
+}
+
 func (state GameState) CurrentAttack() interfaces.Attack {
 	return state.attackQueue[len(state.attackQueue)-1]
 }

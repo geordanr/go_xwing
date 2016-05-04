@@ -1,10 +1,10 @@
-package step
+package runner
 
 import (
 	// "fmt"
 	"github.com/geordanr/go_xwing/attack"
 	"github.com/geordanr/go_xwing/attack/modification"
-	"github.com/geordanr/go_xwing/attack/runner"
+	"github.com/geordanr/go_xwing/attack/step"
 	"github.com/geordanr/go_xwing/constants"
 	"github.com/geordanr/go_xwing/dice"
 	"github.com/geordanr/go_xwing/gamestate"
@@ -17,11 +17,6 @@ import (
 func TestRun(t *testing.T) {
 	assert := assert.New(t)
 
-	in := make(chan interfaces.StepRequest)
-	out := make(chan interfaces.StepRequest)
-	done := make(chan bool)
-	modifyAttackDiceStep := Step{}
-	modifyAttackDiceStep.SetName("Modify Attack Dice")
 	attacker := ship.New("Attacker", 0, 0, 0, 0)
 	defender := ship.New("Defender", 0, 0, 0, 0)
 	state := gamestate.GameState{}
@@ -32,10 +27,7 @@ func TestRun(t *testing.T) {
 			&attackerSpendFocus,
 		},
 	}
-	req := runner.Request{}
-	req.SetState(&state)
-
-	go modifyAttackDiceStep.Run(in, out, done)
+	runner := New(step.Steps)
 
 	attacker.SetFocusTokens(2)
 	attackResults := dice.RollAttackDice(3)
@@ -53,8 +45,7 @@ func TestRun(t *testing.T) {
 
 	state.EnqueueAttack(attack.New(attacker, defender, mods))
 
-	in <- &req
-	<-out
+	runner.Run(&state)
 
 	assert.EqualValues(1, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
@@ -66,7 +57,4 @@ func TestRun(t *testing.T) {
 	assert.EqualValues(1, defenseResults.Blanks())
 	assert.EqualValues(1, defenseResults.Focuses())
 	assert.EqualValues(1, defenseResults.Evades())
-
-	close(in)
-	<-done
 }

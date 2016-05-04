@@ -8,29 +8,33 @@ import (
 )
 
 type Step struct {
-	Name     string
+	name string
+	next string // default next step to perform
 }
 
 /*
-Run loops forever and reads a GameState from the input channel, runs
-the modifications appropriate to this step, and sends a new GameState
+Run loops forever and reads a StepRequest from the input channel, runs
+the modifications appropriate to this step, and sends a new StepRequest
 to the output channel.
 
-When the in channel is closed and no more GameStates are waiting,
-true is send on the done channel.
+When the in channel is closed and no more StepRequests are waiting,
+true is sent on the done channel.
 */
-func (step *Step) Run(in <-chan interfaces.GameState, out chan<- interfaces.GameState, done chan<- bool) {
+func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.StepRequest, done chan<- bool) {
 	for {
-		state, more := <-in
-
+		req, more := <-in
 		if !more {
 			close(out)
 			done <- true
 			return
 		}
 
+		state := req.State()
+		// A nil next state means use the step default.
+		state.SetNextAttackStep(nil)
+
 		currentAttack := state.CurrentAttack()
-		stepmods, exists := currentAttack.Modifications()[step.Name]
+		stepmods, exists := currentAttack.Modifications()[step.Name()]
 		if exists {
 			for _, mod := range stepmods {
 				var ship interfaces.Ship
@@ -44,6 +48,21 @@ func (step *Step) Run(in <-chan interfaces.GameState, out chan<- interfaces.Game
 			}
 		}
 
-		out <- state
+		// No one overrode the next step, so use the default.
+		if state.NextAttackStep() == nil {
+			state.SetNextAttackStep(step.Next())
+		}
+
+		req.SetState(state)
+		req.SetStep(&step)
+		out <- req
 	}
 }
+
+// Next returns the default next step to perform.
+// This is used by the attack runner to figure out what step to perform
+// next if one isn't provided to the GameState by a modification.
+func (step Step) Next() interfaces.Step { return Steps[step.next] }
+
+func (step Step) Name() string         { return step.name }
+func (step *Step) SetName(name string) { step.name = name }

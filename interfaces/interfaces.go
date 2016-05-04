@@ -13,6 +13,7 @@ type Attack interface {
 
 type GameState interface {
 	EnqueueAttack(Attack)
+	DequeueAttack()
 	CurrentAttack() Attack
 	AttackResults() *dice.Results
 	SetAttackResults(*dice.Results)
@@ -48,6 +49,17 @@ type Ship interface {
 }
 
 type Step interface {
+	Next() Step
+	Run(<-chan StepRequest, chan<- StepRequest, chan<- bool)
+	Name() string
+	SetName(string)
+}
+
+type StepRequest interface {
+	State() GameState
+	SetState(GameState)
+	Step() Step
+	SetStep(Step)
 }
 
 type Team interface {
