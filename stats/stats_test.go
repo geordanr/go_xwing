@@ -8,7 +8,7 @@ import (
 func TestAverage(t *testing.T) {
 	assert := assert.New(t)
 
-	s := new(IntStats)
+	s := new(Integers)
 
 	s.Update(1)
 	s.Update(14)
@@ -21,7 +21,7 @@ func TestAverage(t *testing.T) {
 func TestStddev(t *testing.T) {
 	assert := assert.New(t)
 
-	s := new(IntStats)
+	s := new(Integers)
 	values := []int{2, 4, 4, 4, 5, 5, 7, 9}
 
 	for _, val := range(values) {
