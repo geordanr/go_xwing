@@ -14,7 +14,7 @@ import (
 	"testing"
 )
 
-func TestRun(t *testing.T) {
+func TestRun_ContrivedFocus(t *testing.T) {
 	assert := assert.New(t)
 
 	attacker := ship.New("Attacker", 0, 0, 0, 0)
@@ -27,7 +27,9 @@ func TestRun(t *testing.T) {
 			&attackerSpendFocus,
 		},
 	}
-	runner := New(step.Steps)
+	runner := New(step.Steps, 1)
+	output := make(chan interfaces.GameState)
+	go runner.Run(output)
 
 	attacker.SetFocusTokens(2)
 	attackResults := dice.RollAttackDice(3)
@@ -45,7 +47,8 @@ func TestRun(t *testing.T) {
 
 	state.EnqueueAttack(attack.New(attacker, defender, mods))
 
-	runner.Run(&state)
+	runner.InjectState(&state)
+	<-output
 
 	assert.EqualValues(1, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
@@ -57,4 +60,55 @@ func TestRun(t *testing.T) {
 	assert.EqualValues(1, defenseResults.Blanks())
 	assert.EqualValues(1, defenseResults.Focuses())
 	assert.EqualValues(1, defenseResults.Evades())
+}
+
+func TestRun_MultipleStates(t *testing.T) {
+	// assert := assert.New(t)
+
+	makeState := func() *gamestate.GameState {
+		attacker := ship.New("Attacker", 3, 2, 3, 2)
+		defender := ship.New("Defender", 2, 3, 3, 0)
+		state := gamestate.GameState{}
+		attackerSpendFocus := modification.SpendFocus{}
+		attackerSpendFocus.SetActor(constants.ATTACKER)
+		attackerRollDice := modification.RollDice{}
+		attackerRollDice.SetActor(constants.ATTACKER)
+		defenderRollDice := modification.RollDice{}
+		defenderRollDice.SetActor(constants.DEFENDER)
+		compareResults := modification.CompareResults{}
+		mods := map[string][]interfaces.Modification{
+			"Modify Attack Dice": []interfaces.Modification{
+				&attackerSpendFocus,
+			},
+			"Roll Attack Dice": []interfaces.Modification{
+				&attackerRollDice,
+			},
+			"Roll Defense Dice": []interfaces.Modification{
+				&defenderRollDice,
+			},
+			"Compare Results": []interfaces.Modification{
+				&compareResults,
+			},
+		}
+
+		attacker.SetFocusTokens(2)
+		defender.SetFocusTokens(3)
+		state.EnqueueAttack(attack.New(attacker, defender, mods))
+		state.EnqueueAttack(attack.New(defender, attacker, mods))
+
+		return &state
+	}
+
+	nStates := 100
+	runner := New(step.Steps, nStates)
+	output := make(chan interfaces.GameState, nStates)
+	go runner.Run(output)
+
+	for i := 0; i < nStates; i++ {
+		runner.InjectState(makeState())
+	}
+
+	for i := 0; i < nStates; i++ {
+		<-output
+	}
 }

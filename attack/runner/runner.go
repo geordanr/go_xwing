@@ -13,8 +13,10 @@ type Runner struct {
 }
 
 // New returns a new instance of the step runner, using the Step map given.
-func New(steps map[string]interfaces.Step) *Runner {
-	recvChan := make(chan interfaces.StepRequest)
+// Bufsize should be the number of states expected to be passed through
+// the runner.
+func New(steps map[string]interfaces.Step, bufsize int) *Runner {
+	recvChan := make(chan interfaces.StepRequest, bufsize)
 
 	r := Runner{
 		sendChans: make(map[string]chan interfaces.StepRequest),
@@ -23,27 +25,41 @@ func New(steps map[string]interfaces.Step) *Runner {
 	}
 
 	for name, step := range steps {
-		r.sendChans[name] = make(chan interfaces.StepRequest)
-		r.doneChans[name] = make(chan bool)
+		r.sendChans[name] = make(chan interfaces.StepRequest, bufsize)
+		r.doneChans[name] = make(chan bool, bufsize)
 		go step.Run(r.sendChans[name], recvChan, r.doneChans[name])
 	}
 
 	return &r
 }
 
-func (r Runner) Run(state interfaces.GameState) interfaces.GameState {
-	req := Request{state: state}
-	r.sendChans["__START__"] <- &req
+// Run processes game states until every injected game state has an empty attack queue.
+// Completed game states are sent to the given channel.
+func (r Runner) Run(output chan<- interfaces.GameState) {
 	for {
 		req := <-r.recvChan
 		state := req.State()
-		// Are we at an end state?
 		if state.NextAttackStep() == nil {
-			return state
+			// End of attack sequence, process next attack
+			more := state.DequeueAttack()
+			if more {
+				// Send the new state back into the machine
+				state.ResetTransientState()
+				r.InjectState(state)
+			} else {
+				// No more attacks, this state is done
+				output <- state
+			}
 		} else {
 			// Send the state to the next step
 			newReq := Request{state: state}
 			r.sendChans[state.NextAttackStep().Name()] <- &newReq
 		}
 	}
+}
+
+// InjectState sends the given state into the runner for processing.
+func (r Runner) InjectState(state interfaces.GameState) {
+	req := Request{state: state}
+	r.sendChans["__START__"] <- &req
 }

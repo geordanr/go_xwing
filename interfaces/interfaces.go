@@ -13,7 +13,7 @@ type Attack interface {
 
 type GameState interface {
 	EnqueueAttack(Attack)
-	DequeueAttack()
+	DequeueAttack() bool
 	CurrentAttack() Attack
 	AttackResults() *dice.Results
 	SetAttackResults(*dice.Results)
@@ -21,6 +21,19 @@ type GameState interface {
 	SetDefenseResults(*dice.Results)
 	NextAttackStep() Step
 	SetNextAttackStep(Step)
+	PerformAttackTwice() bool
+	SetPerformAttackTwice(bool)
+	AttackDiceModifier() int
+	SetAttackDiceModifier(int)
+	DefenseDiceModifier() int
+	SetDefenseDiceModifier(int)
+	AttackMissed() bool
+	SetAttackMissed(bool)
+	ResetTransientState()
+	HitsLanded() uint
+	SetHitsLanded(uint)
+	CritsLanded() uint
+	SetCritsLanded(uint)
 }
 
 type Modification interface {
