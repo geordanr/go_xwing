@@ -9,6 +9,7 @@ import (
 
 type Step struct {
 	name string
+	mods []interfaces.Modification // default mods to run if not specified in attack
 	next string // default next step to perform
 }
 
@@ -35,17 +36,23 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 
 		currentAttack := state.CurrentAttack()
 		stepmods, exists := currentAttack.Modifications()[step.Name()]
-		if exists {
-			for _, mod := range stepmods {
-				var ship interfaces.Ship
-				switch mod.Actor() {
-				case constants.ATTACKER:
-					ship = currentAttack.Attacker()
-				case constants.DEFENDER:
-					ship = currentAttack.Defender()
-				}
-				mod.ModifyState(state, ship)
+		if !exists {
+			if stepmods == nil {
+				stepmods = []interfaces.Modification{}
+			} else {
+				stepmods = step.mods
 			}
+		}
+
+		for _, mod := range stepmods {
+			var ship interfaces.Ship
+			switch mod.Actor() {
+			case constants.ATTACKER:
+				ship = currentAttack.Attacker()
+			case constants.DEFENDER:
+				ship = currentAttack.Defender()
+			}
+			mod.ModifyState(state, ship)
 		}
 
 		// No one overrode the next step, so use the default.
