@@ -55,6 +55,8 @@ type Ship interface {
 	SetFocusTokens(uint)
 	EvadeTokens() uint
 	SetEvadeTokens(uint)
+	TargetLock() string
+	SetTargetLock(string)
 
 	SpendFocus() bool
 	SpendEvade() bool

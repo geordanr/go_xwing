@@ -10,6 +10,7 @@ type Ship struct {
 	shields     uint
 	focusTokens uint
 	evadeTokens uint
+	targetLock  string
 	// Actions []Action
 	cannotAttack bool // default zero value means we can attack
 }
@@ -43,6 +44,9 @@ func (ship Ship) FocusTokens() uint      { return ship.focusTokens }
 func (ship *Ship) SetFocusTokens(n uint) { ship.focusTokens = n }
 func (ship Ship) EvadeTokens() uint      { return ship.evadeTokens }
 func (ship *Ship) SetEvadeTokens(n uint) { ship.evadeTokens = n }
+
+func (ship Ship) TargetLock() string         { return ship.targetLock }
+func (ship *Ship) SetTargetLock(name string) { ship.targetLock = name }
 
 func (ship *Ship) SpendFocus() bool {
 	if ship.focusTokens > 0 {

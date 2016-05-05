@@ -83,7 +83,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 			cbt := shipFunc(combatant.Name)
 			cbt.SetFocusTokens(combatant.Tokens.FocusTokens)
 			cbt.SetEvadeTokens(combatant.Tokens.EvadeTokens)
-			// TODO target locks
+			cbt.SetTargetLock(combatant.Tokens.TargetLock)
 			combatants[combatant.Name] = cbt
 		}
 		state.SetCombatants(combatants)
