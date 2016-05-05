@@ -75,6 +75,3 @@ type StepRequest interface {
 	Step() Step
 	SetStep(Step)
 }
-
-type Team interface {
-}

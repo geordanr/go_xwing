@@ -12,7 +12,6 @@ import (
 //
 // This may need to store transient per round stuff.
 type GameState struct {
-	teams       map[string]interfaces.Team
 	attackQueue []interfaces.Attack
 	// transient per attack
 	attackResults       *dice.Results
