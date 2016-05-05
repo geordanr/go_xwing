@@ -51,8 +51,9 @@ func TestRun_MultipleStates(t *testing.T) {
 	}
 
 	nStates := 100
-	runner := New(step.All, nStates)
-	output := make(chan interfaces.GameState, nStates)
+	bufsz := 8
+	runner := New(step.All, bufsz)
+	output := make(chan interfaces.GameState, bufsz)
 	go runner.Run(output)
 
 	for i := 0; i < nStates; i++ {

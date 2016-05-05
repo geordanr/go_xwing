@@ -13,8 +13,7 @@ type Runner struct {
 }
 
 // New returns a new instance of the step runner, using the Step map given.
-// Bufsize should be the number of states expected to be passed through
-// the runner.
+// Bufsize is the size of the buffer for channels.
 func New(steps map[string]interfaces.Step, bufsize int) *Runner {
 	recvChan := make(chan interfaces.StepRequest, bufsize)
 
@@ -39,6 +38,7 @@ func (r Runner) Run(output chan<- interfaces.GameState) {
 	for {
 		req := <-r.recvChan
 		state := req.State()
+		// fmt.Println("Processing", state.CurrentAttack(), ", next:", state.NextAttackStep())
 		if state.NextAttackStep() == "" {
 			// End of attack sequence, process next attack
 			more := state.DequeueAttack()

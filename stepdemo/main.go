@@ -17,9 +17,10 @@ import (
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	nIterations := 10000
-	runner := runner.New(step.All, nIterations)
-	output := make(chan interfaces.GameState, nIterations)
+	nIterations := 1000
+	bufsz := 8
+	runner := runner.New(step.All, bufsz)
+	output := make(chan interfaces.GameState, bufsz)
 	attackerStats := ShipStats{
 		Hits:  new(stats.Integers),
 		Crits: new(stats.Integers),

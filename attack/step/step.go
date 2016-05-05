@@ -70,7 +70,9 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 
 		req.SetState(state)
 		req.SetStep(&step)
-		out <- req
+		go func() {
+			out <- req
+		}()
 	}
 }
 

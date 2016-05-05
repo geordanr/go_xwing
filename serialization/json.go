@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math"
-	// "fmt"
 	"github.com/geordanr/go_xwing/attack"
 	"github.com/geordanr/go_xwing/attack/modification"
 	"github.com/geordanr/go_xwing/attack/runner"
@@ -15,6 +13,7 @@ import (
 	"github.com/geordanr/go_xwing/interfaces"
 	"github.com/geordanr/go_xwing/ship"
 	"io/ioutil"
+	"math"
 )
 
 // MAX_ITERATIONS is the maximum number of game states to process.
@@ -179,7 +178,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 		return nil, err
 	}
 	nStates := int(math.Min(float64(MAX_ITERATIONS), float64(data.Iterations)))
-	fmt.Println("Running", nStates, "iterations")
+	// fmt.Println("Running", nStates, "iterations")
 	runner := runner.New(step.All, nStates)
 	runnerOut := make(chan interfaces.GameState, nStates)
 	output := make(chan interfaces.GameState, nStates)
@@ -191,15 +190,12 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 			// fmt.Println("makestate error", err)
 			return nil, err
 		}
-		fmt.Println("Inject state", i)
 		runner.InjectState(state)
 	}
 
 	go func() {
 		for i := 0; i < nStates; i++ {
-			fmt.Println("Reading output", i, "...")
 			output <- <-runnerOut
-			fmt.Println("Read output", i)
 		}
 		close(output)
 	}()
