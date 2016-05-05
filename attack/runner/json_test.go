@@ -6,27 +6,27 @@ import (
 	"testing"
 )
 
-var jsonData = `{
-    "ships": [
-        {
-            "name": "X-Wing",
-            "attack": 3,
-            "agility": 2,
-            "hull": 3,
-            "shields": 2
-        },
-        {
-            "name": "TIE Fighter",
-            "attack": 2,
-            "agility": 3,
-            "hull": 3,
-            "shields": 0
-        }
-    ]
-}`
-
 func TestShipsFromJSON(t *testing.T) {
 	assert := assert.New(t)
+
+	jsonData := `{
+		"ships": [
+			{
+				"name": "X-Wing",
+				"attack": 3,
+				"agility": 2,
+				"hull": 3,
+				"shields": 2
+			},
+			{
+				"name": "TIE Fighter",
+				"attack": 2,
+				"agility": 3,
+				"hull": 3,
+				"shields": 0
+			}
+		]
+	}`
 
 	factoryMap, err := shipsFromJSON([]byte(jsonData))
 	assert.Nil(err)
