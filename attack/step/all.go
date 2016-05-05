@@ -5,7 +5,7 @@ import (
 	"github.com/geordanr/go_xwing/interfaces"
 )
 
-var Steps = map[string]interfaces.Step{
+var All = map[string]interfaces.Step{
 	"__START__":                 &Step{name: "__START__", next: "Declare Target"},
 	"Declare Target":            &Step{name: "Declare Target", next: "Roll Attack Dice"},
 	"Roll Attack Dice":          &Step{name: "Roll Attack Dice", mods: []interfaces.Modification{modification.All["Roll Attack Dice"]}, next: "Modify Attack Dice"},

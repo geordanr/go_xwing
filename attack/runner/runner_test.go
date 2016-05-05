@@ -27,7 +27,7 @@ func TestRun_ContrivedFocus(t *testing.T) {
 			&attackerSpendFocus,
 		},
 	}
-	runner := New(step.Steps, 1)
+	runner := New(step.All, 1)
 	output := make(chan interfaces.GameState)
 	go runner.Run(output)
 
@@ -100,7 +100,7 @@ func TestRun_MultipleStates(t *testing.T) {
 	}
 
 	nStates := 100
-	runner := New(step.Steps, nStates)
+	runner := New(step.All, nStates)
 	output := make(chan interfaces.GameState, nStates)
 	go runner.Run(output)
 

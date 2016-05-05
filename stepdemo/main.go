@@ -19,7 +19,7 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	nIterations := 100000
-	runner := runner.New(step.Steps, nIterations)
+	runner := runner.New(step.All, nIterations)
 	output := make(chan interfaces.GameState, nIterations)
 	attackerStats := ShipStats{
 		Hits:  new(stats.Integers),
