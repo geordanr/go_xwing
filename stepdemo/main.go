@@ -21,63 +21,80 @@ func main() {
 	nIterations := 100000
 	runner := runner.New(step.Steps, nIterations)
 	output := make(chan interfaces.GameState, nIterations)
-	hitStats := new(stats.Integers)
-	critStats := new(stats.Integers)
+	attackerStats := ShipStats{
+		Hits:  new(stats.Integers),
+		Crits: new(stats.Integers),
+	}
+	defenderStats := ShipStats{
+		Hits:  new(stats.Integers),
+		Crits: new(stats.Integers),
+	}
 
 	go runner.Run(output)
 
 	for i := 0; i < nIterations; i++ {
-		runner.InjectState(makeState(hitStats, critStats))
+		runner.InjectState(makeState(&attackerStats, &defenderStats))
 	}
 
 	for i := 0; i < nIterations; i++ {
 		<-output
 	}
 
-	fmt.Printf("Average hits : %3.2f\n", hitStats.Average())
-	fmt.Printf("Stddev hits  : %3.2f\n", hitStats.Stddev())
-	fmt.Printf("Average crits: %3.2f\n", critStats.Average())
-	fmt.Printf("Stddev crits : %3.2f\n", critStats.Stddev())
+	fmt.Println("Attacker")
+	fmt.Println("--------")
+	fmt.Printf("Average hits : %3.2f\n", attackerStats.Hits.Average())
+	fmt.Printf("Stddev hits  : %3.2f\n", attackerStats.Hits.Stddev())
+	fmt.Printf("Average crits: %3.2f\n", attackerStats.Crits.Average())
+	fmt.Printf("Stddev crits : %3.2f\n", attackerStats.Crits.Stddev())
+	fmt.Println()
+	fmt.Println("Defender")
+	fmt.Println("--------")
+	fmt.Printf("Average hits : %3.2f\n", defenderStats.Hits.Average())
+	fmt.Printf("Stddev hits  : %3.2f\n", defenderStats.Hits.Stddev())
+	fmt.Printf("Average crits: %3.2f\n", defenderStats.Crits.Average())
+	fmt.Printf("Stddev crits : %3.2f\n", defenderStats.Crits.Stddev())
 }
 
-func makeState(hitStats, critStats *stats.Integers) *gamestate.GameState {
+func makeState(attackerStats, defenderStats *ShipStats) *gamestate.GameState {
 	attacker := ship.New("TIE Fighter", 2, 3, 3, 0)
 	defender := ship.New("X-Wing", 3, 2, 3, 2)
 	mods := map[string][]interfaces.Modification{
 		"Suffer Damage": []interfaces.Modification{
 			modification.All["Suffer Damage"],
-			&TabulateHits{stats: hitStats},
-			&TabulateCrits{stats: critStats},
+			&TabulateStats{
+				ship:  attacker,
+				stats: attackerStats,
+			},
+			&TabulateStats{
+				ship:  defender,
+				stats: defenderStats,
+			},
 		},
 	}
 	state := gamestate.GameState{}
 	state.EnqueueAttack(attack.New(attacker, defender, mods))
-	// state.EnqueueAttack(attack.New(defender, attacker, mods))
+	state.EnqueueAttack(attack.New(defender, attacker, mods))
 	return &state
 }
 
-type TabulateHits struct {
-	stats *stats.Integers
+type ShipStats struct {
+	Hits  *stats.Integers
+	Crits *stats.Integers
+}
+
+type TabulateStats struct {
+	ship  *ship.Ship
+	stats *ShipStats
 	actor constants.ModificationActor
 }
 
-func (mod *TabulateHits) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
-	mod.stats.Update(int(state.HitsLanded()))
+func (mod *TabulateStats) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
+	if ship == mod.ship {
+		mod.stats.Hits.Update(int(state.HitsLanded()))
+		mod.stats.Crits.Update(int(state.CritsLanded()))
+	}
 }
 
-func (mod TabulateHits) Actor() constants.ModificationActor          { return mod.actor }
-func (mod *TabulateHits) SetActor(actor constants.ModificationActor) { mod.actor = actor }
-func (mod TabulateHits) String() string                              { return "Tabulate Hits" }
-
-type TabulateCrits struct {
-	stats *stats.Integers
-	actor constants.ModificationActor
-}
-
-func (mod *TabulateCrits) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
-	mod.stats.Update(int(state.CritsLanded()))
-}
-
-func (mod TabulateCrits) Actor() constants.ModificationActor          { return mod.actor }
-func (mod *TabulateCrits) SetActor(actor constants.ModificationActor) { mod.actor = actor }
-func (mod TabulateCrits) String() string                              { return "Tabulate Crits" }
+func (mod TabulateStats) Actor() constants.ModificationActor          { return mod.actor }
+func (mod *TabulateStats) SetActor(actor constants.ModificationActor) { mod.actor = actor }
+func (mod TabulateStats) String() string                              { return "Tabulate Stats" }
