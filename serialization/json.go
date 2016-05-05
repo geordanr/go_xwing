@@ -56,6 +56,14 @@ func shipsFromJSON(b []byte) (map[string]func(string) *ship.Ship, error) {
 	return factory, nil
 }
 
+func FromJSONPath(path string, shipFactory map[string]func(string) *ship.Ship) (<-chan interfaces.GameState, error) {
+	bytes, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	return FromJSON(bytes, shipFactory)
+}
+
 // FromJSON reads the JSON bytestream, creates a Runner to run the simulation, and returns an output channel to read game states from.
 func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan interfaces.GameState, error) {
 	makeState := func() (interfaces.GameState, error) {
@@ -66,7 +74,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 			return nil, err
 		}
 
-		combatants := map[string]*ship.Ship{}
+		combatants := map[string]interfaces.Ship{}
 		for _, combatant := range data.Combatants {
 			shipFunc, exists := shipFactory[combatant.ShipType]
 			if !exists {
@@ -78,6 +86,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 			// TODO target locks
 			combatants[combatant.Name] = cbt
 		}
+		state.SetCombatants(combatants)
 
 		// eventually we need to reverse the list
 		tmp := []*attack.Attack{}

@@ -1,38 +1,96 @@
 package main
 
 import (
-    "flag"
-    "fmt"
-    "math/rand"
-    // "path/filepath"
-    // "runtime"
-    "os"
-    "time"
-    "github.com/geordanr/go_xwing/combat"
+	"flag"
+	"fmt"
+	"math/rand"
+	// "path/filepath"
+	// "runtime"
+	"github.com/geordanr/go_xwing/serialization"
+	"github.com/geordanr/go_xwing/ship"
+	"github.com/geordanr/go_xwing/stats"
+	"os"
+	"time"
 )
+
+type shipStats struct {
+	hull    stats.Integers
+	shields stats.Integers
+}
+
+func (s *shipStats) update(ship *ship.Ship) {
+	s.hull.Update(int(ship.Hull()))
+	s.shields.Update(int(ship.Shields()))
+}
+
+func (s shipStats) String() string {
+	return fmt.Sprintf("Hull\t: average=%2.3f stddev=%2.3f\nShields\t: average=%2.3f stddev=%2.3f\n", s.hull.Average(), s.hull.Stddev(), s.shields.Average(), s.shields.Stddev())
+}
 
 // Demo of reading JSON, simulating it, and outputting JSON results
 func main() {
-    // _, thisfile, _, _ := runtime.Caller(0)
-    // thisdir := filepath.Dir(thisfile)
-    // shipStats, shipResults, err := combat.SimulateFromJSONPath(filepath.Join(thisdir, "..", "combat", "sample.json"))
-    // if err != nil {
-	// panic(err)
-    // }
+	// _, thisfile, _, _ := runtime.Caller(0)
+	// thisdir := filepath.Dir(thisfile)
+	// shipStats, shipResults, err := combat.SimulateFromsimjson(filepath.Join(thisdir, "..", "combat", "sample.json"))
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-    jsonpath := flag.String("jsonpath", "", "Path to JSON file to parse")
-    flag.Parse()
+	rand.Seed(time.Now().UnixNano())
 
-    if *jsonpath == "" {
-	fmt.Println("Specify the path to the JSON file to parse.")
-	os.Exit(1)
-    }
+	shipjson, simjson := parseArgs()
 
-    rand.Seed(time.Now().UnixNano())
-    shipStats, shipResults, err := combat.SimulateFromJSONPath(*jsonpath)
-    if err != nil { panic(err) }
-    data, err := combat.SimResultsToJSON(shipStats, shipResults)
-    if err != nil { panic(err) }
+	shipFactory, err := serialization.ShipsFromJSONPath(*shipjson)
+	if err != nil {
+		panic(err)
+	}
 
-    fmt.Println(string(data))
+	output, err := serialization.FromJSONPath(*simjson, shipFactory)
+	if err != nil {
+		panic(err)
+	}
+
+	// map from ship ID to stats struct
+	cbtStats := map[string]*shipStats{}
+
+	for {
+		state, more := <-output
+		if !more {
+			break
+		}
+		for name, cbt := range state.Combatants() {
+			s, exists := cbtStats[name]
+			if !exists {
+				cbtStats[name] = new(shipStats)
+				s = cbtStats[name]
+			}
+			s.update(cbt.(*ship.Ship))
+		}
+	}
+
+	for name, s := range cbtStats {
+		fmt.Println()
+		fmt.Println(name)
+		fmt.Println("---")
+		fmt.Println(s)
+	}
+}
+
+func parseArgs() (*string, *string) {
+	shipjson := flag.String("shipjson", "", "Path to JSON file of ship data")
+	simjson := flag.String("simjson", "", "Path to JSON file of sim parameters")
+
+	flag.Parse()
+
+	if *shipjson == "" {
+		fmt.Println("Specify the path to the ship JSON file.")
+		os.Exit(1)
+	}
+
+	if *simjson == "" {
+		fmt.Println("Specify the path to the sim parameter JSON file.")
+		os.Exit(1)
+	}
+
+	return shipjson, simjson
 }

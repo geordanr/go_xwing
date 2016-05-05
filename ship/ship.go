@@ -33,15 +33,15 @@ func (ship *Ship) String() string {
 	return fmt.Sprintf("<Ship name='%s' %d/%d/%d/%d focus=%d evade=%d>", ship.name, ship.attack, ship.agility, ship.hull, ship.shields, ship.focusTokens, ship.evadeTokens)
 }
 
-func (ship *Ship) Name() string  { return ship.name }
-func (ship *Ship) Attack() uint  { return ship.attack }
-func (ship *Ship) Agility() uint { return ship.agility }
-func (ship *Ship) Hull() uint    { return ship.hull }
-func (ship *Ship) Shields() uint { return ship.shields }
+func (ship Ship) Name() string  { return ship.name }
+func (ship Ship) Attack() uint  { return ship.attack }
+func (ship Ship) Agility() uint { return ship.agility }
+func (ship Ship) Hull() uint    { return ship.hull }
+func (ship Ship) Shields() uint { return ship.shields }
 
-func (ship *Ship) FocusTokens() uint     { return ship.focusTokens }
+func (ship Ship) FocusTokens() uint      { return ship.focusTokens }
 func (ship *Ship) SetFocusTokens(n uint) { ship.focusTokens = n }
-func (ship *Ship) EvadeTokens() uint     { return ship.evadeTokens }
+func (ship Ship) EvadeTokens() uint      { return ship.evadeTokens }
 func (ship *Ship) SetEvadeTokens(n uint) { ship.evadeTokens = n }
 
 func (ship *Ship) SpendFocus() bool {
@@ -62,11 +62,11 @@ func (ship *Ship) SpendEvade() bool {
 	}
 }
 
-func (ship *Ship) IsAlive() bool {
+func (ship Ship) IsAlive() bool {
 	return ship.hull > 0
 }
 
-func (ship *Ship) CanAttack() bool {
+func (ship Ship) CanAttack() bool {
 	return !ship.cannotAttack
 }
 

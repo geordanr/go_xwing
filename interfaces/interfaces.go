@@ -12,6 +12,8 @@ type Attack interface {
 }
 
 type GameState interface {
+	Combatants() map[string]Ship
+	SetCombatants(map[string]Ship)
 	EnqueueAttack(Attack)
 	DequeueAttack() bool
 	CurrentAttack() Attack

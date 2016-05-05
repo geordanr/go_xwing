@@ -12,6 +12,7 @@ import (
 //
 // This may need to store transient per round stuff.
 type GameState struct {
+	combatants  map[string]interfaces.Ship
 	attackQueue []interfaces.Attack
 	// transient per attack
 	attackResults       *dice.Results
@@ -23,6 +24,12 @@ type GameState struct {
 	defenseDiceModifier int // amount to increase or decrease rolled defense dice
 	hitsLanded          uint
 	critsLanded         uint
+}
+
+// Combatants returns a map of ship names to ships.
+func (state GameState) Combatants() map[string]interfaces.Ship { return state.combatants }
+func (state *GameState) SetCombatants(combatants map[string]interfaces.Ship) {
+	state.combatants = combatants
 }
 
 // EnqueueAttack adds an attack to the front of the attack queue.
