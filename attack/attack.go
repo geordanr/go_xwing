@@ -1,7 +1,7 @@
 package attack
 
 import (
-	// "fmt"
+	"fmt"
 	"github.com/geordanr/go_xwing/interfaces"
 )
 
@@ -30,4 +30,8 @@ func (atk *Attack) Defender() interfaces.Ship {
 
 func (atk *Attack) Modifications() map[string][]interfaces.Modification {
 	return atk.modifications
+}
+
+func (atk Attack) String() string {
+	return fmt.Sprintf("<Attack attacker=%s defender=%s>", atk.attacker, atk.defender)
 }
