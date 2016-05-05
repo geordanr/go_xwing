@@ -24,6 +24,10 @@ var All = map[string]interfaces.Modification{
 	// roll.go
 	"Roll Attack Dice":  &attackerRollDice,
 	"Roll Defense Dice": &defenderRollDice,
+	// performattacktwice.go
+	"Perform Attack Twice": &PerformAttackTwice{},
 	// sufferdamage.go
 	"Suffer Damage": &SufferDamage{},
+	// tlt.go
+	"Twin Laser Turret": &TwinLaserTurret{},
 }

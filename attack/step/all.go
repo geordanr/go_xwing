@@ -15,6 +15,6 @@ var All = map[string]interfaces.Step{
 	"Compare Results":           &Step{name: "Compare Results", mods: []interfaces.Modification{modification.All["Compare Results"]}, next: "Suffer Damage"},
 	"Suffer Damage":             &Step{name: "Suffer Damage", mods: []interfaces.Modification{modification.All["Suffer Damage"]}, next: "After Attacking/Defending"},
 	"After Attacking/Defending": &Step{name: "After Attacking/Defending", next: "Perform Attack Twice"},
-	"Perform Attack Twice":      &Step{name: "Perform Attack Twice", next: "Perform Additional Attack"},
+	"Perform Attack Twice":      &Step{name: "Perform Attack Twice", mods: []interfaces.Modification{modification.All["Perform Attack Twice"]}, next: "Perform Additional Attack"},
 	"Perform Additional Attack": &Step{name: "Perform Additional Attack"},
 }

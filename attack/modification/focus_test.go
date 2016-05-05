@@ -1,12 +1,12 @@
 package modification
 
 import (
-	"github.com/stretchr/testify/assert"
-	"testing"
 	"github.com/geordanr/go_xwing/attack"
 	"github.com/geordanr/go_xwing/dice"
 	"github.com/geordanr/go_xwing/gamestate"
 	"github.com/geordanr/go_xwing/ship"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestSpendFocus_OnAttackHasTokens(t *testing.T) {
@@ -34,12 +34,14 @@ func TestSpendFocus_OnAttackHasTokens(t *testing.T) {
 	state.EnqueueAttack(attack.New(attacker, defender, nil))
 	mod.ModifyState(&state, attacker)
 
+	attackResults = *state.AttackResults()
 	assert.EqualValues(1, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
 	assert.EqualValues(0, attackResults.Focuses())
 	assert.EqualValues(2, attackResults.Hits())
 	assert.EqualValues(0, attackResults.Crits())
 
+	defenseResults = *state.DefenseResults()
 	assert.EqualValues(3, defender.FocusTokens())
 	assert.EqualValues(1, defenseResults.Blanks())
 	assert.EqualValues(1, defenseResults.Focuses())
@@ -71,12 +73,14 @@ func TestSpendFocus_OnAttackHasNoTokens(t *testing.T) {
 	state.EnqueueAttack(attack.New(attacker, defender, nil))
 	mod.ModifyState(&state, attacker)
 
+	attackResults = *state.AttackResults()
 	assert.EqualValues(0, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
 	assert.EqualValues(1, attackResults.Focuses())
 	assert.EqualValues(1, attackResults.Hits())
 	assert.EqualValues(0, attackResults.Crits())
 
+	defenseResults = *state.DefenseResults()
 	assert.EqualValues(3, defender.FocusTokens())
 	assert.EqualValues(1, defenseResults.Blanks())
 	assert.EqualValues(1, defenseResults.Focuses())
@@ -108,12 +112,14 @@ func TestSpendFocus_OnAttackHasNoFocusResults(t *testing.T) {
 	state.EnqueueAttack(attack.New(attacker, defender, nil))
 	mod.ModifyState(&state, attacker)
 
+	attackResults = *state.AttackResults()
 	assert.EqualValues(2, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
 	assert.EqualValues(0, attackResults.Focuses())
 	assert.EqualValues(1, attackResults.Hits())
 	assert.EqualValues(1, attackResults.Crits())
 
+	defenseResults = *state.DefenseResults()
 	assert.EqualValues(3, defender.FocusTokens())
 	assert.EqualValues(1, defenseResults.Blanks())
 	assert.EqualValues(1, defenseResults.Focuses())
@@ -145,12 +151,14 @@ func TestSpendFocus_OnDefenseHasTokens(t *testing.T) {
 	state.EnqueueAttack(attack.New(attacker, defender, nil))
 	mod.ModifyState(&state, defender)
 
+	attackResults = *state.AttackResults()
 	assert.EqualValues(2, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
 	assert.EqualValues(1, attackResults.Focuses())
 	assert.EqualValues(1, attackResults.Hits())
 	assert.EqualValues(0, attackResults.Crits())
 
+	defenseResults = *state.DefenseResults()
 	assert.EqualValues(2, defender.FocusTokens())
 	assert.EqualValues(1, defenseResults.Blanks())
 	assert.EqualValues(0, defenseResults.Focuses())
@@ -182,12 +190,14 @@ func TestSpendFocus_OnDefenseHasNoTokens(t *testing.T) {
 	state.EnqueueAttack(attack.New(attacker, defender, nil))
 	mod.ModifyState(&state, defender)
 
+	attackResults = *state.AttackResults()
 	assert.EqualValues(2, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
 	assert.EqualValues(1, attackResults.Focuses())
 	assert.EqualValues(1, attackResults.Hits())
 	assert.EqualValues(0, attackResults.Crits())
 
+	defenseResults = *state.DefenseResults()
 	assert.EqualValues(0, defender.FocusTokens())
 	assert.EqualValues(1, defenseResults.Blanks())
 	assert.EqualValues(1, defenseResults.Focuses())
@@ -219,12 +229,14 @@ func TestSpendFocus_OnDefenseHasNoFocusResults(t *testing.T) {
 	state.EnqueueAttack(attack.New(attacker, defender, nil))
 	mod.ModifyState(&state, defender)
 
+	attackResults = *state.AttackResults()
 	assert.EqualValues(2, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
 	assert.EqualValues(1, attackResults.Focuses())
 	assert.EqualValues(1, attackResults.Hits())
 	assert.EqualValues(0, attackResults.Crits())
 
+	defenseResults = *state.DefenseResults()
 	assert.EqualValues(3, defender.FocusTokens())
 	assert.EqualValues(2, defenseResults.Blanks())
 	assert.EqualValues(0, defenseResults.Focuses())

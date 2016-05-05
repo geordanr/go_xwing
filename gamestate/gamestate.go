@@ -22,8 +22,8 @@ type GameState struct {
 	attackMissed        bool
 	attackDiceModifier  int // amount to increase or decrease rolled attack dice
 	defenseDiceModifier int // amount to increase or decrease rolled defense dice
-	hitsLanded uint
-	critsLanded uint
+	hitsLanded          uint
+	critsLanded         uint
 }
 
 // EnqueueAttack adds an attack to the front of the attack queue.

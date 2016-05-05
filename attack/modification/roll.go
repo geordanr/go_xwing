@@ -11,18 +11,29 @@ import (
 // RollDice rolls dice for the attacker or defender, using their attack
 // or agility values as appropriate, and sets the state's dice results.
 type RollDice struct {
-	actor constants.ModificationActor
+	actor      constants.ModificationActor
+	numDice    uint8
+	useNumDice bool
 }
 
 func (mod *RollDice) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
 	var results dice.Results
+	var nDice uint8
 	currentAttack := state.CurrentAttack()
 	if ship == currentAttack.Attacker() {
-		nDice := uint8(math.Max(0, float64(ship.Attack())+float64(state.AttackDiceModifier())))
+		if mod.useNumDice {
+			nDice = mod.numDice
+		} else {
+			nDice = uint8(math.Max(0, float64(ship.Attack())+float64(state.AttackDiceModifier())))
+		}
 		results = dice.RollAttackDice(nDice)
 		state.SetAttackResults(&results)
 	} else if ship == currentAttack.Defender() {
-		nDice := uint8(math.Max(0, float64(ship.Agility())+float64(state.DefenseDiceModifier())))
+		if mod.useNumDice {
+			nDice = mod.numDice
+		} else {
+			nDice = uint8(math.Max(0, float64(ship.Agility())+float64(state.DefenseDiceModifier())))
+		}
 		results = dice.RollDefenseDice(nDice)
 		state.SetDefenseResults(&results)
 	}
@@ -31,3 +42,8 @@ func (mod *RollDice) ModifyState(state interfaces.GameState, ship interfaces.Shi
 func (mod RollDice) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *RollDice) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 func (mod RollDice) String() string                              { return "Roll Dice" }
+
+// SetNumDice sets the number of dice to be rolled, instead of using the
+// attacker's attack value or the defender's agility value modified by
+// any other dice count modifiers.
+func (mod *RollDice) SetNumDice(numDice uint8) { mod.numDice = numDice; mod.useNumDice = true }

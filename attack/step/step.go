@@ -55,6 +55,8 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 				ship = currentAttack.Attacker()
 			case constants.DEFENDER:
 				ship = currentAttack.Defender()
+			case constants.INITIATIVE:
+				// TODO
 			}
 			mod.ModifyState(state, ship)
 		}

@@ -7,7 +7,7 @@ import (
 	"github.com/geordanr/go_xwing/interfaces"
 )
 
-type SpendFocus struct{
+type SpendFocus struct {
 	actor constants.ModificationActor
 }
 
@@ -30,8 +30,8 @@ func (mod *SpendFocus) ModifyState(state interfaces.GameState, ship interfaces.S
 	}
 }
 
-func (mod SpendFocus) Actor() constants.ModificationActor { return mod.actor }
-func (mod *SpendFocus) SetActor(actor constants.ModificationActor) { mod.actor = actor}
+func (mod SpendFocus) Actor() constants.ModificationActor          { return mod.actor }
+func (mod *SpendFocus) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 
 func (mod SpendFocus) String() string {
 	return "Spend Focus"
