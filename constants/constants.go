@@ -3,7 +3,8 @@ package constants
 type ModificationActor uint8
 
 const (
-	ATTACKER ModificationActor = iota
+	IGNORE ModificationActor = iota
+	ATTACKER
 	DEFENDER
 	INITIATIVE
 )

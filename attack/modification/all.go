@@ -1,3 +1,5 @@
+// Package modification implements modification functions used when
+// executing the steps of an attack.
 package modification
 
 import (
@@ -10,14 +12,17 @@ var defenderSpendFocus = SpendFocus{actor: constants.DEFENDER}
 var attackerRollDice = RollDice{actor: constants.ATTACKER}
 var defenderRollDice = RollDice{actor: constants.DEFENDER}
 
+// All contains a mapping from human-readable strings to Modifications.
 var All = map[string]interfaces.Modification{
 	// compareresults.go
 	"Compare Results": &CompareResults{},
+	// evade.go
+	"Spend Evade": &SpendEvade{},
 	// focus.go
 	"Attacker Spend Focus": &attackerSpendFocus,
 	"Defender Spend Focus": &defenderSpendFocus,
 	// roll.go
-	"Roll Attack Dice": &attackerRollDice,
+	"Roll Attack Dice":  &attackerRollDice,
 	"Roll Defense Dice": &defenderRollDice,
 	// sufferdamage.go
 	"Suffer Damage": &SufferDamage{},
