@@ -3,10 +3,21 @@ package runner
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"math"
 	// "fmt"
+	"github.com/geordanr/go_xwing/attack"
+	"github.com/geordanr/go_xwing/attack/modification"
+	"github.com/geordanr/go_xwing/attack/step"
+	"github.com/geordanr/go_xwing/constants"
+	"github.com/geordanr/go_xwing/gamestate"
+	"github.com/geordanr/go_xwing/interfaces"
 	"github.com/geordanr/go_xwing/ship"
 	"io/ioutil"
 )
+
+// MAX_ITERATIONS is the maximum number of game states to process.
+const MAX_ITERATIONS = 100000
 
 // ShipJSONSchema represents ship stats for a ship chassis type.
 type ShipJSONSchema struct {
@@ -15,6 +26,13 @@ type ShipJSONSchema struct {
 	Agility uint   `json:"agility"`
 	Hull    uint   `json:"hull"`
 	Shields uint   `json:"shields"`
+}
+
+// SimulationJSONSchema represents the specifications for a simulation.
+type SimulationJSONSchema struct {
+	Iterations  int                   `json:"iterations"`
+	Combatants  []CombatantJSONSchema `json:"combatants"`
+	AttackQueue []AttackJSONSchema    `json:"attack_queue"`
 }
 
 // CombatantJSONSchema represents a combatant in the simulation.
@@ -75,6 +93,111 @@ func shipsFromJSON(b []byte) (map[string]func(string) *ship.Ship, error) {
 	}
 
 	return factory, nil
+}
+
+// FromJSON reads the JSON bytestream, creates a Runner to run the simulation, and returns an output channel to read game states from.
+func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan interfaces.GameState, error) {
+	makeState := func() (interfaces.GameState, error) {
+		state := gamestate.GameState{}
+		data := SimulationJSONSchema{}
+		err := fromJSON(b, &data)
+		if err != nil {
+			return nil, err
+		}
+
+		combatants := map[string]*ship.Ship{}
+		for _, combatant := range data.Combatants {
+			shipFunc, exists := shipFactory[combatant.ShipType]
+			if !exists {
+				return nil, errors.New(fmt.Sprintf("No data for ship type '%s'", combatant.ShipType))
+			}
+			cbt := shipFunc(combatant.Name)
+			cbt.SetFocusTokens(combatant.Tokens.FocusTokens)
+			cbt.SetEvadeTokens(combatant.Tokens.EvadeTokens)
+			// TODO target locks
+			combatants[combatant.Name] = cbt
+		}
+
+		// eventually we need to reverse the list
+		tmp := []*attack.Attack{}
+		for _, atkParams := range data.AttackQueue {
+			attacker, exists := combatants[atkParams.Attacker]
+			if !exists {
+				return nil, errors.New(fmt.Sprintf("Attacker '%s' not found", atkParams.Attacker))
+			}
+
+			defender, exists := combatants[atkParams.Defender]
+			if !exists {
+				return nil, errors.New(fmt.Sprintf("Defender '%s' not found", atkParams.Defender))
+			}
+
+			mods := map[string][]interfaces.Modification{}
+			for stepName, stepMods := range atkParams.Modifications {
+				mods[stepName] = []interfaces.Modification{}
+				for _, modParams := range stepMods {
+					var a constants.ModificationActor
+					actor := modParams[0]
+					modName := modParams[1]
+
+					mod := modification.All[modName]
+					switch actor {
+					case "attacker":
+						a = constants.ATTACKER
+					case "defender":
+						a = constants.DEFENDER
+					case "initiative":
+						a = constants.INITIATIVE
+					default:
+						a = constants.IGNORE
+					}
+					mod.SetActor(a)
+
+					mods[stepName] = append(mods[stepName], mod)
+				}
+			}
+
+			tmp = append(tmp, attack.New(attacker, defender, mods))
+		}
+		// Finally reverse the attack list to put it in the correct queue order
+		for i := 0; i < len(tmp); i++ {
+			state.EnqueueAttack(tmp[i])
+		}
+
+		return &state, nil
+	}
+
+	// need to unpack number of iterations
+	data := SimulationJSONSchema{}
+	err := fromJSON(b, &data)
+	if err != nil {
+		return nil, err
+	}
+	nStates := int(math.Max(float64(MAX_ITERATIONS), float64(data.Iterations)))
+	fmt.Println("Running", nStates, "iterations")
+	runner := New(step.All, nStates)
+	runnerOut := make(chan interfaces.GameState, nStates)
+	output := make(chan interfaces.GameState, nStates)
+	go runner.Run(runnerOut)
+
+	for i := 0; i < nStates; i++ {
+		state, err := makeState()
+		if err != nil {
+			return nil, err
+		}
+		fmt.Println("Inject state", i)
+		runner.InjectState(state)
+	}
+
+	go func() {
+		for i := 0; i < nStates; i++ {
+			fmt.Println("Reading output", i, "...")
+			output <- <-runnerOut
+			fmt.Println("Read output", i)
+		}
+		close(output)
+	}()
+
+	return output, nil
 }
 
 // fromJSON reads the JSON bytestream b and unmarshals it into the structure data.

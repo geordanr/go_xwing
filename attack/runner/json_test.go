@@ -6,29 +6,29 @@ import (
 	"testing"
 )
 
+var shipJson = `{
+	"ships": [
+		{
+			"name": "X-Wing",
+			"attack": 3,
+			"agility": 2,
+			"hull": 3,
+			"shields": 2
+		},
+		{
+			"name": "TIE Fighter",
+			"attack": 2,
+			"agility": 3,
+			"hull": 3,
+			"shields": 0
+		}
+	]
+}`
+
 func TestShipsFromJSON(t *testing.T) {
 	assert := assert.New(t)
 
-	jsonData := `{
-		"ships": [
-			{
-				"name": "X-Wing",
-				"attack": 3,
-				"agility": 2,
-				"hull": 3,
-				"shields": 2
-			},
-			{
-				"name": "TIE Fighter",
-				"attack": 2,
-				"agility": 3,
-				"hull": 3,
-				"shields": 0
-			}
-		]
-	}`
-
-	factoryMap, err := shipsFromJSON([]byte(jsonData))
+	factoryMap, err := shipsFromJSON([]byte(shipJson))
 	assert.Nil(err)
 	assert.Equal(2, len(factoryMap))
 	assert.Contains(factoryMap, "X-Wing")
@@ -50,4 +50,72 @@ func TestShipsFromJSON(t *testing.T) {
 	assert.EqualValues(3, tie.Hull())
 	assert.EqualValues(0, tie.Shields())
 
+}
+
+func TestFromJSON(t *testing.T) {
+	assert := assert.New(t)
+
+	factoryMap, err := shipsFromJSON([]byte(shipJson))
+
+	paramsJson := `{
+		"iterations": 2,
+		"combatants": [
+			{
+				"name": "Luke Skywalker",
+				"ship": "X-Wing",
+				"skill": 8,
+				"initiative": true,
+				"tokens": {
+					"focus": 1,
+					"targetlock": "Colonel Vessery"
+				}
+			},
+			{
+				"name": "Howlrunner",
+				"ship": "TIE Fighter",
+				"skill": 8,
+				"initiative": false,
+				"tokens": {
+					"focus": 1,
+					"evade": 1
+				}
+			}
+		],
+		"attack_queue": [
+			{
+				"attacker": "Luke Skywalker",
+				"defender": "Howlrunner",
+				"mods": {
+					"Modify Attack Dice": [
+						["attacker", "Spend Focus"]
+					],
+					"Modify Defense Dice": [
+						["defender", "Spend Focus"]
+						["defender", "Spend Evade"]
+					]
+				}
+			},
+			{
+				"attacker": "Howlrunner",
+				"defender": "Luke Skywalker",
+				"mods": {
+					"Modify Attack Dice": [
+						["attacker", "Spend Focus"]
+					],
+					"Modify Defense Dice": [
+						["defender", "Spend Focus"]
+					]
+				}
+			}
+		]
+	}`
+
+	output, err := FromJSON([]byte(paramsJson), factoryMap)
+	assert.Nil(err)
+	for {
+		_, more := <-output
+		if !more {
+			break
+		}
+	}
 }
