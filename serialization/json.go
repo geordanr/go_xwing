@@ -1,4 +1,4 @@
-package runner
+package serialization
 
 import (
 	"encoding/json"
@@ -8,6 +8,7 @@ import (
 	// "fmt"
 	"github.com/geordanr/go_xwing/attack"
 	"github.com/geordanr/go_xwing/attack/modification"
+	"github.com/geordanr/go_xwing/attack/runner"
 	"github.com/geordanr/go_xwing/attack/step"
 	"github.com/geordanr/go_xwing/constants"
 	"github.com/geordanr/go_xwing/gamestate"
@@ -163,7 +164,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 			tmp = append(tmp, attack.New(attacker, defender, mods))
 		}
 		// Finally reverse the attack list to put it in the correct queue order
-		for i := 0; i < len(tmp); i++ {
+		for i := len(tmp) - 1; i > -1; i-- {
 			state.EnqueueAttack(tmp[i])
 		}
 
@@ -174,6 +175,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 	data := SimulationJSONSchema{}
 	err := fromJSON(b, &data)
 	if err != nil {
+		// fmt.Println("Returning error:", err)
 		return nil, err
 	}
 	nStates := int(math.Min(float64(MAX_ITERATIONS), float64(data.Iterations)))
@@ -186,6 +188,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 	for i := 0; i < nStates; i++ {
 		state, err := makeState()
 		if err != nil {
+			// fmt.Println("makestate error", err)
 			return nil, err
 		}
 		fmt.Println("Inject state", i)
