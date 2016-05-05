@@ -139,7 +139,11 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 					actor := modParams[0]
 					modName := modParams[1]
 
-					mod := modification.All[modName]
+					modFactory, exists := modification.All[modName]
+					if !exists {
+						return nil, errors.New(fmt.Sprintf("No modification '%s'", modName))
+					}
+					mod := modFactory()
 					switch actor {
 					case "attacker":
 						a = constants.ATTACKER
@@ -172,9 +176,9 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 	if err != nil {
 		return nil, err
 	}
-	nStates := int(math.Max(float64(MAX_ITERATIONS), float64(data.Iterations)))
+	nStates := int(math.Min(float64(MAX_ITERATIONS), float64(data.Iterations)))
 	fmt.Println("Running", nStates, "iterations")
-	runner := New(step.All, nStates)
+	runner := runner.New(step.All, nStates)
 	runnerOut := make(chan interfaces.GameState, nStates)
 	output := make(chan interfaces.GameState, nStates)
 	go runner.Run(runnerOut)

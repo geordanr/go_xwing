@@ -7,27 +7,14 @@ import (
 	"github.com/geordanr/go_xwing/interfaces"
 )
 
-var attackerSpendFocus = SpendFocus{actor: constants.ATTACKER}
-var defenderSpendFocus = SpendFocus{actor: constants.DEFENDER}
-var attackerRollDice = RollDice{actor: constants.ATTACKER}
-var defenderRollDice = RollDice{actor: constants.DEFENDER}
-
-// All contains a mapping from human-readable strings to Modifications.
-var All = map[string]interfaces.Modification{
-	// compareresults.go
-	"Compare Results": &CompareResults{},
-	// evade.go
-	"Spend Evade": &SpendEvade{},
-	// focus.go
-	"Attacker Spend Focus": &attackerSpendFocus,
-	"Defender Spend Focus": &defenderSpendFocus,
-	// roll.go
-	"Roll Attack Dice":  &attackerRollDice,
-	"Roll Defense Dice": &defenderRollDice,
-	// performattacktwice.go
-	"Perform Attack Twice": &PerformAttackTwice{},
-	// sufferdamage.go
-	"Suffer Damage": &SufferDamage{},
-	// tlt.go
-	"Twin Laser Turret": &TwinLaserTurret{},
+// All contains a mapping from human-readable strings to Modification factory functions.
+var All = map[string]func() interfaces.Modification{
+	"Compare Results":      func() interfaces.Modification { return new(CompareResults) },                              // compareresults.go
+	"Spend Evade Token":    func() interfaces.Modification { return new(SpendEvade) },                                  // evade.go
+	"Spend Focus Token":    func() interfaces.Modification { return new(SpendFocus) },                                  // focus.go
+	"Roll Attack Dice":     func() interfaces.Modification { mod := RollDice{actor: constants.ATTACKER}; return &mod }, // roll.go
+	"Roll Defense Dice":    func() interfaces.Modification { mod := RollDice{actor: constants.DEFENDER}; return &mod },
+	"Perform Attack Twice": func() interfaces.Modification { return new(PerformAttackTwice) }, // performattacktwice.go
+	"Suffer Damage":        func() interfaces.Modification { return new(SufferDamage) },       // sufferdamage.go
+	"Twin Laser Turret":    func() interfaces.Modification { return new(TwinLaserTurret) },    // tlt.go
 }
