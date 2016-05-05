@@ -17,7 +17,7 @@ import (
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	nIterations := 1000
+	nIterations := 100000
 	bufsz := 8
 	runner := runner.New(step.All, bufsz)
 	output := make(chan interfaces.GameState, bufsz)
