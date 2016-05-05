@@ -19,8 +19,8 @@ type GameState interface {
 	SetAttackResults(*dice.Results)
 	DefenseResults() *dice.Results
 	SetDefenseResults(*dice.Results)
-	NextAttackStep() Step
-	SetNextAttackStep(Step)
+	NextAttackStep() string
+	SetNextAttackStep(string)
 	PerformAttackTwice() bool
 	SetPerformAttackTwice(bool)
 	AttackDiceModifier() int
@@ -62,7 +62,7 @@ type Ship interface {
 }
 
 type Step interface {
-	Next() Step
+	Next() string
 	Run(<-chan StepRequest, chan<- StepRequest, chan<- bool)
 	Name() string
 	SetName(string)

@@ -39,7 +39,7 @@ func (r Runner) Run(output chan<- interfaces.GameState) {
 	for {
 		req := <-r.recvChan
 		state := req.State()
-		if state.NextAttackStep() == nil {
+		if state.NextAttackStep() == "" {
 			// End of attack sequence, process next attack
 			more := state.DequeueAttack()
 			if more {
@@ -53,7 +53,8 @@ func (r Runner) Run(output chan<- interfaces.GameState) {
 		} else {
 			// Send the state to the next step
 			newReq := Request{state: state}
-			r.sendChans[state.NextAttackStep().Name()] <- &newReq
+			// This depends on the names of the steps being the same as the keys in the step map
+			r.sendChans[state.NextAttackStep()] <- &newReq
 		}
 	}
 }

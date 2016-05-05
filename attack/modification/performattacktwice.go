@@ -13,7 +13,7 @@ type PerformAttackTwice struct {
 func (mod *PerformAttackTwice) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
 	if state.PerformAttackTwice() {
 		state.ResetTransientState()
-		// fmt.Println("Would set next step to 'Roll Attack Dice'")
+		state.SetNextAttackStep("Roll Attack Dice")
 	}
 }
 

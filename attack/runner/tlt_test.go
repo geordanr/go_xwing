@@ -32,8 +32,9 @@ func TestTwinLaserTurret(t *testing.T) {
 		compareResultsCounter,
 	}
 
-	afterAttackDefendCounter := new(countSteps)
-	mods["After Attacking/Defending"] = []interfaces.Modification{afterAttackDefendCounter}
+	finalCounter := new(countSteps)
+	// Does "after attacking/defending" happen before or after "perform attack twice"?
+	mods["Perform Additional Attack"] = []interfaces.Modification{finalCounter}
 
 	state.EnqueueAttack(attack.New(attacker, defender, mods))
 
@@ -46,7 +47,7 @@ func TestTwinLaserTurret(t *testing.T) {
 	<-output
 
 	assert.EqualValues(2, compareResultsCounter.Value())
-	assert.EqualValues(1, afterAttackDefendCounter.Value())
+	assert.EqualValues(1, finalCounter.Value())
 }
 
 type countSteps int

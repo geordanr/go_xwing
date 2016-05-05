@@ -30,9 +30,11 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 			return
 		}
 
+		// fmt.Println("Entering", step.name)
+
 		state := req.State()
-		// A nil next state means use the step default.
-		state.SetNextAttackStep(nil)
+		// An empty string next state means use the step default.
+		state.SetNextAttackStep("")
 
 		currentAttack := state.CurrentAttack()
 		stepmods, exists := currentAttack.Modifications()[step.Name()]
@@ -62,7 +64,7 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 		}
 
 		// No one overrode the next step, so use the default.
-		if state.NextAttackStep() == nil {
+		if state.NextAttackStep() == "" {
 			state.SetNextAttackStep(step.Next())
 		}
 
@@ -75,7 +77,7 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 // Next returns the default next step to perform.
 // This is used by the attack runner to figure out what step to perform
 // next if one isn't provided to the GameState by a modification.
-func (step Step) Next() interfaces.Step { return All[step.next] }
+func (step Step) Next() string { return step.next }
 
 func (step Step) Name() string                    { return step.name }
 func (step *Step) SetName(name string)            { step.name = name }

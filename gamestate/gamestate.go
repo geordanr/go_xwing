@@ -17,7 +17,7 @@ type GameState struct {
 	// transient per attack
 	attackResults       *dice.Results
 	defenseResults      *dice.Results
-	nextAttackStep      interfaces.Step
+	nextAttackStepName  string
 	performAttackTwice  bool // can change mid-attack
 	attackMissed        bool
 	attackDiceModifier  int // amount to increase or decrease rolled attack dice
@@ -63,12 +63,12 @@ func (state *GameState) SetDefenseResults(r *dice.Results) {
 	state.defenseResults = r
 }
 
-func (state GameState) NextAttackStep() interfaces.Step {
-	return state.nextAttackStep
+func (state GameState) NextAttackStep() string {
+	return state.nextAttackStepName
 }
 
-func (state *GameState) SetNextAttackStep(step interfaces.Step) {
-	state.nextAttackStep = step
+func (state *GameState) SetNextAttackStep(stepName string) {
+	state.nextAttackStepName = stepName
 }
 
 func (state GameState) PerformAttackTwice() bool {
@@ -122,7 +122,7 @@ func (state *GameState) SetCritsLanded(critsLanded uint) {
 func (state *GameState) ResetTransientState() {
 	state.attackResults = nil
 	state.defenseResults = nil
-	state.nextAttackStep = nil
+	state.nextAttackStepName = ""
 	state.performAttackTwice = false
 	state.attackMissed = false
 	state.attackDiceModifier = 0
