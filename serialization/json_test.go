@@ -1,7 +1,7 @@
-package runner
+package serialization
 
 import (
-	// "github.com/geordanr/go_xwing/ship"
+	// "fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -57,8 +57,8 @@ func TestFromJSON(t *testing.T) {
 
 	factoryMap, err := shipsFromJSON([]byte(shipJson))
 
-	paramsJson := `{
-		"iterations": 2,
+	paramsJson := ` {
+		"iterations": 1,
 		"combatants": [
 			{
 				"name": "Luke Skywalker",
@@ -87,11 +87,11 @@ func TestFromJSON(t *testing.T) {
 				"defender": "Howlrunner",
 				"mods": {
 					"Modify Attack Dice": [
-						["attacker", "Spend Focus"]
+						["attacker", "Spend Focus Token"]
 					],
 					"Modify Defense Dice": [
-						["defender", "Spend Focus"]
-						["defender", "Spend Evade"]
+						["defender", "Spend Focus Token"],
+						["defender", "Spend Evade Token"]
 					]
 				}
 			},
@@ -100,10 +100,10 @@ func TestFromJSON(t *testing.T) {
 				"defender": "Luke Skywalker",
 				"mods": {
 					"Modify Attack Dice": [
-						["attacker", "Spend Focus"]
+						["attacker", "Spend Focus Token"]
 					],
 					"Modify Defense Dice": [
-						["defender", "Spend Focus"]
+						["defender", "Spend Focus Token"]
 					]
 				}
 			}
@@ -113,7 +113,9 @@ func TestFromJSON(t *testing.T) {
 	output, err := FromJSON([]byte(paramsJson), factoryMap)
 	assert.Nil(err)
 	for {
+		// fmt.Println("reading from output...")
 		_, more := <-output
+		// fmt.Println("read, more=", more)
 		if !more {
 			break
 		}

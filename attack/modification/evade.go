@@ -33,5 +33,5 @@ func (mod SpendEvade) Actor() constants.ModificationActor          { return mod.
 func (mod *SpendEvade) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 
 func (mod SpendEvade) String() string {
-	return "Spend Evade"
+	return "Spend Evade Token"
 }

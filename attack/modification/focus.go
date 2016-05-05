@@ -34,5 +34,5 @@ func (mod SpendFocus) Actor() constants.ModificationActor          { return mod.
 func (mod *SpendFocus) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 
 func (mod SpendFocus) String() string {
-	return "Spend Focus"
+	return "Spend Focus Token"
 }
