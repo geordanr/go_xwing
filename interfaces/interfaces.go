@@ -66,6 +66,7 @@ type Step interface {
 	Run(<-chan StepRequest, chan<- StepRequest, chan<- bool)
 	Name() string
 	SetName(string)
+	Mods() []Modification
 }
 
 type StepRequest interface {

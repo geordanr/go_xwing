@@ -75,5 +75,6 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 // next if one isn't provided to the GameState by a modification.
 func (step Step) Next() interfaces.Step { return All[step.next] }
 
-func (step Step) Name() string         { return step.name }
-func (step *Step) SetName(name string) { step.name = name }
+func (step Step) Name() string                    { return step.name }
+func (step *Step) SetName(name string)            { step.name = name }
+func (step Step) Mods() []interfaces.Modification { return step.mods }

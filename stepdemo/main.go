@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/geordanr/go_xwing/attack"
-	"github.com/geordanr/go_xwing/attack/modification"
 	"github.com/geordanr/go_xwing/attack/runner"
 	"github.com/geordanr/go_xwing/attack/step"
 	"github.com/geordanr/go_xwing/constants"
@@ -18,7 +17,7 @@ import (
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	nIterations := 100000
+	nIterations := 1
 	runner := runner.New(step.All, nIterations)
 	output := make(chan interfaces.GameState, nIterations)
 	attackerStats := ShipStats{
@@ -58,18 +57,18 @@ func main() {
 func makeState(attackerStats, defenderStats *ShipStats) *gamestate.GameState {
 	attacker := ship.New("TIE Fighter", 2, 3, 3, 0)
 	defender := ship.New("X-Wing", 3, 2, 3, 2)
+	sufferDamageMods := step.All["Suffer Damage"].Mods()
+	sufferDamageMods = append(sufferDamageMods, &TabulateStats{
+		ship:  attacker,
+		stats: attackerStats,
+	})
+	sufferDamageMods = append(sufferDamageMods, &TabulateStats{
+		ship:  defender,
+		stats: defenderStats,
+	})
+
 	mods := map[string][]interfaces.Modification{
-		"Suffer Damage": []interfaces.Modification{
-			modification.All["Suffer Damage"],
-			&TabulateStats{
-				ship:  attacker,
-				stats: attackerStats,
-			},
-			&TabulateStats{
-				ship:  defender,
-				stats: defenderStats,
-			},
-		},
+		"Suffer Damage": sufferDamageMods,
 	}
 	state := gamestate.GameState{}
 	state.EnqueueAttack(attack.New(attacker, defender, mods))
