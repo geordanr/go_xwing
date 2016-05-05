@@ -17,7 +17,7 @@ import (
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	nIterations := 1
+	nIterations := 10000
 	runner := runner.New(step.All, nIterations)
 	output := make(chan interfaces.GameState, nIterations)
 	attackerStats := ShipStats{
@@ -61,10 +61,12 @@ func makeState(attackerStats, defenderStats *ShipStats) *gamestate.GameState {
 	sufferDamageMods = append(sufferDamageMods, &TabulateStats{
 		ship:  attacker,
 		stats: attackerStats,
+		actor: constants.ATTACKER,
 	})
 	sufferDamageMods = append(sufferDamageMods, &TabulateStats{
 		ship:  defender,
 		stats: defenderStats,
+		actor: constants.ATTACKER,
 	})
 
 	mods := map[string][]interfaces.Modification{
