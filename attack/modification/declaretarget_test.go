@@ -11,8 +11,8 @@ import (
 func TestDeclareTarget_Normal(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 2, 3, 3, 0)
-	defender := ship.New("Defender", 3, 2, 3, 2)
+	attacker := ship.New("Attacker", 0, 2, 3, 3, 0)
+	defender := ship.New("Defender", 0, 3, 2, 3, 2)
 	state := gamestate.GameState{}
 	mod := DeclareTarget{}
 
@@ -27,8 +27,8 @@ func TestDeclareTarget_Normal(t *testing.T) {
 func TestDeclareTarget_CannotAttack(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 2, 3, 3, 0)
-	defender := ship.New("Defender", 3, 2, 3, 2)
+	attacker := ship.New("Attacker", 0, 2, 3, 3, 0)
+	defender := ship.New("Defender", 0, 3, 2, 3, 2)
 	state := gamestate.GameState{}
 	mod := DeclareTarget{}
 
@@ -44,8 +44,8 @@ func TestDeclareTarget_CannotAttack(t *testing.T) {
 func TestDeclareTarget_DefenderDead(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 2, 3, 3, 0)
-	defender := ship.New("Defender", 3, 2, 0, 0)
+	attacker := ship.New("Attacker", 0, 2, 3, 3, 0)
+	defender := ship.New("Defender", 0, 3, 2, 0, 0)
 	state := gamestate.GameState{}
 	mod := DeclareTarget{}
 

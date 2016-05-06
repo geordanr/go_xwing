@@ -12,8 +12,8 @@ import (
 func TestSpendEvade_NoTokens(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendEvade{}
 
@@ -41,8 +41,8 @@ func TestSpendEvade_NoTokens(t *testing.T) {
 func TestSpendEvade_HasTokens(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendEvade{}
 
@@ -71,8 +71,8 @@ func TestSpendEvade_HasTokens(t *testing.T) {
 func TestSpendEvade_NoNeedToSpend(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendEvade{}
 
@@ -101,8 +101,8 @@ func TestSpendEvade_NoNeedToSpend(t *testing.T) {
 func TestSpendEvade_SpendEnough(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendEvade{}
 

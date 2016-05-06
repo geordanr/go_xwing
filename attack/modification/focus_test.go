@@ -12,8 +12,8 @@ import (
 func TestSpendFocus_OnAttackHasTokens(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendFocus{}
 
@@ -51,8 +51,8 @@ func TestSpendFocus_OnAttackHasTokens(t *testing.T) {
 func TestSpendFocus_OnAttackHasNoTokens(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendFocus{}
 
@@ -90,8 +90,8 @@ func TestSpendFocus_OnAttackHasNoTokens(t *testing.T) {
 func TestSpendFocus_OnAttackHasNoFocusResults(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendFocus{}
 
@@ -129,8 +129,8 @@ func TestSpendFocus_OnAttackHasNoFocusResults(t *testing.T) {
 func TestSpendFocus_OnDefenseHasTokens(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendFocus{}
 
@@ -168,8 +168,8 @@ func TestSpendFocus_OnDefenseHasTokens(t *testing.T) {
 func TestSpendFocus_OnDefenseHasNoTokens(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendFocus{}
 
@@ -207,8 +207,8 @@ func TestSpendFocus_OnDefenseHasNoTokens(t *testing.T) {
 func TestSpendFocus_OnDefenseHasNoFocusResults(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := SpendFocus{}
 

@@ -11,8 +11,8 @@ import (
 func TestCannotAttackAgain(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 2, 3, 3, 0)
-	defender := ship.New("Defender", 3, 2, 3, 2)
+	attacker := ship.New("Attacker", 0, 2, 3, 3, 0)
+	defender := ship.New("Defender", 0, 3, 2, 3, 2)
 	state := gamestate.GameState{}
 	mod := CannotAttackAgain{}
 

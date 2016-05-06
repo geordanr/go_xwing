@@ -17,8 +17,8 @@ func TestRun_MultipleStates(t *testing.T) {
 	// assert := assert.New(t)
 
 	makeState := func() *gamestate.GameState {
-		attacker := ship.New("Attacker", 3, 2, 3, 2)
-		defender := ship.New("Defender", 2, 3, 3, 0)
+		attacker := ship.New("Attacker", 0, 3, 2, 3, 2)
+		defender := ship.New("Defender", 0, 2, 3, 3, 0)
 		state := gamestate.GameState{}
 		attackerSpendFocus := modification.SpendFocus{}
 		attackerSpendFocus.SetActor(constants.ATTACKER)

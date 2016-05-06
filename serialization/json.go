@@ -22,7 +22,7 @@ const MAX_ITERATIONS = 100000
 // ShipsFromJSONPath reads a JSON file and returns a map of ship names
 // to factory functions.  The factory function accepts a string argument
 // which will be the ship's name.
-func ShipsFromJSONPath(path string) (map[string]func(string) *ship.Ship, error) {
+func ShipsFromJSONPath(path string) (map[string]func(string, uint) *ship.Ship, error) {
 	bytes, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -31,14 +31,14 @@ func ShipsFromJSONPath(path string) (map[string]func(string) *ship.Ship, error) 
 }
 
 // shipsFromJSON is a helper function (primarily for testing)
-func shipsFromJSON(b []byte) (map[string]func(string) *ship.Ship, error) {
+func shipsFromJSON(b []byte) (map[string]func(string, uint) *ship.Ship, error) {
 	data := map[string][]ShipJSONSchema{}
 	err := fromJSON(b, &data)
 	if err != nil {
 		return nil, err
 	}
 
-	factory := map[string]func(string) *ship.Ship{}
+	factory := map[string]func(string, uint) *ship.Ship{}
 	// Expect to find the array of ships in the object property "ships"
 	shipList, exists := data["ships"]
 	if !exists {
@@ -47,16 +47,15 @@ func shipsFromJSON(b []byte) (map[string]func(string) *ship.Ship, error) {
 
 	for _, shipStats := range shipList {
 		shipStats := shipStats // silly closure trick
-		factory[shipStats.Name] = func(name string) *ship.Ship {
-			return ship.New(name, shipStats.Attack, shipStats.Agility, shipStats.Hull, shipStats.Shields)
-
+		factory[shipStats.Name] = func(name string, skill uint) *ship.Ship {
+			return ship.New(name, skill, shipStats.Attack, shipStats.Agility, shipStats.Hull, shipStats.Shields)
 		}
 	}
 
 	return factory, nil
 }
 
-func FromJSONPath(path string, shipFactory map[string]func(string) *ship.Ship) (<-chan interfaces.GameState, error) {
+func FromJSONPath(path string, shipFactory map[string]func(string, uint) *ship.Ship) (<-chan interfaces.GameState, error) {
 	bytes, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -65,7 +64,7 @@ func FromJSONPath(path string, shipFactory map[string]func(string) *ship.Ship) (
 }
 
 // FromJSON reads the JSON bytestream, creates a Runner to run the simulation, and returns an output channel to read game states from.
-func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan interfaces.GameState, error) {
+func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<-chan interfaces.GameState, error) {
 	makeState := func() (interfaces.GameState, error) {
 		state := gamestate.GameState{}
 		data := SimulationJSONSchema{}
@@ -80,7 +79,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string) *ship.Ship) (<-chan 
 			if !exists {
 				return nil, errors.New(fmt.Sprintf("No data for ship type '%s'", combatant.ShipType))
 			}
-			cbt := shipFunc(combatant.Name)
+			cbt := shipFunc(combatant.Name, combatant.Skill)
 			cbt.SetFocusTokens(combatant.Tokens.FocusTokens)
 			cbt.SetEvadeTokens(combatant.Tokens.EvadeTokens)
 			cbt.SetTargetLock(combatant.Tokens.TargetLock)

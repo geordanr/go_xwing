@@ -1,19 +1,19 @@
 package modification
 
 import (
-	"github.com/stretchr/testify/assert"
-	"testing"
 	"github.com/geordanr/go_xwing/attack"
 	"github.com/geordanr/go_xwing/dice"
 	"github.com/geordanr/go_xwing/gamestate"
 	"github.com/geordanr/go_xwing/ship"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestCompareResults_NoHits(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 2, 3, 3, 0)
-	defender := ship.New("Defender", 3, 2, 3, 2)
+	attacker := ship.New("Attacker", 0, 2, 3, 3, 0)
+	defender := ship.New("Defender", 0, 3, 2, 3, 2)
 	state := gamestate.GameState{}
 	mod := CompareResults{}
 
@@ -40,8 +40,8 @@ func TestCompareResults_NoHits(t *testing.T) {
 func TestCompareResults_AttackMissed(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 2, 3, 3, 0)
-	defender := ship.New("Defender", 3, 2, 3, 2)
+	attacker := ship.New("Attacker", 0, 2, 3, 3, 0)
+	defender := ship.New("Defender", 0, 3, 2, 3, 2)
 	state := gamestate.GameState{}
 	mod := CompareResults{}
 
@@ -68,8 +68,8 @@ func TestCompareResults_AttackMissed(t *testing.T) {
 func TestCompareResults_ShieldBeforeHull(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 2, 3, 3, 0)
-	defender := ship.New("Defender", 3, 2, 3, 2)
+	attacker := ship.New("Attacker", 0, 2, 3, 3, 0)
+	defender := ship.New("Defender", 0, 3, 2, 3, 2)
 	state := gamestate.GameState{}
 	mod := CompareResults{}
 

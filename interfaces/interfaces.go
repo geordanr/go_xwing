@@ -51,6 +51,7 @@ type Modification interface {
 
 type Ship interface {
 	Name() string
+	Skill() uint
 	Attack() uint
 	Agility() uint
 	Hull() uint

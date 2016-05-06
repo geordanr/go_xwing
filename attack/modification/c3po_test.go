@@ -11,7 +11,7 @@ import (
 func TestC3PO(t *testing.T) {
 	assert := assert.New(t)
 
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	mod := C3PO{} // guess 0
 

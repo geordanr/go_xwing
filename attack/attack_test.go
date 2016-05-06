@@ -11,8 +11,8 @@ import (
 func TestNew(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	modifications := map[string][]interfaces.Modification{}
 
 	atk := New(attacker, defender, modifications)
@@ -25,8 +25,8 @@ func TestNew(t *testing.T) {
 func TestAttacker(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	modifications := map[string][]interfaces.Modification{}
 
 	atk := New(attacker, defender, modifications)
@@ -37,8 +37,8 @@ func TestAttacker(t *testing.T) {
 func TestDefender(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	modifications := map[string][]interfaces.Modification{}
 
 	atk := New(attacker, defender, modifications)
@@ -49,8 +49,8 @@ func TestDefender(t *testing.T) {
 func TestModifications(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	modifications := map[string][]interfaces.Modification{}
 
 	atk := New(attacker, defender, modifications)

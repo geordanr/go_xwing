@@ -16,8 +16,8 @@ import (
 func TestTwinLaserTurret(t *testing.T) {
 	assert := assert.New(t)
 
-	attacker := ship.New("Attacker", 2, 1, 5, 3)
-	defender := ship.New("Defender", 3, 3, 3, 0)
+	attacker := ship.New("Attacker", 0, 2, 1, 5, 3)
+	defender := ship.New("Defender", 0, 3, 3, 3, 0)
 	state := gamestate.GameState{}
 	mods := map[string][]interfaces.Modification{}
 

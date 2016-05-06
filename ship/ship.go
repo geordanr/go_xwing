@@ -4,6 +4,7 @@ import "fmt"
 
 type Ship struct {
 	name        string
+	skill       uint
 	attack      uint
 	agility     uint
 	hull        uint
@@ -16,11 +17,12 @@ type Ship struct {
 }
 
 // New returns a pointer to a ship with the given stats.
-func New(name string, attack, agility, hull, shields uint) *Ship {
+func New(name string, skill, attack, agility, hull, shields uint) *Ship {
 	var ship Ship
 
 	ship = Ship{
 		name:    name,
+		skill:   skill,
 		attack:  attack,
 		agility: agility,
 		hull:    hull,
@@ -31,10 +33,11 @@ func New(name string, attack, agility, hull, shields uint) *Ship {
 }
 
 func (ship *Ship) String() string {
-	return fmt.Sprintf("<Ship name='%s' %d/%d/%d/%d focus=%d evade=%d>", ship.name, ship.attack, ship.agility, ship.hull, ship.shields, ship.focusTokens, ship.evadeTokens)
+	return fmt.Sprintf("<Ship name='%s' PS%d %d/%d/%d/%d focus=%d evade=%d>", ship.name, ship.skill, ship.attack, ship.agility, ship.hull, ship.shields, ship.focusTokens, ship.evadeTokens)
 }
 
 func (ship Ship) Name() string  { return ship.name }
+func (ship Ship) Skill() uint   { return ship.skill }
 func (ship Ship) Attack() uint  { return ship.attack }
 func (ship Ship) Agility() uint { return ship.agility }
 func (ship Ship) Hull() uint    { return ship.hull }

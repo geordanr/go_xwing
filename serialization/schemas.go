@@ -20,7 +20,7 @@ type SimulationJSONSchema struct {
 type CombatantJSONSchema struct {
 	Name          string `json:"name"`       // unique identifier for a combatant
 	ShipType      string `json:"ship"`       // ship chassis name (e.g. "X-Wing")
-	Skill         uint   `json:"skill"`      // pilot skill (not used?)
+	Skill         uint   `json:"skill"`      // pilot skill
 	HasInitiative bool   `json:"initiative"` // whether this combatant has initiative in the event of tied skill (not used?)
 	Tokens        TokenJSONSchema
 }

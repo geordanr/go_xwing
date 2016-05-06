@@ -35,7 +35,7 @@ func TestShipsFromJSON(t *testing.T) {
 	assert.Contains(factoryMap, "TIE Fighter")
 
 	xwingFactory := factoryMap["X-Wing"]
-	xwing := xwingFactory("Wedge Antilles")
+	xwing := xwingFactory("Wedge Antilles", 9)
 	assert.Equal("Wedge Antilles", xwing.Name())
 	assert.EqualValues(3, xwing.Attack())
 	assert.EqualValues(2, xwing.Agility())
@@ -43,7 +43,7 @@ func TestShipsFromJSON(t *testing.T) {
 	assert.EqualValues(2, xwing.Shields())
 
 	tieFactory := factoryMap["TIE Fighter"]
-	tie := tieFactory("Howlrunner")
+	tie := tieFactory("Howlrunner", 8)
 	assert.Equal("Howlrunner", tie.Name())
 	assert.EqualValues(2, tie.Attack())
 	assert.EqualValues(3, tie.Agility())

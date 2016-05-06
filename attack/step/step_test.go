@@ -22,8 +22,8 @@ func TestRun(t *testing.T) {
 	done := make(chan bool)
 	modifyAttackDiceStep := Step{}
 	modifyAttackDiceStep.SetName("Modify Attack Dice")
-	attacker := ship.New("Attacker", 0, 0, 0, 0)
-	defender := ship.New("Defender", 0, 0, 0, 0)
+	attacker := ship.New("Attacker", 0, 0, 0, 0, 0)
+	defender := ship.New("Defender", 0, 0, 0, 0, 0)
 	state := gamestate.GameState{}
 	attackerSpendFocus := modification.SpendFocus{}
 	attackerSpendFocus.SetActor(constants.ATTACKER)

@@ -56,8 +56,8 @@ func main() {
 }
 
 func makeState(attackerStats, defenderStats *ShipStats) *gamestate.GameState {
-	attacker := ship.New("TIE Fighter", 2, 3, 3, 0)
-	defender := ship.New("X-Wing", 3, 2, 3, 2)
+	attacker := ship.New("TIE Fighter", 0, 2, 3, 3, 0)
+	defender := ship.New("X-Wing", 0, 3, 2, 3, 2)
 	dealDamageMods := step.All["Deal Damage"].Mods()
 	dealDamageMods = append(dealDamageMods, &TabulateStats{
 		ship:  attacker,
