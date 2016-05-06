@@ -49,7 +49,7 @@ func (atk *Attack) Copy() interfaces.Attack {
 	}
 	// Since there's no map copy...
 	for stepName, mods := range atk.modifications {
-		newMods := make([]interfaces.Modification, len(mods))
+		newMods := []interfaces.Modification{}
 		// Don't copy transients
 		for _, mod := range mods {
 			t, ok := mod.(interfaces.Transient)
