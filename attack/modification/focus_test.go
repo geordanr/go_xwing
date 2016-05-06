@@ -137,7 +137,7 @@ func TestSpendFocus_OnDefenseHasTokens(t *testing.T) {
 	attacker.SetFocusTokens(2)
 	attackResults := dice.RollAttackDice(3)
 	attackResults[0].SetResult(dice.BLANK)
-	attackResults[1].SetResult(dice.FOCUS)
+	attackResults[1].SetResult(dice.HIT)
 	attackResults[2].SetResult(dice.HIT)
 	state.SetAttackResults(&attackResults)
 
@@ -154,8 +154,8 @@ func TestSpendFocus_OnDefenseHasTokens(t *testing.T) {
 	attackResults = *state.AttackResults()
 	assert.EqualValues(2, attacker.FocusTokens())
 	assert.EqualValues(1, attackResults.Blanks())
-	assert.EqualValues(1, attackResults.Focuses())
-	assert.EqualValues(1, attackResults.Hits())
+	assert.EqualValues(0, attackResults.Focuses())
+	assert.EqualValues(2, attackResults.Hits())
 	assert.EqualValues(0, attackResults.Crits())
 
 	defenseResults = *state.DefenseResults()

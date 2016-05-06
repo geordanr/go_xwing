@@ -17,14 +17,17 @@ func (mod *SpendFocus) ModifyState(state interfaces.GameState, ship interfaces.S
 		if ship == currentAttack.Attacker() {
 			results := state.AttackResults()
 			if results.Focuses() > 0 {
+				// fmt.Println(ship.Name(), "spent focus")
 				ship.SpendFocus()
 				results.ConvertAll(dice.FOCUS, dice.HIT)
 			}
 		} else if ship == currentAttack.Defender() {
-			results := state.DefenseResults()
-			if results.Focuses() > 0 {
+			atkResults := state.AttackResults()
+			defResults := state.DefenseResults()
+			if defResults.Focuses() > 0 && (atkResults.Hits()+atkResults.Crits()) > defResults.Evades() {
+				// fmt.Println(ship.Name(), "spent focus")
 				ship.SpendFocus()
-				results.ConvertAll(dice.FOCUS, dice.EVADE)
+				defResults.ConvertAll(dice.FOCUS, dice.EVADE)
 			}
 		}
 	}
