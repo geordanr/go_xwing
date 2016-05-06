@@ -100,3 +100,4 @@ func (mod *TabulateStats) ModifyState(state interfaces.GameState, ship interface
 func (mod TabulateStats) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *TabulateStats) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 func (mod TabulateStats) String() string                              { return "Tabulate Stats" }
+func (mod TabulateStats) IsSecondaryWeapon() bool                     { return false }

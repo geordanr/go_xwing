@@ -63,3 +63,4 @@ func (mod *countSteps) SetActor(actor constants.ModificationActor) {}
 func (mod countSteps) String() string                              { return "Count Steps" }
 func (mod countSteps) Mods() []interfaces.Modification             { return nil }
 func (mod countSteps) Value() int                                  { return int(mod) }
+func (mod countSteps) IsSecondaryWeapon() bool                     { return false }
