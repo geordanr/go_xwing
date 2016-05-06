@@ -21,6 +21,7 @@ import (
 // All contains a mapping from human-readable strings to Modification factory functions.
 // In general, if a modification's name is the same as an attack step, it is the default handler for that step.
 var All = map[string]func() interfaces.Modification{
+	"Accuracy Corrector":   func() interfaces.Modification { return new(AccuracyCorrector) },               // accuracycorrector.go
 	"C-3PO (guess 0)":      func() interfaces.Modification { return new(C3PO) },                            // c3po.go
 	"C-3PO (guess 1)":      func() interfaces.Modification { return &C3PO{guess: 1} },                      // c3po.go
 	"C-3PO (guess 2)":      func() interfaces.Modification { return &C3PO{guess: 2} },                      // c3po.go
