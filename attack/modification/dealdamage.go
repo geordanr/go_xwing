@@ -19,5 +19,4 @@ func (mod *DealDamage) ModifyState(state interfaces.GameState, ship interfaces.S
 func (mod DealDamage) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *DealDamage) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 func (mod DealDamage) String() string                              { return "Deal Damage" }
-func (mod DealDamage) IsSecondaryWeapon() bool                     { return false }
 func (mod DealDamage) IsDamageDealer() bool                        { return true }

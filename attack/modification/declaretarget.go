@@ -23,4 +23,3 @@ func (mod *DeclareTarget) ModifyState(state interfaces.GameState, ship interface
 func (mod DeclareTarget) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *DeclareTarget) SetActor(actor constants.ModificationActor) {}
 func (mod DeclareTarget) String() string                              { return "Declare Target" }
-func (mod DeclareTarget) IsSecondaryWeapon() bool                     { return false }

@@ -36,4 +36,3 @@ func (mod *CompareResults) ModifyState(state interfaces.GameState, ship interfac
 func (mod CompareResults) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *CompareResults) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 func (mod CompareResults) String() string                              { return "Compare Results" }
-func (mod CompareResults) IsSecondaryWeapon() bool                     { return false }

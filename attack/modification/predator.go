@@ -31,4 +31,3 @@ func (mod *Predator) ModifyState(state interfaces.GameState, ship interfaces.Shi
 func (mod Predator) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *Predator) SetActor(actor constants.ModificationActor) {}
 func (mod Predator) String() string                              { return "Predator" }
-func (mod Predator) IsSecondaryWeapon() bool                     { return false }

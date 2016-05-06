@@ -58,7 +58,6 @@ func (mod RollDice) String() string {
 		return fmt.Sprintf("Roll %s Dice", dieType)
 	}
 }
-func (mod RollDice) IsSecondaryWeapon() bool { return false }
 
 // SetNumDice sets the number of dice to be rolled, instead of using the
 // attacker's attack value or the defender's agility value modified by

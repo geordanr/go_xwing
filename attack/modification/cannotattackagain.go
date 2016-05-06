@@ -21,4 +21,3 @@ func (mod *CannotAttackAgain) ModifyState(state interfaces.GameState, ship inter
 func (mod CannotAttackAgain) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *CannotAttackAgain) SetActor(actor constants.ModificationActor) {}
 func (mod CannotAttackAgain) String() string                              { return "Cannot Attack Again" }
-func (mod CannotAttackAgain) IsSecondaryWeapon() bool                     { return false }

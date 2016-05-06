@@ -26,5 +26,3 @@ func (mod *AdvancedTargetingComputer) ModifyState(state interfaces.GameState, sh
 func (mod AdvancedTargetingComputer) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *AdvancedTargetingComputer) SetActor(actor constants.ModificationActor) {}
 func (mod AdvancedTargetingComputer) String() string                              { return "Advanced Targeting Computer" }
-func (mod AdvancedTargetingComputer) IsSecondaryWeapon() bool                     { return false }
-func (mod AdvancedTargetingComputer) IsDamageDealer() bool                        { return true }

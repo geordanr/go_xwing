@@ -45,7 +45,6 @@ type Modification interface {
 	Actor() constants.ModificationActor
 	SetActor(constants.ModificationActor)
 	ModifyState(GameState, Ship)
-	IsSecondaryWeapon() bool
 	String() string
 }
 

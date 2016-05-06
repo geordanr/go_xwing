@@ -69,5 +69,4 @@ func (mod *DealTLTDamage) ModifyState(state interfaces.GameState, ship interface
 func (mod DealTLTDamage) Actor() constants.ModificationActor          { return constants.DEFENDER }
 func (mod *DealTLTDamage) SetActor(actor constants.ModificationActor) {}
 func (mod DealTLTDamage) String() string                              { return "Deal TLT Damage" }
-func (mod DealTLTDamage) IsSecondaryWeapon() bool                     { return false }
 func (mod DealTLTDamage) IsDamageDealer() bool                        { return true }

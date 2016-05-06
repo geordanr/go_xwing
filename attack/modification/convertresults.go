@@ -7,7 +7,7 @@ import (
 	"github.com/geordanr/go_xwing/interfaces"
 )
 
-// ConvertResults should be used in one of the modify steps.
+// ConvertResults is a utility modification for changing die results.
 // It can be instantiated with what results to convert to what, up to the amount given.  If all matching results should be converted, set all to true.
 // The result pool being modified depends on the actor.
 type ConvertResults struct {
@@ -42,4 +42,3 @@ func (mod *ConvertResults) ModifyState(state interfaces.GameState, ship interfac
 func (mod ConvertResults) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *ConvertResults) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 func (mod ConvertResults) String() string                              { return "Convert Results" }
-func (mod ConvertResults) IsSecondaryWeapon() bool                     { return false }

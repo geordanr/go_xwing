@@ -28,5 +28,3 @@ func (mod *AccuracyCorrector) ModifyState(state interfaces.GameState, ship inter
 func (mod AccuracyCorrector) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *AccuracyCorrector) SetActor(actor constants.ModificationActor) {}
 func (mod AccuracyCorrector) String() string                              { return "Accuracy Corrector" }
-func (mod AccuracyCorrector) IsSecondaryWeapon() bool                     { return false }
-func (mod AccuracyCorrector) IsDamageDealer() bool                        { return true }

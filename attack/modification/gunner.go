@@ -22,7 +22,8 @@ func (mod *Gunner) ModifyState(state interfaces.GameState, ship interfaces.Ship)
 		mods = newAtk.Modifications()["Declare Target"]
 		newMods = []interfaces.Modification{}
 		for _, mod := range mods {
-			if !mod.IsSecondaryWeapon() {
+			_, ok := mod.(SecondaryWeapon)
+			if !ok {
 				newMods = append(newMods, mod)
 			}
 		}
@@ -32,10 +33,10 @@ func (mod *Gunner) ModifyState(state interfaces.GameState, ship interfaces.Ship)
 		mods = newAtk.Modifications()["Roll Attack Dice"]
 		newMods = []interfaces.Modification{}
 		for _, mod := range mods {
-			switch mod.(type) {
-			case *RollDice:
+			_, ok := mod.(*RollDice)
+			if ok {
 				newMods = append(newMods, &RollDice{actor: constants.ATTACKER})
-			default:
+			} else {
 				newMods = append(newMods, mod)
 			}
 		}
@@ -85,4 +86,3 @@ func (mod *Gunner) ModifyState(state interfaces.GameState, ship interfaces.Ship)
 func (mod Gunner) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *Gunner) SetActor(actor constants.ModificationActor) {}
 func (mod Gunner) String() string                              { return "Gunner" }
-func (mod Gunner) IsSecondaryWeapon() bool                     { return false }

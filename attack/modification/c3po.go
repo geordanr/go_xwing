@@ -28,4 +28,3 @@ func (mod *C3PO) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
 func (mod C3PO) Actor() constants.ModificationActor          { return constants.DEFENDER }
 func (mod *C3PO) SetActor(actor constants.ModificationActor) {}
 func (mod C3PO) String() string                              { return fmt.Sprintf("C-3PO (guess %d)", mod.guess) }
-func (mod C3PO) IsSecondaryWeapon() bool                     { return false }

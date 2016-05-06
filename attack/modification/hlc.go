@@ -37,6 +37,7 @@ func (mod *HeavyLaserCannon) ModifyState(state interfaces.GameState, ship interf
 	}
 
 	// Install mod to convert attack results first
+	// TODO - gunner etc. needs to be able to remove this.
 	stepMods, exists := mods["Modify Attack Dice"]
 	if !exists {
 		stepMods = []interfaces.Modification{}

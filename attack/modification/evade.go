@@ -32,4 +32,3 @@ func (mod *SpendEvade) ModifyState(state interfaces.GameState, ship interfaces.S
 func (mod SpendEvade) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *SpendEvade) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 func (mod SpendEvade) String() string                              { return "Spend Evade Token" }
-func (mod SpendEvade) IsSecondaryWeapon() bool                     { return false }

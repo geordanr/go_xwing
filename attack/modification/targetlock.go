@@ -38,4 +38,3 @@ func (mod *SpendTargetLock) ModifyState(state interfaces.GameState, ship interfa
 func (mod SpendTargetLock) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *SpendTargetLock) SetActor(actor constants.ModificationActor) {}
 func (mod SpendTargetLock) String() string                              { return "Spend Target Lock" }
-func (mod SpendTargetLock) IsSecondaryWeapon() bool                     { return false }

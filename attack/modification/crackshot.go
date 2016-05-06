@@ -28,4 +28,3 @@ func (mod *CrackShot) ModifyState(state interfaces.GameState, ship interfaces.Sh
 func (mod CrackShot) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *CrackShot) SetActor(actor constants.ModificationActor) {}
 func (mod CrackShot) String() string                              { return "Crack Shot" }
-func (mod CrackShot) IsSecondaryWeapon() bool                     { return false }
