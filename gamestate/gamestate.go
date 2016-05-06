@@ -49,6 +49,16 @@ func (state *GameState) DequeueAttack() bool {
 	}
 }
 
+// SetNextAttack makes the given attack be the next one in the queue after the current attack.
+func (state *GameState) SetNextAttack(atk interfaces.Attack) {
+	curAtk := state.CurrentAttack()
+	newQueue := []interfaces.Attack{}
+	newQueue = append(newQueue, state.attackQueue[:len(state.attackQueue)-1]...)
+	newQueue = append(newQueue, atk, curAtk)
+	state.attackQueue = newQueue
+}
+
+// CurrentAttack returns the attack at the front of the queue.
 func (state GameState) CurrentAttack() interfaces.Attack {
 	return state.attackQueue[len(state.attackQueue)-1]
 }

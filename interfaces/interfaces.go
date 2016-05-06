@@ -9,6 +9,7 @@ type Attack interface {
 	Attacker() Ship
 	Defender() Ship
 	Modifications() map[string]([]Modification)
+	SetModifications(map[string]([]Modification))
 	Copy() Attack
 }
 
@@ -17,6 +18,7 @@ type GameState interface {
 	SetCombatants(map[string]Ship)
 	EnqueueAttack(Attack)
 	DequeueAttack() bool
+	SetNextAttack(Attack)
 	CurrentAttack() Attack
 	AttackResults() *dice.Results
 	SetAttackResults(*dice.Results)

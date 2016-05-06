@@ -36,6 +36,9 @@ func (atk *Attack) Defender() interfaces.Ship {
 func (atk *Attack) Modifications() map[string][]interfaces.Modification {
 	return atk.modifications
 }
+func (atk *Attack) SetModifications(mods map[string][]interfaces.Modification) {
+	atk.modifications = mods
+}
 
 // Copy returns a copy of this Attack.
 func (atk *Attack) Copy() interfaces.Attack {
