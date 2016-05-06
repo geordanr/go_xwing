@@ -9,6 +9,7 @@ type Attack interface {
 	Attacker() Ship
 	Defender() Ship
 	Modifications() map[string]([]Modification)
+	Copy() Attack
 }
 
 type GameState interface {
