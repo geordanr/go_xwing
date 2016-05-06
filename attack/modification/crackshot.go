@@ -7,15 +7,22 @@ import (
 	"github.com/geordanr/go_xwing/interfaces"
 )
 
-// CrackShot should be used in the Compare Results step, before the default handler.
+// CrackShot should be used in the Compare defenseResults step, before the default handler.
 type CrackShot struct {
 	actor constants.ModificationActor
+	used  bool
 }
 
 func (mod *CrackShot) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
-	results := state.DefenseResults()
-	results.ConvertUpto(1, dice.EVADE, dice.CANCELED)
-	// TODO crack shot only once per sim
+	if mod.used {
+		return
+	}
+	attackResults := state.AttackResults()
+	defenseResults := state.DefenseResults()
+	if defenseResults.Evades() > 0 && (attackResults.Hits()+attackResults.Crits()) > 0 {
+		mod.used = true
+		defenseResults.ConvertUpto(1, dice.EVADE, dice.CANCELED)
+	}
 }
 
 func (mod CrackShot) Actor() constants.ModificationActor          { return constants.ATTACKER }
