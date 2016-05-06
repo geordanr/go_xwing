@@ -37,7 +37,7 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 		state.SetNextAttackStep("")
 
 		currentAttack := state.CurrentAttack()
-		stepmods, exists := currentAttack.Modifications()[step.Name()]
+		stepmods, exists := currentAttack.Modifications()[step.name]
 		if !exists {
 			if step.mods == nil {
 				// fmt.Println(step.name, "has no default mods")
@@ -51,6 +51,7 @@ func (step Step) Run(in <-chan interfaces.StepRequest, out chan<- interfaces.Ste
 		// fmt.Printf("Step mods for %s: %s\n", step.name, stepmods)
 
 		for _, mod := range stepmods {
+			// fmt.Println("In", step.name, "apply mod", mod)
 			var ship interfaces.Ship
 			switch mod.Actor() {
 			case constants.ATTACKER:

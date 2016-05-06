@@ -1,7 +1,7 @@
 package modification
 
 import (
-	// "fmt"
+	"fmt"
 	"github.com/geordanr/go_xwing/constants"
 	"github.com/geordanr/go_xwing/dice"
 	"github.com/geordanr/go_xwing/interfaces"
@@ -41,7 +41,24 @@ func (mod *RollDice) ModifyState(state interfaces.GameState, ship interfaces.Shi
 
 func (mod RollDice) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *RollDice) SetActor(actor constants.ModificationActor) { mod.actor = actor }
-func (mod RollDice) String() string                              { return "Roll Dice" }
+func (mod RollDice) String() string {
+	var dieType string
+	switch mod.actor {
+	case constants.ATTACKER:
+		dieType = "Attack"
+	case constants.DEFENDER:
+		dieType = "Defense"
+	default:
+		dieType = "Unknown"
+	}
+
+	if mod.useNumDice {
+		return fmt.Sprintf("Roll %d %s Dice", mod.numDice, dieType)
+	} else {
+		return fmt.Sprintf("Roll %s Dice", dieType)
+	}
+}
+func (mod RollDice) IsSecondaryWeapon() bool { return false }
 
 // SetNumDice sets the number of dice to be rolled, instead of using the
 // attacker's attack value or the defender's agility value modified by

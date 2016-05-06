@@ -32,7 +32,5 @@ func (mod *SpendFocus) ModifyState(state interfaces.GameState, ship interfaces.S
 
 func (mod SpendFocus) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *SpendFocus) SetActor(actor constants.ModificationActor) { mod.actor = actor }
-
-func (mod SpendFocus) String() string {
-	return "Spend Focus Token"
-}
+func (mod SpendFocus) String() string                              { return "Spend Focus Token" }
+func (mod SpendFocus) IsSecondaryWeapon() bool                     { return false }

@@ -57,5 +57,5 @@ func (atk *Attack) Copy() interfaces.Attack {
 }
 
 func (atk Attack) String() string {
-	return fmt.Sprintf("<Attack attacker=%s defender=%s>", atk.attacker, atk.defender)
+	return fmt.Sprintf("<Attack attacker=%s defender=%s>", atk.attacker.Name(), atk.defender.Name())
 }

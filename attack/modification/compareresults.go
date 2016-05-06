@@ -17,7 +17,7 @@ func (mod *CompareResults) ModifyState(state interfaces.GameState, ship interfac
 	hits := uint(state.AttackResults().Hits())
 	crits := uint(state.AttackResults().Crits())
 	evades := uint(state.DefenseResults().Evades())
-	// fmt.Printf("Compare: hits=%d, crits=%d, evades=%d\n", hits, crits, evades)
+	// fmt.Printf("%s: Compare: hits=%d, crits=%d, evades=%d\n", state.CurrentAttack(), hits, crits, evades)
 	// Spend evade results on hits first
 	evadesSpentOnHits := uint(math.Min(float64(hits), float64(evades)))
 	// fmt.Printf("Evades spent on hits: %d\n", evadesSpentOnHits)
@@ -29,9 +29,11 @@ func (mod *CompareResults) ModifyState(state interfaces.GameState, ship interfac
 	// fmt.Printf("Crits now %d\n", crits)
 	state.SetHitsLanded(hits)
 	state.SetCritsLanded(crits)
+	// fmt.Println("Landed", hits, "hits and", crits, "crits")
 	state.SetAttackMissed(hits+crits == 0)
 }
 
 func (mod CompareResults) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *CompareResults) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 func (mod CompareResults) String() string                              { return "Compare Results" }
+func (mod CompareResults) IsSecondaryWeapon() bool                     { return false }

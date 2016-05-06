@@ -19,3 +19,4 @@ func (mod *SufferDamage) ModifyState(state interfaces.GameState, ship interfaces
 func (mod SufferDamage) Actor() constants.ModificationActor          { return mod.actor }
 func (mod *SufferDamage) SetActor(actor constants.ModificationActor) { mod.actor = actor }
 func (mod SufferDamage) String() string                              { return "Suffer Damage" }
+func (mod SufferDamage) IsSecondaryWeapon() bool                     { return false }

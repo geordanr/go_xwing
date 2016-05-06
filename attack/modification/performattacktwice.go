@@ -20,3 +20,4 @@ func (mod *PerformAttackTwice) ModifyState(state interfaces.GameState, ship inte
 func (mod PerformAttackTwice) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *PerformAttackTwice) SetActor(actor constants.ModificationActor) {}
 func (mod PerformAttackTwice) String() string                              { return "Perform Attack Twice" }
+func (mod PerformAttackTwice) IsSecondaryWeapon() bool                     { return false }

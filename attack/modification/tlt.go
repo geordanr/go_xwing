@@ -42,3 +42,4 @@ func (mod *TwinLaserTurret) ModifyState(state interfaces.GameState, ship interfa
 func (mod TwinLaserTurret) Actor() constants.ModificationActor          { return constants.ATTACKER }
 func (mod *TwinLaserTurret) SetActor(actor constants.ModificationActor) {}
 func (mod TwinLaserTurret) String() string                              { return "Twin Laser Turret" }
+func (mod TwinLaserTurret) IsSecondaryWeapon() bool                     { return true }
