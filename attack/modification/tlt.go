@@ -63,7 +63,7 @@ type DealTLTDamage struct{}
 func (mod *DealTLTDamage) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
 	currentAttack := state.CurrentAttack()
 	if state.HitsLanded()+state.CritsLanded() > 0 {
-		currentAttack.Defender().SufferDamage(1)
+		currentAttack.Defender().SufferDamage(1, 0)
 	}
 }
 func (mod DealTLTDamage) Actor() constants.ModificationActor          { return constants.DEFENDER }

@@ -69,7 +69,7 @@ type Ship interface {
 	IsAlive() bool
 	CanAttack() bool
 	SetCanAttack(bool)
-	SufferDamage(uint)
+	SufferDamage(uint, uint)
 }
 
 type Step interface {

@@ -55,7 +55,7 @@ func TestIsAlive(t *testing.T) {
 func TestSufferDamage(t *testing.T) {
 	ship := Ship{shields: 4, hull: 4}
 
-	ship.SufferDamage(3)
+	ship.SufferDamage(2, 1)
 	if ship.shields != 1 {
 		t.Errorf("Expected 1 shield left, has %d", ship.shields)
 	}
@@ -63,7 +63,7 @@ func TestSufferDamage(t *testing.T) {
 		t.Errorf("Expected 4 hull left, has %d", ship.hull)
 	}
 
-	ship.SufferDamage(2)
+	ship.SufferDamage(1, 1)
 	if ship.shields != 0 {
 		t.Errorf("Expected 0 shields left, has %d", ship.shields)
 	}
@@ -72,13 +72,13 @@ func TestSufferDamage(t *testing.T) {
 	}
 
 	ship = Ship{shields: 4, hull: 4}
-	ship.SufferDamage(8)
+	ship.SufferDamage(4, 4)
 	if ship.IsAlive() {
 		t.Errorf("Ship should be dead, has %d hull", ship.hull)
 	}
 
 	ship = Ship{shields: 4, hull: 4}
-	ship.SufferDamage(10)
+	ship.SufferDamage(5, 5)
 	if ship.IsAlive() {
 		t.Errorf("Ship should be dead, has %d hull", ship.hull)
 	}

@@ -13,7 +13,7 @@ type DealDamage struct {
 
 func (mod *DealDamage) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
 	currentAttack := state.CurrentAttack()
-	currentAttack.Defender().SufferDamage(state.HitsLanded() + state.CritsLanded())
+	currentAttack.Defender().SufferDamage(state.HitsLanded(), state.CritsLanded())
 }
 
 func (mod DealDamage) Actor() constants.ModificationActor          { return mod.actor }
