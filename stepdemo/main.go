@@ -58,20 +58,20 @@ func main() {
 func makeState(attackerStats, defenderStats *ShipStats) *gamestate.GameState {
 	attacker := ship.New("TIE Fighter", 2, 3, 3, 0)
 	defender := ship.New("X-Wing", 3, 2, 3, 2)
-	sufferDamageMods := step.All["Suffer Damage"].Mods()
-	sufferDamageMods = append(sufferDamageMods, &TabulateStats{
+	dealDamageMods := step.All["Deal Damage"].Mods()
+	dealDamageMods = append(dealDamageMods, &TabulateStats{
 		ship:  attacker,
 		stats: attackerStats,
 		actor: constants.ATTACKER,
 	})
-	sufferDamageMods = append(sufferDamageMods, &TabulateStats{
+	dealDamageMods = append(dealDamageMods, &TabulateStats{
 		ship:  defender,
 		stats: defenderStats,
 		actor: constants.ATTACKER,
 	})
 
 	mods := map[string][]interfaces.Modification{
-		"Suffer Damage": sufferDamageMods,
+		"Deal Damage": dealDamageMods,
 	}
 	state := gamestate.GameState{}
 	state.EnqueueAttack(attack.New(attacker, defender, mods))

@@ -6,17 +6,17 @@ import (
 	"github.com/geordanr/go_xwing/interfaces"
 )
 
-// SufferDamage applies damage to the defender.
-type SufferDamage struct {
+// DealDamage applies damage to the defender.
+type DealDamage struct {
 	actor constants.ModificationActor
 }
 
-func (mod *SufferDamage) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
+func (mod *DealDamage) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
 	currentAttack := state.CurrentAttack()
 	currentAttack.Defender().SufferDamage(state.HitsLanded() + state.CritsLanded())
 }
 
-func (mod SufferDamage) Actor() constants.ModificationActor          { return mod.actor }
-func (mod *SufferDamage) SetActor(actor constants.ModificationActor) { mod.actor = actor }
-func (mod SufferDamage) String() string                              { return "Suffer Damage" }
-func (mod SufferDamage) IsSecondaryWeapon() bool                     { return false }
+func (mod DealDamage) Actor() constants.ModificationActor          { return mod.actor }
+func (mod *DealDamage) SetActor(actor constants.ModificationActor) { mod.actor = actor }
+func (mod DealDamage) String() string                              { return "Deal Damage" }
+func (mod DealDamage) IsSecondaryWeapon() bool                     { return false }

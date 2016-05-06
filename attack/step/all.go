@@ -36,11 +36,11 @@ var All = map[string]interfaces.Step{
 	"Compare Results": &Step{
 		name: "Compare Results",
 		mods: []interfaces.Modification{modification.All["Compare Results"]()},
-		next: "Suffer Damage",
+		next: "Deal Damage",
 	},
-	"Suffer Damage": &Step{
-		name: "Suffer Damage",
-		mods: []interfaces.Modification{modification.All["Suffer Damage"]()},
+	"Deal Damage": &Step{
+		name: "Deal Damage",
+		mods: []interfaces.Modification{modification.All["Deal Damage"]()},
 		next: "After Attacking/Defending",
 	},
 	"After Attacking/Defending": &Step{
