@@ -8,13 +8,13 @@ import (
 	"testing"
 )
 
-func TestSufferDamage_NoHits(t *testing.T) {
+func TestDealDamage_NoHits(t *testing.T) {
 	assert := assert.New(t)
 
 	attacker := ship.New("Attacker", 2, 3, 3, 0)
 	defender := ship.New("Defender", 3, 2, 3, 2)
 	state := gamestate.GameState{}
-	mod := SufferDamage{}
+	mod := DealDamage{}
 
 	state.EnqueueAttack(attack.New(attacker, defender, nil))
 	mod.ModifyState(&state, nil)
@@ -23,13 +23,13 @@ func TestSufferDamage_NoHits(t *testing.T) {
 	assert.EqualValues(2, defender.Shields())
 }
 
-func TestSufferDamage_ShieldBeforeHull(t *testing.T) {
+func TestDealDamage_ShieldBeforeHull(t *testing.T) {
 	assert := assert.New(t)
 
 	attacker := ship.New("Attacker", 2, 3, 3, 0)
 	defender := ship.New("Defender", 3, 2, 3, 2)
 	state := gamestate.GameState{}
-	mod := SufferDamage{}
+	mod := DealDamage{}
 
 	state.SetHitsLanded(2)
 	state.SetCritsLanded(1)
