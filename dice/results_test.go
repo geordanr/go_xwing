@@ -2,14 +2,14 @@ package dice
 
 import "testing"
 
-func testRollAttackDice(t *testing.T) {
+func TestRollAttackDice(t *testing.T) {
 	results := RollAttackDice(100)
 	if results.Evades() > 0 {
 		t.Errorf("Attack die rolled evade")
 	}
 }
 
-func testRollDefenseDice(t *testing.T) {
+func TestRollDefenseDice(t *testing.T) {
 	results := RollDefenseDice(100)
 	if results.Hits() > 0 {
 		t.Errorf("Defense die rolled hits")
@@ -19,7 +19,7 @@ func testRollDefenseDice(t *testing.T) {
 	}
 }
 
-func testConvertAll(t *testing.T) {
+func TestConvertAll(t *testing.T) {
 	results := RollDefenseDice(100)
 	expectedEvades := results.Evades() + results.Blanks()
 	results.ConvertAll(BLANK, EVADE)
@@ -31,7 +31,7 @@ func testConvertAll(t *testing.T) {
 	}
 }
 
-func testConvertUpto(t *testing.T) {
+func TestConvertUpto(t *testing.T) {
 	results := RollAttackDice(5)
 	results[0].SetResult(BLANK)
 	results[1].SetResult(HIT)
@@ -44,5 +44,18 @@ func testConvertUpto(t *testing.T) {
 	}
 	if results.Crits() != 2 {
 		t.Errorf("Did not get expected crits")
+	}
+}
+
+func TestCancel(t *testing.T) {
+	results := RollAttackDice(5)
+	results[0].SetResult(BLANK)
+	results[1].SetResult(HIT)
+	results[2].SetResult(HIT)
+	results[3].SetResult(BLANK)
+	results[4].SetResult(FOCUS)
+	results.Cancel(HIT)
+	if results.Hits() != 1 {
+		t.Errorf("Cancel failed")
 	}
 }

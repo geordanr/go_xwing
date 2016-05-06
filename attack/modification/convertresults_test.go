@@ -44,11 +44,6 @@ func TestConvertResults_AttackerUpTo(t *testing.T) {
 	assert.EqualValues(0, attackResults.Focuses())
 	assert.EqualValues(1, attackResults.Hits())
 	assert.EqualValues(2, attackResults.Crits())
-
-	// defenseResults = *state.DefenseResults()
-	// assert.EqualValues(1, defenseResults.Blanks())
-	// assert.EqualValues(1, defenseResults.Focuses())
-	// assert.EqualValues(1, defenseResults.Evades())
 }
 
 func TestConvertResults_AttackerAll(t *testing.T) {
@@ -85,11 +80,6 @@ func TestConvertResults_AttackerAll(t *testing.T) {
 	assert.EqualValues(2, attackResults.Focuses())
 	assert.EqualValues(0, attackResults.Hits())
 	assert.EqualValues(1, attackResults.Crits())
-
-	// defenseResults = *state.DefenseResults()
-	// assert.EqualValues(1, defenseResults.Blanks())
-	// assert.EqualValues(1, defenseResults.Focuses())
-	// assert.EqualValues(1, defenseResults.Evades())
 }
 
 func TestConvertResults_DefenderUpTo(t *testing.T) {

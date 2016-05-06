@@ -31,12 +31,12 @@ func (mod *ConvertResults) ModifyState(state interfaces.GameState, ship interfac
 	} else {
 		results.ConvertUpto(mod.upto, mod.from, mod.to)
 	}
-	switch mod.actor {
-	case constants.ATTACKER:
-		state.SetAttackResults(results)
-	case constants.DEFENDER:
-		state.SetDefenseResults(results)
-	}
+	// switch mod.actor {
+	// case constants.ATTACKER:
+	// 	state.SetAttackResults(results)
+	// case constants.DEFENDER:
+	// 	state.SetDefenseResults(results)
+	// }
 }
 
 func (mod ConvertResults) Actor() constants.ModificationActor          { return mod.actor }

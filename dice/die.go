@@ -8,7 +8,8 @@ import (
 type Result uint8
 
 const (
-	BLANK Result = iota
+	CANCELED Result = iota
+	BLANK
 	FOCUS
 	HIT
 	CRIT

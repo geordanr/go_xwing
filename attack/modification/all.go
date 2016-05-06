@@ -27,6 +27,7 @@ var All = map[string]func() interfaces.Modification{
 	"C-3PO (guess 3)":      func() interfaces.Modification { return &C3PO{guess: 3} },                      // c3po.go
 	"Cannot Attack Again":  func() interfaces.Modification { return new(CannotAttackAgain) },               // cannotattackagain.go
 	"Compare Results":      func() interfaces.Modification { return new(CompareResults) },                  // compareresults.go
+	"Crack Shot":           func() interfaces.Modification { return new(CrackShot) },                       // crackshot.go
 	"Deal Damage":          func() interfaces.Modification { return new(DealDamage) },                      // dealdamage.go
 	"Declare Target":       func() interfaces.Modification { return new(DeclareTarget) },                   // declaretarget.go
 	"Spend Evade Token":    func() interfaces.Modification { return new(SpendEvade) },                      // evade.go

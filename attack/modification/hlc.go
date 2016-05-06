@@ -52,7 +52,7 @@ func (mod *HeavyLaserCannon) ModifyState(state interfaces.GameState, ship interf
 	mods["Modify Attack Dice"] = append(newMods, stepMods...)
 }
 
-func (mod HeavyLaserCannon) Actor() constants.ModificationActor          { return mod.actor }
-func (mod *HeavyLaserCannon) SetActor(actor constants.ModificationActor) { mod.actor = actor }
+func (mod HeavyLaserCannon) Actor() constants.ModificationActor          { return constants.ATTACKER }
+func (mod *HeavyLaserCannon) SetActor(actor constants.ModificationActor) {}
 func (mod HeavyLaserCannon) String() string                              { return "Heavy Laser Cannon" }
 func (mod HeavyLaserCannon) IsSecondaryWeapon() bool                     { return true }

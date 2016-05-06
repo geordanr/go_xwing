@@ -70,3 +70,7 @@ func (results *Results) ConvertUpto(numToConvert uint, from, to Result) *Results
 func (results *Results) ConvertAll(from, to Result) *Results {
 	return results.ConvertUpto(uint(len(*results)), from, to)
 }
+
+func (results *Results) Cancel(what Result) *Results {
+	return results.ConvertUpto(1, what, CANCELED)
+}
