@@ -23,9 +23,9 @@ var All = map[string]func() interfaces.Modification{
 	"Spend Focus Token":    func() interfaces.Modification { return new(SpendFocus) },                                  // focus.go
 	"Gunner":               func() interfaces.Modification { return new(Gunner) },                                      // gunner.go
 	"Roll Attack Dice":     func() interfaces.Modification { mod := RollDice{actor: constants.ATTACKER}; return &mod }, // roll.go
-	"Roll Defense Dice":    func() interfaces.Modification { mod := RollDice{actor: constants.DEFENDER}; return &mod },
-	"Perform Attack Twice": func() interfaces.Modification { return new(PerformAttackTwice) }, // performattacktwice.go
-	"Suffer Damage":        func() interfaces.Modification { return new(SufferDamage) },       // sufferdamage.go
-	"Spend Target Lock":    func() interfaces.Modification { return new(SpendTargetLock) },    // targetlock.go
-	"Twin Laser Turret":    func() interfaces.Modification { return new(TwinLaserTurret) },    // tlt.go
+	"Roll Defense Dice":    func() interfaces.Modification { mod := RollDice{actor: constants.DEFENDER}; return &mod }, // roll.go
+	"Perform Attack Twice": func() interfaces.Modification { return new(PerformAttackTwice) },                          // performattacktwice.go
+	"Suffer Damage":        func() interfaces.Modification { return new(SufferDamage) },                                // sufferdamage.go
+	"Spend Target Lock":    func() interfaces.Modification { return new(SpendTargetLock) },                             // targetlock.go
+	"Twin Laser Turret":    func() interfaces.Modification { return new(TwinLaserTurret) },                             // tlt.go
 }
