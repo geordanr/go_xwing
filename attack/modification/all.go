@@ -39,6 +39,7 @@ var All = map[string]func() interfaces.Modification{
 	"Roll Attack Dice":            func() interfaces.Modification { return &RollDice{actor: constants.ATTACKER} }, // roll.go
 	"Roll Defense Dice":           func() interfaces.Modification { return &RollDice{actor: constants.DEFENDER} }, // roll.go
 	"Perform Attack Twice":        func() interfaces.Modification { return new(PerformAttackTwice) },              // performattacktwice.go
+	"Predator":                    func() interfaces.Modification { return new(Predator) },                        // predator.go
 	"Spend Target Lock":           func() interfaces.Modification { return new(SpendTargetLock) },                 // targetlock.go
 	"Twin Laser Turret":           func() interfaces.Modification { return new(TwinLaserTurret) },                 // tlt.go
 }
