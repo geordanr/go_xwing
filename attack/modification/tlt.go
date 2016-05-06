@@ -6,7 +6,7 @@ import (
 	"github.com/geordanr/go_xwing/interfaces"
 )
 
-// TwinLaserTurret should be used in the Declare Attack Dice step.
+// TwinLaserTurret should be used in the Declare Attack step.
 // It sets the number of dice to roll for the attacker and sets the
 // perform attack twice flag to be used by the default Perform Attack
 // Twice modification.
@@ -22,8 +22,18 @@ func (mod *TwinLaserTurret) ModifyState(state interfaces.GameState, ship interfa
 	rollTLTDice := RollDice{}
 	rollTLTDice.SetNumDice(3)
 	rollTLTDice.SetActor(constants.ATTACKER)
+
 	// Instead of the default dice roller, use our roller
-	mods["Roll Attack Dice"] = []interfaces.Modification{&rollTLTDice}
+	rollAtkDiceMods := mods["Roll Attack Dice"]
+	for i, mod := range rollAtkDiceMods {
+		if mod.String() == "Roll Attack Dice" {
+			rollAtkDiceMods[i] = &rollTLTDice
+		}
+	}
+	if len(rollAtkDiceMods) == 0 {
+		// just in case
+		mods["Roll Attack Dice"] = []interfaces.Modification{&rollTLTDice}
+	}
 
 	// Signal the default Perform Attack Twice handler to activate
 	state.SetPerformAttackTwice(true)

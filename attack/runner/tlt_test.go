@@ -46,6 +46,8 @@ func TestTwinLaserTurret(t *testing.T) {
 	runner.InjectState(&state)
 	<-output
 
+	atkResults := state.AttackResults()
+	assert.EqualValues(3, atkResults.Blanks()+atkResults.Focuses()+atkResults.Hits()+atkResults.Crits())
 	assert.EqualValues(2, compareResultsCounter.Value())
 	assert.EqualValues(1, finalCounter.Value())
 }

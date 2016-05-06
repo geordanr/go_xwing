@@ -42,6 +42,7 @@ type Modification interface {
 	Actor() constants.ModificationActor
 	SetActor(constants.ModificationActor)
 	ModifyState(GameState, Ship)
+	String() string
 }
 
 type Ship interface {
