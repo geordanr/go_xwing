@@ -70,3 +70,4 @@ func (mod DealTLTDamage) Actor() constants.ModificationActor          { return c
 func (mod *DealTLTDamage) SetActor(actor constants.ModificationActor) {}
 func (mod DealTLTDamage) String() string                              { return "Deal TLT Damage" }
 func (mod DealTLTDamage) IsSecondaryWeapon() bool                     { return false }
+func (mod DealTLTDamage) IsDamageDealer() bool                        { return true }

@@ -41,6 +41,25 @@ func (mod *Gunner) ModifyState(state interfaces.GameState, ship interfaces.Ship)
 		}
 		newAtk.Modifications()["Roll Attack Dice"] = newMods
 
+		// Use the default damage dealer
+		mods = newAtk.Modifications()["Deal Damage"]
+		newMods = []interfaces.Modification{}
+		for _, mod := range mods {
+			switch mod.(type) {
+			case DamageDealer:
+				_, ok := mod.(*DealDamage)
+				if !ok {
+					// It's not the default damage dealer
+					mod = new(DealDamage)
+				}
+				// since we can't fallthrough in a type switch
+				newMods = append(newMods, mod)
+			default:
+				newMods = append(newMods, mod)
+			}
+		}
+		newAtk.Modifications()["Perform Additional Attack"] = newMods
+
 		// Remove Gunner mod
 		mods = newAtk.Modifications()["Perform Additional Attack"]
 		newMods = []interfaces.Modification{}
