@@ -7,7 +7,3 @@ type DamageDealer interface {
 type SecondaryWeapon interface {
 	IsSecondaryWeapon() bool
 }
-
-type Transient interface {
-	IsTransient() bool
-}

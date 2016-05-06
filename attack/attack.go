@@ -40,7 +40,7 @@ func (atk *Attack) SetModifications(mods map[string][]interfaces.Modification) {
 	atk.modifications = mods
 }
 
-// Copy returns a copy of this Attack.
+// Copy returns a copy of this Attack, skipping transient mods.
 func (atk *Attack) Copy() interfaces.Attack {
 	cp := Attack{
 		attacker:      atk.attacker,
@@ -50,7 +50,13 @@ func (atk *Attack) Copy() interfaces.Attack {
 	// Since there's no map copy...
 	for stepName, mods := range atk.modifications {
 		newMods := make([]interfaces.Modification, len(mods))
-		copy(newMods, mods)
+		// Don't copy transients
+		for _, mod := range mods {
+			t, ok := mod.(interfaces.Transient)
+			if !ok || !t.IsTransient() {
+				newMods = append(newMods, mod)
+			}
+		}
 		cp.modifications[stepName] = newMods
 	}
 	return &cp

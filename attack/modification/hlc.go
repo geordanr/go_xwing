@@ -44,10 +44,11 @@ func (mod *HeavyLaserCannon) ModifyState(state interfaces.GameState, ship interf
 	}
 	newMods := []interfaces.Modification{
 		&ConvertResults{
-			actor: constants.ATTACKER,
-			from:  dice.CRIT,
-			to:    dice.HIT,
-			all:   true,
+			actor:     constants.ATTACKER,
+			from:      dice.CRIT,
+			to:        dice.HIT,
+			all:       true,
+			transient: true,
 		},
 	}
 	mods["Modify Attack Dice"] = append(newMods, stepMods...)

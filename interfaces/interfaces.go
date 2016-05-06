@@ -85,3 +85,7 @@ type StepRequest interface {
 	Step() Step
 	SetStep(Step)
 }
+
+type Transient interface {
+	IsTransient() bool
+}
