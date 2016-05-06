@@ -12,6 +12,7 @@ var All = map[string]interfaces.Step{
 	},
 	"Declare Target": &Step{
 		name: "Declare Target",
+		mods: []interfaces.Modification{modification.All["Declare Target"]()},
 		next: "Roll Attack Dice",
 	},
 	"Roll Attack Dice": &Step{

@@ -74,6 +74,10 @@ func (ship Ship) CanAttack() bool {
 	return !ship.cannotAttack
 }
 
+func (ship *Ship) SetCanAttack(b bool) {
+	ship.cannotAttack = !b
+}
+
 func (ship *Ship) SufferDamage(nDamage uint) {
 	var i uint
 	for i = 0; i < nDamage; i++ {

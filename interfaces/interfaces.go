@@ -64,6 +64,7 @@ type Ship interface {
 	SpendEvade() bool
 	IsAlive() bool
 	CanAttack() bool
+	SetCanAttack(bool)
 	SufferDamage(uint)
 }
 

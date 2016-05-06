@@ -10,6 +10,7 @@ import (
 // All contains a mapping from human-readable strings to Modification factory functions.
 var All = map[string]func() interfaces.Modification{
 	"Compare Results":      func() interfaces.Modification { return new(CompareResults) },                              // compareresults.go
+	"Declare Target":       func() interfaces.Modification { return new(DeclareTarget) },                               // declaretarget.go
 	"Spend Evade Token":    func() interfaces.Modification { return new(SpendEvade) },                                  // evade.go
 	"Spend Focus Token":    func() interfaces.Modification { return new(SpendFocus) },                                  // focus.go
 	"Roll Attack Dice":     func() interfaces.Modification { mod := RollDice{actor: constants.ATTACKER}; return &mod }, // roll.go
