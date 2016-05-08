@@ -1,6 +1,9 @@
 package ship
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestSpendFocus(t *testing.T) {
 	ship := Ship{}
@@ -83,4 +86,80 @@ func TestSufferDamage(t *testing.T) {
 		t.Errorf("Ship should be dead, has %d hull", ship.hull)
 	}
 
+}
+
+func TestCopy(t *testing.T) {
+	assert := assert.New(t)
+
+	wedge := Ship{
+		name:         "Wedge Antilles",
+		skill:        9,
+		attack:       3,
+		agility:      2,
+		hull:         3,
+		shields:      2,
+		focusTokens:  1,
+		evadeTokens:  0,
+		targetLock:   "Colonel Vessery",
+		cannotAttack: false,
+	}
+
+	copyInterface := wedge.Copy()
+	cp, ok := copyInterface.(*Ship)
+	assert.True(ok)
+
+	assert.Equal(wedge.name, cp.name)
+	assert.Equal(wedge.skill, cp.skill)
+	assert.Equal(wedge.attack, cp.attack)
+	assert.Equal(wedge.agility, cp.agility)
+	assert.Equal(wedge.hull, cp.hull)
+	assert.Equal(wedge.shields, cp.shields)
+	assert.Equal(wedge.focusTokens, cp.focusTokens)
+	assert.Equal(wedge.evadeTokens, cp.evadeTokens)
+	assert.Equal(wedge.targetLock, cp.targetLock)
+	assert.Equal(wedge.cannotAttack, cp.cannotAttack)
+
+	cp.name = "Miranda Doni"
+	cp.skill = 8
+	cp.attack = 2
+	cp.agility = 1
+	cp.hull = 5
+	cp.shields = 4
+	cp.focusTokens = 0
+	cp.evadeTokens = 1
+	cp.targetLock = "Howlrunner"
+	cp.cannotAttack = true
+
+	assert.NotEqual(wedge.name, cp.name)
+	assert.NotEqual(wedge.skill, cp.skill)
+	assert.NotEqual(wedge.attack, cp.attack)
+	assert.NotEqual(wedge.agility, cp.agility)
+	assert.NotEqual(wedge.hull, cp.hull)
+	assert.NotEqual(wedge.shields, cp.shields)
+	assert.NotEqual(wedge.focusTokens, cp.focusTokens)
+	assert.NotEqual(wedge.evadeTokens, cp.evadeTokens)
+	assert.NotEqual(wedge.targetLock, cp.targetLock)
+	assert.NotEqual(wedge.cannotAttack, cp.cannotAttack)
+
+	wedge.name = "Colonel Vessery"
+	wedge.skill = 6
+	wedge.attack = 3
+	wedge.agility = 3
+	wedge.hull = 3
+	wedge.shields = 3
+	wedge.focusTokens = 2
+	wedge.evadeTokens = 2
+	wedge.targetLock = ""
+	wedge.cannotAttack = false
+
+	assert.NotEqual(wedge.name, cp.name)
+	assert.NotEqual(wedge.skill, cp.skill)
+	assert.NotEqual(wedge.attack, cp.attack)
+	assert.NotEqual(wedge.agility, cp.agility)
+	assert.NotEqual(wedge.hull, cp.hull)
+	assert.NotEqual(wedge.shields, cp.shields)
+	assert.NotEqual(wedge.focusTokens, cp.focusTokens)
+	assert.NotEqual(wedge.evadeTokens, cp.evadeTokens)
+	assert.NotEqual(wedge.targetLock, cp.targetLock)
+	assert.NotEqual(wedge.cannotAttack, cp.cannotAttack)
 }

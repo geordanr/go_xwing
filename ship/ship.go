@@ -1,6 +1,9 @@
 package ship
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/geordanr/go_xwing/interfaces"
+)
 
 type Ship struct {
 	name        string
@@ -85,6 +88,7 @@ func (ship *Ship) SufferDamage(hits uint, crits uint) {
 	ship.applyDamage(hits)
 	// TODO handle crits differently?
 	ship.applyDamage(crits)
+	// fmt.Printf("%s (%p) damaged\n", ship.name, ship)
 }
 
 func (ship *Ship) applyDamage(nDamage uint) {
@@ -98,4 +102,10 @@ func (ship *Ship) applyDamage(nDamage uint) {
 			break
 		}
 	}
+}
+
+func (ship Ship) Copy() interfaces.Ship {
+	newShip := &Ship{}
+	*newShip = ship
+	return newShip
 }

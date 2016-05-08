@@ -146,3 +146,27 @@ func (state *GameState) ResetTransientState() {
 	state.hitsLanded = 0
 	state.critsLanded = 0
 }
+
+func (state GameState) Copy() interfaces.GameState {
+	var newState *GameState
+	newState = &GameState{}
+	*newState = state
+
+	// copy over non-values
+	newState.combatants = make(map[string]interfaces.Ship)
+	newState.attackQueue = make([]interfaces.Attack, len(state.attackQueue))
+	// Attack.Copy() makes copies of its combatants, so we need to populate our combatants list with the new copies.
+	for i, atk := range state.attackQueue {
+		newState.attackQueue[i] = atk.Copy()
+		attacker := newState.attackQueue[i].Attacker()
+		defender := newState.attackQueue[i].Defender()
+		if _, exists := newState.combatants[attacker.Name()]; !exists {
+			newState.combatants[attacker.Name()] = attacker
+		}
+		if _, exists := newState.combatants[defender.Name()]; !exists {
+			newState.combatants[defender.Name()] = defender
+		}
+	}
+
+	return newState
+}

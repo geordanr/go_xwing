@@ -65,88 +65,78 @@ func FromJSONPath(path string, shipFactory map[string]func(string, uint) *ship.S
 
 // FromJSON reads the JSON bytestream, creates a Runner to run the simulation, and returns an output channel to read game states from.
 func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<-chan interfaces.GameState, error) {
-	makeState := func() (interfaces.GameState, error) {
-		state := gamestate.GameState{}
-		data := SimulationJSONSchema{}
-		err := fromJSON(b, &data)
-		if err != nil {
-			return nil, err
-		}
-
-		combatants := map[string]interfaces.Ship{}
-		for _, combatant := range data.Combatants {
-			shipFunc, exists := shipFactory[combatant.ShipType]
-			if !exists {
-				return nil, errors.New(fmt.Sprintf("No data for ship type '%s'", combatant.ShipType))
-			}
-			cbt := shipFunc(combatant.Name, combatant.Skill)
-			cbt.SetFocusTokens(combatant.Tokens.FocusTokens)
-			cbt.SetEvadeTokens(combatant.Tokens.EvadeTokens)
-			cbt.SetTargetLock(combatant.Tokens.TargetLock)
-			combatants[combatant.Name] = cbt
-		}
-		state.SetCombatants(combatants)
-
-		// eventually we need to reverse the list
-		tmp := []*attack.Attack{}
-		for _, atkParams := range data.AttackQueue {
-			attacker, exists := combatants[atkParams.Attacker]
-			if !exists {
-				return nil, errors.New(fmt.Sprintf("Attacker '%s' not found", atkParams.Attacker))
-			}
-
-			defender, exists := combatants[atkParams.Defender]
-			if !exists {
-				return nil, errors.New(fmt.Sprintf("Defender '%s' not found", atkParams.Defender))
-			}
-
-			mods := map[string][]interfaces.Modification{}
-			for stepName, stepMods := range atkParams.Modifications {
-				mods[stepName] = []interfaces.Modification{}
-				for _, modParams := range stepMods {
-					var a constants.ModificationActor
-					actor := modParams[0]
-					modName := modParams[1]
-
-					modFactory, exists := modification.All[modName]
-					if !exists {
-						return nil, errors.New(fmt.Sprintf("No modification '%s'", modName))
-					}
-					mod := modFactory()
-					switch actor {
-					case "attacker":
-						a = constants.ATTACKER
-					case "defender":
-						a = constants.DEFENDER
-					case "initiative":
-						a = constants.INITIATIVE
-					default:
-						a = constants.IGNORE
-					}
-					mod.SetActor(a)
-
-					mods[stepName] = append(mods[stepName], mod)
-				}
-			}
-
-			tmp = append(tmp, attack.New(attacker, defender, mods))
-		}
-		// Finally reverse the attack list to put it in the correct queue order
-		for i := len(tmp) - 1; i > -1; i-- {
-			state.EnqueueAttack(tmp[i])
-		}
-
-		return &state, nil
-	}
-
-	// need to unpack number of iterations
 	data := SimulationJSONSchema{}
 	err := fromJSON(b, &data)
 	if err != nil {
-		// fmt.Println("Returning error:", err)
 		return nil, err
 	}
 	nStates := int(math.Min(float64(MAX_ITERATIONS), float64(data.Iterations)))
+
+	state := gamestate.GameState{}
+
+	combatants := map[string]interfaces.Ship{}
+	for _, combatant := range data.Combatants {
+		shipFunc, exists := shipFactory[combatant.ShipType]
+		if !exists {
+			return nil, errors.New(fmt.Sprintf("No data for ship type '%s'", combatant.ShipType))
+		}
+		cbt := shipFunc(combatant.Name, combatant.Skill)
+		cbt.SetFocusTokens(combatant.Tokens.FocusTokens)
+		cbt.SetEvadeTokens(combatant.Tokens.EvadeTokens)
+		cbt.SetTargetLock(combatant.Tokens.TargetLock)
+		combatants[combatant.Name] = cbt
+	}
+	state.SetCombatants(combatants)
+
+	// eventually we need to reverse the list
+	tmp := []*attack.Attack{}
+	for _, atkParams := range data.AttackQueue {
+		attacker, exists := combatants[atkParams.Attacker]
+		if !exists {
+			return nil, errors.New(fmt.Sprintf("Attacker '%s' not found", atkParams.Attacker))
+		}
+
+		defender, exists := combatants[atkParams.Defender]
+		if !exists {
+			return nil, errors.New(fmt.Sprintf("Defender '%s' not found", atkParams.Defender))
+		}
+
+		mods := map[string][]interfaces.Modification{}
+		for stepName, stepMods := range atkParams.Modifications {
+			mods[stepName] = []interfaces.Modification{}
+			for _, modParams := range stepMods {
+				var a constants.ModificationActor
+				actor := modParams[0]
+				modName := modParams[1]
+
+				modFactory, exists := modification.All[modName]
+				if !exists {
+					return nil, errors.New(fmt.Sprintf("No modification '%s'", modName))
+				}
+				mod := modFactory()
+				switch actor {
+				case "attacker":
+					a = constants.ATTACKER
+				case "defender":
+					a = constants.DEFENDER
+				case "initiative":
+					a = constants.INITIATIVE
+				default:
+					a = constants.IGNORE
+				}
+				mod.SetActor(a)
+
+				mods[stepName] = append(mods[stepName], mod)
+			}
+		}
+
+		tmp = append(tmp, attack.New(attacker, defender, mods))
+	}
+	// Finally reverse the attack list to put it in the correct queue order
+	for i := len(tmp) - 1; i > -1; i-- {
+		state.EnqueueAttack(tmp[i])
+	}
+
 	// fmt.Println("Running", nStates, "iterations")
 	runner := runner.New(step.All, nStates)
 	runnerOut := make(chan interfaces.GameState, nStates)
@@ -154,7 +144,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<
 	go runner.Run(runnerOut)
 
 	for i := 0; i < nStates; i++ {
-		state, err := makeState()
+		state := state.Copy()
 		if err != nil {
 			// fmt.Println("makestate error", err)
 			return nil, err

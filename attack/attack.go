@@ -43,8 +43,8 @@ func (atk *Attack) SetModifications(mods map[string][]interfaces.Modification) {
 // Copy returns a copy of this Attack, skipping transient mods.
 func (atk *Attack) Copy() interfaces.Attack {
 	cp := Attack{
-		attacker:      atk.attacker,
-		defender:      atk.defender,
+		attacker:      atk.attacker.Copy(),
+		defender:      atk.defender.Copy(),
 		modifications: map[string][]interfaces.Modification{},
 	}
 	// Since there's no map copy...

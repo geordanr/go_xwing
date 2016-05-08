@@ -1,5 +1,9 @@
 package main
 
+// import _ "net/http/pprof"
+// import "net/http"
+// import "log"
+
 import (
 	"flag"
 	"fmt"
@@ -74,6 +78,8 @@ func main() {
 		fmt.Println("---")
 		fmt.Println(s)
 	}
+
+	// log.Println(http.ListenAndServe("localhost:8080", nil))
 }
 
 func parseArgs() (*string, *string) {

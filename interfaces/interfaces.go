@@ -39,6 +39,7 @@ type GameState interface {
 	SetHitsLanded(uint)
 	CritsLanded() uint
 	SetCritsLanded(uint)
+	Copy() GameState
 }
 
 type Modification interface {
@@ -69,6 +70,8 @@ type Ship interface {
 	CanAttack() bool
 	SetCanAttack(bool)
 	SufferDamage(uint, uint)
+
+	Copy() Ship
 }
 
 type Step interface {
