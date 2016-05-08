@@ -153,19 +153,19 @@ func (state GameState) Copy() interfaces.GameState {
 	*newState = state
 
 	// copy over non-values
+	// first, copy the combatants
 	newState.combatants = make(map[string]interfaces.Ship)
+	for name, combatant := range state.combatants {
+		newState.combatants[name] = combatant.Copy()
+	}
+	// then remap them onto the attacks
 	newState.attackQueue = make([]interfaces.Attack, len(state.attackQueue))
-	// Attack.Copy() makes copies of its combatants, so we need to populate our combatants list with the new copies.
 	for i, atk := range state.attackQueue {
 		newState.attackQueue[i] = atk.Copy()
-		attacker := newState.attackQueue[i].Attacker()
-		defender := newState.attackQueue[i].Defender()
-		if _, exists := newState.combatants[attacker.Name()]; !exists {
-			newState.combatants[attacker.Name()] = attacker
-		}
-		if _, exists := newState.combatants[defender.Name()]; !exists {
-			newState.combatants[defender.Name()] = defender
-		}
+		attacker := atk.Attacker()
+		defender := atk.Defender()
+		newState.attackQueue[i].SetAttacker(newState.combatants[attacker.Name()])
+		newState.attackQueue[i].SetDefender(newState.combatants[defender.Name()])
 	}
 
 	return newState

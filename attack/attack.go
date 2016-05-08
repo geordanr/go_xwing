@@ -23,14 +23,12 @@ func New(attacker, defender interfaces.Ship, modifications map[string][]interfac
 }
 
 // Attacker returns the attacking ship in this attack.
-func (atk *Attack) Attacker() interfaces.Ship {
-	return atk.attacker
-}
+func (atk *Attack) Attacker() interfaces.Ship     { return atk.attacker }
+func (atk *Attack) SetAttacker(a interfaces.Ship) { atk.attacker = a }
 
 // Defender returns the defending ship in this attack.
-func (atk *Attack) Defender() interfaces.Ship {
-	return atk.defender
-}
+func (atk *Attack) Defender() interfaces.Ship     { return atk.defender }
+func (atk *Attack) SetDefender(d interfaces.Ship) { atk.defender = d }
 
 // Modifications returns the map of step names to modifications.
 func (atk *Attack) Modifications() map[string][]interfaces.Modification {

@@ -7,7 +7,9 @@ import (
 
 type Attack interface {
 	Attacker() Ship
+	SetAttacker(Ship)
 	Defender() Ship
+	SetDefender(Ship)
 	Modifications() map[string]([]Modification)
 	SetModifications(map[string]([]Modification))
 	Copy() Attack

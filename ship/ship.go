@@ -88,7 +88,7 @@ func (ship *Ship) SufferDamage(hits uint, crits uint) {
 	ship.applyDamage(hits)
 	// TODO handle crits differently?
 	ship.applyDamage(crits)
-	// fmt.Printf("%s (%p) damaged\n", ship.name, ship)
+	// fmt.Printf("%s (%p) damaged, now %s\n", ship.name, ship, ship)
 }
 
 func (ship *Ship) applyDamage(nDamage uint) {

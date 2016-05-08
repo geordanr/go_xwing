@@ -68,6 +68,7 @@ func main() {
 				cbtStats[name] = new(shipStats)
 				s = cbtStats[name]
 			}
+			// fmt.Printf("Update ship stats for %s (%p) %s\n", cbt.Name(), cbt, cbt)
 			s.update(cbt.(*ship.Ship))
 		}
 	}
