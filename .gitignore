@@ -3,3 +3,4 @@ _vimrc_local.vim
 *.iml
 input_files
 tags
+*.pprof
