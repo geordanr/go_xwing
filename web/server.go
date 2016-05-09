@@ -127,19 +127,12 @@ func (*Context) Simulate(rw web.ResponseWriter, req *web.Request) {
 	results := make(simResults)
 	for name, s := range cbtStats {
 		results[name] = make(shipStatsJSONSchema)
-		// TODO reflect this noise
-		val := s.Hull()
-		results[name]["hull"] = shipStatJSONSchema{
-			Average:   val.Stats.Average(),
-			Stddev:    val.Stats.Stddev(),
-			Histogram: val.Histogram.NormalizedStrMap(),
-		}
-
-		val = s.Shields()
-		results[name]["shields"] = shipStatJSONSchema{
-			Average:   val.Stats.Average(),
-			Stddev:    val.Stats.Stddev(),
-			Histogram: val.Histogram.NormalizedStrMap(),
+		for statName, combinedStats := range s.StatMap() {
+			results[name][statName] = shipStatJSONSchema{
+				Average:   combinedStats.Stats.Average(),
+				Stddev:    combinedStats.Stats.Stddev(),
+				Histogram: combinedStats.Histogram.NormalizedStrMap(),
+			}
 		}
 	}
 
