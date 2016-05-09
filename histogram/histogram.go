@@ -8,6 +8,8 @@ import (
 
 type Integers map[int]int
 
+func New() *Integers { return &Integers{} }
+
 func (h Integers) Normalized() map[int]float64 {
 	r := make(map[int]float64)
 	total := 0
@@ -16,6 +18,18 @@ func (h Integers) Normalized() map[int]float64 {
 	}
 	for k, v := range h {
 		r[k] = float64(v) / float64(total)
+	}
+	return r
+}
+
+func (h Integers) NormalizedStrMap() map[string]float64 {
+	r := make(map[string]float64)
+	total := 0
+	for _, v := range h {
+		total += v
+	}
+	for k, v := range h {
+		r[fmt.Sprintf("%d", k)] = float64(v) / float64(total)
 	}
 	return r
 }
@@ -47,4 +61,10 @@ func (this *Integers) Add(that Integers) *Integers {
 		(*this)[k] += v
 	}
 	return this
+}
+
+func (h *Integers) Update(val int) {
+	v := (*h)[val]
+	v++
+	(*h)[val] = v
 }

@@ -3,6 +3,7 @@ package main
 // import _ "net/http/pprof"
 // import "net/http"
 // import "log"
+// import "github.com/pkg/profile"
 
 import (
 	"flag"
@@ -12,33 +13,21 @@ import (
 	// "runtime"
 	"github.com/geordanr/go_xwing/serialization"
 	"github.com/geordanr/go_xwing/ship"
-	"github.com/geordanr/go_xwing/stats"
+	"github.com/geordanr/go_xwing/shipstats"
 	"os"
 	"time"
 )
-
-type shipStats struct {
-	hull    stats.Integers
-	shields stats.Integers
-}
-
-func (s *shipStats) update(ship *ship.Ship) {
-	s.hull.Update(int(ship.Hull()))
-	s.shields.Update(int(ship.Shields()))
-}
-
-func (s shipStats) String() string {
-	return fmt.Sprintf("Hull\t: average=%2.3f stddev=%2.3f\nShields\t: average=%2.3f stddev=%2.3f\n", s.hull.Average(), s.hull.Stddev(), s.shields.Average(), s.shields.Stddev())
-}
 
 // Demo of reading JSON, simulating it, and outputting JSON results
 func main() {
 	// _, thisfile, _, _ := runtime.Caller(0)
 	// thisdir := filepath.Dir(thisfile)
-	// shipStats, shipResults, err := combat.SimulateFromsimjson(filepath.Join(thisdir, "..", "combat", "sample.json"))
+	// ship.Stats, shipResults, err := combat.SimulateFromsimjson(filepath.Join(thisdir, "..", "combat", "sample.json"))
 	// if err != nil {
 	// 	panic(err)
 	// }
+
+	// defer profile.Start(profile.ProfilePath("."), profile.CPUProfile).Stop()
 
 	rand.Seed(time.Now().UnixNano())
 
@@ -55,7 +44,7 @@ func main() {
 	}
 
 	// map from ship ID to stats struct
-	cbtStats := map[string]*shipStats{}
+	cbtStats := map[string]*shipstats.Stats{}
 
 	for {
 		state, more := <-output
@@ -65,11 +54,11 @@ func main() {
 		for name, cbt := range state.Combatants() {
 			s, exists := cbtStats[name]
 			if !exists {
-				cbtStats[name] = new(shipStats)
+				cbtStats[name] = shipstats.New()
 				s = cbtStats[name]
 			}
 			// fmt.Printf("Update ship stats for %s (%p) %s\n", cbt.Name(), cbt, cbt)
-			s.update(cbt.(*ship.Ship))
+			s.Update(cbt.(*ship.Ship))
 		}
 	}
 
