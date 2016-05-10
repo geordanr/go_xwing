@@ -1,7 +1,10 @@
 // Package stats provides a container to collect statistics.
 package stats
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 type Integers struct {
 	n          int
@@ -25,4 +28,8 @@ func (s *Integers) Average() float64 {
 
 func (s *Integers) Stddev() float64 {
 	return math.Sqrt((float64(s.sumSquares) / float64(s.n)) - math.Pow(s.Average(), 2))
+}
+
+func (s Integers) String() string {
+	return fmt.Sprintf("average=%2.3f stddev=%2.3f", s.Average(), s.Stddev())
 }

@@ -20,6 +20,10 @@ type CombinedStat struct {
 	Histogram *histogram.Integers
 }
 
+func (cs CombinedStat) String() string {
+	return fmt.Sprintf("%s\n%s", cs.Stats, cs.Histogram)
+}
+
 func New() *Stats {
 	s := Stats{}
 
@@ -64,7 +68,7 @@ func (s *Stats) Update(ship *ship.Ship) {
 }
 
 func (s Stats) String() string {
-	return fmt.Sprintf("Hull\t: average=%2.3f stddev=%2.3f\nShields\t: average=%2.3f stddev=%2.3f\n", s.hull.Stats.Average(), s.hull.Stats.Stddev(), s.shields.Stats.Average(), s.shields.Stats.Stddev())
+	return fmt.Sprintf("Hull\t: %s\nShields\t: %s\n", s.hull, s.shields)
 }
 
 func newCombinedStat() *CombinedStat {
