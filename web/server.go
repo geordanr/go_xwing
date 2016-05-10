@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/geordanr/go_xwing/attack/modification"
+	"github.com/geordanr/go_xwing/attack/step"
 	"github.com/geordanr/go_xwing/serialization"
 	"github.com/geordanr/go_xwing/ship"
 	"github.com/geordanr/go_xwing/shipstats"
@@ -56,8 +57,9 @@ func main() {
 		Middleware(web.LoggerMiddleware).
 		Middleware(corsMiddleware).
 		Get("/", (*Context).Root).
-		Get("/api/v1/ships", (*Context).Ships).
 		Get("/api/v1/modifications", (*Context).Modifications).
+		Get("/api/v1/ships", (*Context).Ships).
+		Get("/api/v1/steps", (*Context).Steps).
 		Post("/api/v1/sim", (*Context).Simulate).
 		Error((*Context).Error)
 
@@ -190,6 +192,27 @@ func (*Context) Modifications(rw web.ResponseWriter, req *web.Request) {
 	sort.Strings(modList)
 
 	d := genericList{Data: modList}
+
+	bytes, marshalError := json.Marshal(d)
+	if marshalError != nil {
+		fmt.Fprintf(rw, `{"error":true,"message":"Error marshaling error message: %s"}`, marshalError)
+	} else {
+		fmt.Fprintf(rw, "%s", bytes)
+	}
+}
+
+// Steps returns a JSON list of attack steps in order.
+func (*Context) Steps(rw web.ResponseWriter, req *web.Request) {
+	rw.Header().Set("Content-Type", "application/json")
+
+	stepList := make([]string, 0, len(step.All)-1) // not including the start step
+	s := step.All["__START__"]
+	for s.Next() != "" {
+		s = step.All[s.Next()]
+		stepList = append(stepList, s.Name())
+	}
+
+	d := genericList{Data: stepList}
 
 	bytes, marshalError := json.Marshal(d)
 	if marshalError != nil {
