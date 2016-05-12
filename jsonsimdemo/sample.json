@@ -1,0 +1,65 @@
+{
+    "iterations": 10000,
+    "combatants": [
+        {
+            "name": "Miranda Doni",
+            "ship": "K-Wing",
+            "skill": 8,
+            "initiative": true,
+            "tokens": {
+                "targetlock": "Howlrunner"
+            }
+        },
+        {
+            "name": "Howlrunner",
+            "ship": "TIE Fighter",
+            "skill": 8,
+            "initiative": false,
+            "tokens": {
+                "focus": 1,
+                "evade": 1
+            }
+        }
+    ],
+    "attack_queue": [
+        {
+            "attacker": "Miranda Doni",
+            "defender": "Howlrunner",
+            "mods": {
+                "Declare Target": [
+                    ["attacker", "Twin Laser Turret"]
+                ],
+                "Modify Attack Dice": [
+                    ["attacker", "Spend Target Lock"],
+                    ["attacker", "Spend Focus Token"]
+                ],
+                "Modify Defense Dice": [
+                    ["defender", "Spend Focus Token"],
+                    ["defender", "Spend Evade Token"]
+                ],
+                "Perform Additional Attack": [
+                    ["attacker", "Gunner"]
+                ]
+            }
+        },
+        {
+            "attacker": "Howlrunner",
+            "defender": "Miranda Doni",
+            "mods": {
+                "Modify Attack Dice": [
+                    ["attacker", "Spend Focus Token"]
+                ],
+                "Roll Defense Dice": [
+                    ["defender", "Roll Defense Dice"]
+                ],
+                "Modify Defense Dice": [
+                    ["defender", "Spend Focus Token"]
+                ],
+                "Compare Results": [
+                    ["attacker", "Crack Shot"],
+                    ["attacker", "Compare Results" ]
+                ]
+            }
+        }
+    ]
+}
