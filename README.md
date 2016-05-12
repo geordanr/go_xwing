@@ -21,8 +21,12 @@ This is a monte carlo simulator for simulating a single round of combat in X-Win
 
 Human-readable console output:
 
-    go run $GOPATH/src/github.com/geordanr/go_xwing/atkdemo/main.go -jsonpath atkdemo/sample.json
+    go run $GOPATH/src/github.com/geordanr/go_xwing/jsonsimdemo/main.go -shipjson ships.json -simjson jsonsimdemo/sample.json
 
-Parseable JSON output:
+Web server accepting JSON and outputting JSON:
 
-    go run $GOPATH/src/github.com/geordanr/go_xwing/jsonsimdemo/main.go -jsonpath atkdemo/sample.json
+    go run $GOPATH/src/github.com/geordanr/go_xwing/web/server.go -shipjson ships.json
+
+Then send a request:
+
+    curl -H 'Content-Type: application-json' -d @jsonsimdemo/sample.json http://localhost:8080/api/v1/sim
