@@ -18,6 +18,8 @@ const (
 
 func (face Result) String() string {
 	switch face {
+	case CANCELED:
+		return "Canceled"
 	case BLANK:
 		return "Blank"
 	case FOCUS:
@@ -63,6 +65,48 @@ func (die Die) String() string {
 	return s
 }
 
+func (die *Die) Roll() Rollable {
+	// Base implementation
+	return die
+}
+
+func (die *Die) SetResult(result Result) Result {
+	die.result = result
+	return die.Result()
+}
+
+func (die *Die) Result() Result {
+	return die.result
+}
+
+func (die *Die) Locked() bool {
+	return die.locked
+}
+
+func (die *Die) Lock() bool {
+	die.locked = true
+	return die.locked
+}
+
+func (die *Die) Unlock() bool {
+	die.locked = false
+	return die.locked
+}
+
+func (die *Die) Rerolled() bool {
+	return die.wasRerolled
+}
+
+func (die *Die) IsRerollable() bool {
+	return !(die.wasRerolled || die.locked)
+}
+
+func (die *Die) Reroll() Rollable {
+	die.Roll()
+	die.wasRerolled = true
+	return die
+}
+
 type AttackDie struct {
 	Die
 }
@@ -84,43 +128,11 @@ func (die *AttackDie) Roll() Rollable {
 	return die
 }
 
-func (die *AttackDie) Reroll() Rollable {
-	die.Roll()
-	die.wasRerolled = true
-	return die
-}
-
-func (die *AttackDie) Result() Result {
-	return die.result
-}
-
 func (die *AttackDie) SetResult(result Result) Result {
 	if result != EVADE {
 		die.result = result
 	}
 	return die.Result()
-}
-
-func (die *AttackDie) Locked() bool {
-	return die.locked
-}
-
-func (die *AttackDie) Lock() bool {
-	die.locked = true
-	return die.locked
-}
-
-func (die *AttackDie) Unlock() bool {
-	die.locked = false
-	return die.locked
-}
-
-func (die *AttackDie) Rerolled() bool {
-	return die.wasRerolled
-}
-
-func (die *AttackDie) IsRerollable() bool {
-	return !(die.wasRerolled || die.locked)
 }
 
 type DefenseDie struct {
@@ -142,41 +154,9 @@ func (die *DefenseDie) Roll() Rollable {
 	return die
 }
 
-func (die *DefenseDie) Result() Result {
-	return die.result
-}
-
 func (die *DefenseDie) SetResult(result Result) Result {
 	if result != HIT && result != CRIT {
 		die.result = result
 	}
 	return die.Result()
-}
-
-func (die *DefenseDie) Locked() bool {
-	return die.locked
-}
-
-func (die *DefenseDie) Lock() bool {
-	die.locked = true
-	return die.locked
-}
-
-func (die *DefenseDie) Unlock() bool {
-	die.locked = false
-	return die.locked
-}
-
-func (die *DefenseDie) Rerolled() bool {
-	return die.wasRerolled
-}
-
-func (die *DefenseDie) IsRerollable() bool {
-	return !(die.wasRerolled || die.locked)
-}
-
-func (die *DefenseDie) Reroll() Rollable {
-	die.Roll()
-	die.wasRerolled = true
-	return die
 }
