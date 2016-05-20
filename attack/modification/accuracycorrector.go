@@ -14,15 +14,17 @@ type AccuracyCorrector struct {
 
 func (mod *AccuracyCorrector) ModifyState(state interfaces.GameState, ship interfaces.Ship) {
 	results := state.AttackResults()
-	for _, result := range *results {
-		result.SetResult(dice.CANCELED)
+	if results.Hits()+results.Crits() < 2 {
+		for _, result := range *results {
+			result.SetResult(dice.CANCELED)
+		}
+		for i := 0; i < 2; i++ {
+			d := dice.AttackDie{}
+			d.SetResult(dice.HIT)
+			*results = append(*results, &d)
+		}
+		state.SetAttackResults(results)
 	}
-	for i := 0; i < 2; i++ {
-		d := dice.AttackDie{}
-		d.SetResult(dice.HIT)
-		*results = append(*results, &d)
-	}
-	state.SetAttackResults(results)
 }
 
 func (mod AccuracyCorrector) Actor() constants.ModificationActor          { return constants.ATTACKER }

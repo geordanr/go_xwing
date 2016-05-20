@@ -25,9 +25,11 @@ func TestAccuracyCorrector(t *testing.T) {
 		mod.ModifyState(&state, attacker)
 
 		attackResults = *state.AttackResults()
-		assert.EqualValues(0, attackResults.Blanks())
-		assert.EqualValues(0, attackResults.Focuses())
-		assert.EqualValues(2, attackResults.Hits())
-		assert.EqualValues(0, attackResults.Crits())
+		if attackResults.Hits()+attackResults.Crits() < 2 {
+			assert.EqualValues(0, attackResults.Blanks())
+			assert.EqualValues(0, attackResults.Focuses())
+			assert.EqualValues(2, attackResults.Hits())
+			assert.EqualValues(0, attackResults.Crits())
+		}
 	}
 }
