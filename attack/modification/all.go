@@ -34,11 +34,14 @@ var All = map[string]func() interfaces.Modification{
 	"Declare Target":              func() interfaces.Modification { return new(DeclareTarget) },                   // declaretarget.go
 	"Spend Evade Token":           func() interfaces.Modification { return new(SpendEvade) },                      // evade.go
 	"Spend Focus Token":           func() interfaces.Modification { return new(SpendFocus) },                      // focus.go
+	"Guidance Chips":              func() interfaces.Modification { return new(GuidanceChips) },                   // guidancechips.go
 	"Gunner":                      func() interfaces.Modification { return new(Gunner) },                          // gunner.go
 	"Heavy Laser Cannon":          func() interfaces.Modification { return new(HeavyLaserCannon) },                // hlc.go
+	"R4 Agromech":                 func() interfaces.Modification { return new(R4Agromech) },                      // r4agromech.go
 	"Roll Attack Dice":            func() interfaces.Modification { return &RollDice{actor: constants.ATTACKER} }, // roll.go
 	"Roll Defense Dice":           func() interfaces.Modification { return &RollDice{actor: constants.DEFENDER} }, // roll.go
 	"Perform Attack Twice":        func() interfaces.Modification { return new(PerformAttackTwice) },              // performattacktwice.go
+	"Plasma Torpedo":              func() interfaces.Modification { return new(PlasmaTorpedo) },                   // plasmatorpedo.go
 	"Predator":                    func() interfaces.Modification { return new(Predator) },                        // predator.go
 	"Spend Target Lock":           func() interfaces.Modification { return new(SpendTargetLock) },                 // targetlock.go
 	"Twin Laser Turret":           func() interfaces.Modification { return new(TwinLaserTurret) },                 // tlt.go
