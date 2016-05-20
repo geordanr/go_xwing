@@ -43,6 +43,7 @@ var All = map[string]func() interfaces.Modification{
 	"Perform Attack Twice":        func() interfaces.Modification { return new(PerformAttackTwice) },              // performattacktwice.go
 	"Plasma Torpedo":              func() interfaces.Modification { return new(PlasmaTorpedo) },                   // plasmatorpedo.go
 	"Predator":                    func() interfaces.Modification { return new(Predator) },                        // predator.go
+	"Proton Torpedo":              func() interfaces.Modification { return new(ProtonTorpedo) },                   // protontorpedo.go
 	"Spend Target Lock":           func() interfaces.Modification { return new(SpendTargetLock) },                 // targetlock.go
 	"Twin Laser Turret":           func() interfaces.Modification { return new(TwinLaserTurret) },                 // tlt.go
 }
