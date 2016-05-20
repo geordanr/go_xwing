@@ -66,8 +66,7 @@ func (die Die) String() string {
 }
 
 func (die *Die) Roll() Rollable {
-	// Base implementation
-	return die
+	panic("Base implementation")
 }
 
 func (die *Die) SetResult(result Result) Result {
@@ -101,12 +100,6 @@ func (die *Die) IsRerollable() bool {
 	return !(die.wasRerolled || die.locked)
 }
 
-func (die *Die) Reroll() Rollable {
-	die.Roll()
-	die.wasRerolled = true
-	return die
-}
-
 type AttackDie struct {
 	Die
 }
@@ -125,6 +118,12 @@ func (die *AttackDie) Roll() Rollable {
 			die.result = CRIT
 		}
 	}
+	return die
+}
+
+func (die *AttackDie) Reroll() Rollable {
+	die.Roll()
+	die.wasRerolled = true
 	return die
 }
 
@@ -151,6 +150,12 @@ func (die *DefenseDie) Roll() Rollable {
 			die.result = EVADE
 		}
 	}
+	return die
+}
+
+func (die *DefenseDie) Reroll() Rollable {
+	die.Roll()
+	die.wasRerolled = true
 	return die
 }
 
