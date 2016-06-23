@@ -44,9 +44,8 @@ func (state *GameState) DequeueAttack() bool {
 	if len(state.attackQueue) > 0 {
 		state.attackQueue = state.attackQueue[:len(state.attackQueue)-1]
 		return len(state.attackQueue) > 0
-	} else {
-		return false
 	}
+	return false
 }
 
 // SetNextAttack makes the given attack be the next one in the queue after the current attack.
@@ -169,4 +168,33 @@ func (state GameState) Copy() interfaces.GameState {
 	}
 
 	return newState
+}
+
+// ImportCombatants uses the given combatants in this game state, updating references as needed.
+// If resetTokens is true, the imported combatants inherit the tokens of the original combatants.
+func (state *GameState) ImportCombatants(combatants map[string]interfaces.Ship, resetTokens bool) {
+	if resetTokens {
+		for name, combatant := range combatants {
+			combatant.CopyTokensFrom(state.combatants[name])
+		}
+	}
+	state.combatants = combatants
+	// remap them onto the attacks
+	for i, atk := range state.attackQueue {
+		state.attackQueue[i] = atk.Copy()
+		attacker := atk.Attacker()
+		defender := atk.Defender()
+		state.attackQueue[i].SetAttacker(state.combatants[attacker.Name()])
+		state.attackQueue[i].SetDefender(state.combatants[defender.Name()])
+	}
+}
+
+// HasDeadCombatant returns true if at least one combatant is dead.
+func (state GameState) HasDeadCombatant() bool {
+	for _, combatant := range state.combatants {
+		if !combatant.IsAlive() {
+			return true
+		}
+	}
+	return false
 }

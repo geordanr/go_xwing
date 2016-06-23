@@ -42,6 +42,8 @@ type GameState interface {
 	CritsLanded() uint
 	SetCritsLanded(uint)
 	Copy() GameState
+	ImportCombatants(map[string]Ship, bool)
+	HasDeadCombatant() bool
 }
 
 type Modification interface {
@@ -65,6 +67,7 @@ type Ship interface {
 	SetEvadeTokens(uint)
 	TargetLock() string
 	SetTargetLock(string)
+	CopyTokensFrom(Ship)
 
 	SpendFocus() bool
 	SpendEvade() bool

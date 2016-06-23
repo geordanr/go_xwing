@@ -54,6 +54,12 @@ func (ship *Ship) SetEvadeTokens(n uint) { ship.evadeTokens = n }
 func (ship Ship) TargetLock() string         { return ship.targetLock }
 func (ship *Ship) SetTargetLock(name string) { ship.targetLock = name }
 
+func (ship *Ship) CopyTokensFrom(other interfaces.Ship) {
+	ship.SetFocusTokens(other.FocusTokens())
+	ship.SetEvadeTokens(other.EvadeTokens())
+	ship.SetTargetLock(other.TargetLock())
+}
+
 func (ship *Ship) SpendFocus() bool {
 	if ship.focusTokens > 0 {
 		ship.focusTokens--

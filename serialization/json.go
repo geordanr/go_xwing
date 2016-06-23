@@ -72,7 +72,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<
 	}
 	nStates := int(math.Min(float64(MAX_ITERATIONS), float64(data.Iterations)))
 
-	state := gamestate.GameState{}
+	stateTemplate := gamestate.GameState{}
 
 	combatants := map[string]interfaces.Ship{}
 	for _, combatant := range data.Combatants {
@@ -86,7 +86,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<
 		cbt.SetTargetLock(combatant.Tokens.TargetLock)
 		combatants[combatant.Name] = cbt
 	}
-	state.SetCombatants(combatants)
+	stateTemplate.SetCombatants(combatants)
 
 	// eventually we need to reverse the list
 	tmp := []*attack.Attack{}
@@ -134,7 +134,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<
 	}
 	// Finally reverse the attack list to put it in the correct queue order
 	for i := len(tmp) - 1; i > -1; i-- {
-		state.EnqueueAttack(tmp[i])
+		stateTemplate.EnqueueAttack(tmp[i])
 	}
 
 	// fmt.Println("Running", nStates, "iterations")
@@ -144,7 +144,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<
 	go runner.Run(runnerOut)
 
 	for i := 0; i < nStates; i++ {
-		state := state.Copy()
+		state := stateTemplate.Copy()
 		if err != nil {
 			// fmt.Println("makestate error", err)
 			return nil, err
@@ -152,9 +152,18 @@ func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<
 		runner.InjectState(state)
 	}
 
+	statesOutstanding := nStates
 	go func() {
-		for i := 0; i < nStates; i++ {
-			output <- <-runnerOut
+		for statesOutstanding > 0 {
+			state := <-runnerOut
+			if state.HasDeadCombatant() {
+				output <- state
+				statesOutstanding--
+			} else {
+				newState := stateTemplate.Copy()
+				newState.ImportCombatants(state.Combatants(), true)
+				runner.InjectState(newState)
+			}
 		}
 		close(output)
 	}()
