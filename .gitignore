@@ -4,3 +4,6 @@ _vimrc_local.vim
 input_files
 tags
 *.pprof
+
+node_modules
+web/public/bower_components
