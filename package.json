@@ -1,0 +1,22 @@
+{
+  "name": "go_xwing",
+  "version": "1.0.0",
+  "description": "Monte Carlo sim for X-Wing combat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geordanr/go_xwing.git"
+  },
+  "author": "Geordan Rosario <geordan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/geordanr/go_xwing/issues"
+  },
+  "homepage": "https://github.com/geordanr/go_xwing#readme",
+  "devDependencies": {
+    "bower": "1.7.9"
+  }
+}

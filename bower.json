@@ -1,0 +1,22 @@
+{
+  "name": "go_xwing",
+  "description": "Monte Carlo sim for X-Wing combat",
+  "main": "index.js",
+  "authors": [
+    "Geordan Rosario <geordan@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/geordanr/go_xwing",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "^15.1.0",
+    "highcharts": "4.2.5",
+    "jquery": "3.0.0"
+  }
+}
