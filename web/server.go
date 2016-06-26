@@ -6,19 +6,21 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"math/rand"
+	"net/http"
+	"os"
+	"path"
+	"sort"
+	"time"
+
 	"github.com/geordanr/go_xwing/attack/modification"
 	"github.com/geordanr/go_xwing/attack/step"
 	"github.com/geordanr/go_xwing/serialization"
 	"github.com/geordanr/go_xwing/ship"
 	"github.com/geordanr/go_xwing/shipstats"
 	"github.com/gocraft/web"
-	"io/ioutil"
-	"log"
-	"math/rand"
-	"net/http"
-	"os"
-	"sort"
-	"time"
 )
 
 type jsonErrorMessage struct {
@@ -36,9 +38,9 @@ type simResults map[string]map[string]shipStatJSONSchema
 // map stat to average, stddev
 type shipStatsJSONSchema map[string]shipStatJSONSchema
 type shipStatJSONSchema struct {
-	Histogram map[string]float64 `json:"histogram"`
-	Average   float64            `json:"average"`
-	Stddev    float64            `json:"stddev"`
+	Histogram [][]float64 `json:"histogram"`
+	Average   float64     `json:"average"`
+	Stddev    float64     `json:"stddev"`
 }
 
 type Context struct{}
@@ -53,10 +55,12 @@ func main() {
 		panic(err)
 	}
 
+	currentRoot, _ := os.Getwd()
 	router := web.New(Context{}).
 		Middleware(web.LoggerMiddleware).
 		Middleware(corsMiddleware).
-		Get("/", (*Context).Root).
+		Middleware(web.StaticMiddleware(path.Join(currentRoot, "web", "public"), web.StaticOption{IndexFile: "index.html"})).
+		// Get("/", (*Context).Root).
 		Get("/api/v1/modifications", (*Context).Modifications).
 		Get("/api/v1/ships", (*Context).Ships).
 		Get("/api/v1/steps", (*Context).Steps).
@@ -133,7 +137,7 @@ func (*Context) Simulate(rw web.ResponseWriter, req *web.Request) {
 			results[name][statName] = shipStatJSONSchema{
 				Average:   combinedStats.Stats.Average(),
 				Stddev:    combinedStats.Stats.Stddev(),
-				Histogram: combinedStats.Histogram.NormalizedStrMap(),
+				Histogram: combinedStats.Histogram.NormalizedHighchartsSeries(),
 			}
 		}
 	}

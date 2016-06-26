@@ -34,6 +34,14 @@ func (h Integers) NormalizedStrMap() map[string]float64 {
 	return r
 }
 
+func (h Integers) NormalizedHighchartsSeries() [][]float64 {
+	r := [][]float64{}
+	for x, y := range h.Normalized() {
+		r = append(r, []float64{float64(x), y})
+	}
+	return r
+}
+
 func (h Integers) String() (str string) {
 	n := h.Normalized()
 
