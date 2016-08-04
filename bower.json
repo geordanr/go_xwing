@@ -17,6 +17,7 @@
   "dependencies": {
     "react": "^15.1.0",
     "highcharts": "4.2.5",
-    "jquery": "3.0.0"
+    "jquery": "3.0.0",
+    "node-uuid": "1.4.7"
   }
 }

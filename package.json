@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/geordanr/go_xwing#readme",
   "devDependencies": {
-    "bower": "1.7.9"
+    "bower": "1.7.9",
+    "eslint": "3.1.0",
+    "eslint-plugin-react": "5.2.2"
   }
 }
