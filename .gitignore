@@ -6,4 +6,4 @@ tags
 *.pprof
 
 node_modules
-web/public/bower_components
+web/public/js

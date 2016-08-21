@@ -18,6 +18,8 @@
     "react": "^15.1.0",
     "highcharts": "4.2.5",
     "jquery": "3.0.0",
-    "node-uuid": "1.4.7"
+    "node-uuid": "1.4.7",
+    "immutable": "3.8.1",
+    "redux": "https://npmcdn.com/redux/dist/redux.js"
   }
 }
