@@ -1,26 +1,39 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
 import Combatants from './combatants.jsx';
+import Attacks from './attacks.jsx';
 
-const App = React.createClass({
-    propTypes: {
-        ships: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-    },
-    childContextTypes: {
-        ships: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-    },
-    getChildContext: function () {
+class App extends React.Component {
+    getChildContext() {
         return {
             ships: this.props.ships,
         };
-    },
-    render: function () {
+    }
+    render() {
         return (
             <div>
                 <Combatants />
+                <Attacks />
             </div>
         );
-    },
-});
+    }
+}
+App.propTypes = {
+    ships: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+};
+App.childContextTypes = {
+    ships: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+};
 
-export default App;
+function renderUI(args) {
+    ReactDOM.render(
+        <Provider store={args.store}>
+            <App ships={args.ships} />
+        </Provider>,
+        document.getElementById('app')
+    );
+}
+
+export default renderUI;

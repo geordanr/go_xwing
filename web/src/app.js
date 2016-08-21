@@ -2,7 +2,7 @@
 require('./style.sass');
 
 import store from './store';
-import renderUI from './react.jsx';
+import renderUI from './components/app.jsx';
 
 // Fetch necessary static data before rendering
 const API_URL = '/api/v1/ships';
