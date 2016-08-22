@@ -93,10 +93,12 @@ export default connect(
 export const CombatantSelector = React.createClass({
     propTypes: {
         combatants: React.PropTypes.instanceOf(Immutable.List).isRequired,
+        onChange: React.PropTypes.func.isRequired,
     },
     render: function () {
         return (
-            <select>
+            <select onChange={this.props.onChange}>
+                <option value=''>Select Combatant</option>
                 {
                     this.props.combatants.valueSeq().map(c => {
                         return (

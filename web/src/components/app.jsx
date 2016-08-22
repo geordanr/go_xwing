@@ -4,11 +4,14 @@ import { Provider } from 'react-redux';
 
 import Combatants from './combatants.jsx';
 import Attacks from './attacks.jsx';
+import { Params } from './sim.jsx';
 
 class App extends React.Component {
     getChildContext() {
         return {
+            postUrl: this.props.postUrl,
             ships: this.props.ships,
+            modifications: this.props.modifications,
         };
     }
     render() {
@@ -16,21 +19,26 @@ class App extends React.Component {
             <div>
                 <Combatants />
                 <Attacks />
+                <Params />
             </div>
         );
     }
 }
 App.propTypes = {
+    postUrl: React.PropTypes.string.isRequired,
     ships: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    modifications: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 };
 App.childContextTypes = {
+    postUrl: React.PropTypes.string.isRequired,
     ships: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    modifications: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 };
 
 function renderUI(args) {
     ReactDOM.render(
         <Provider store={args.store}>
-            <App ships={args.ships} />
+            <App postUrl={args.postUrl} ships={args.ships} modifications={args.modifications}/>
         </Provider>,
         document.getElementById('app')
     );
