@@ -38,7 +38,7 @@ const Attack = React.createClass({
                 <CombatantSelector ref="defender" combatantType='Defender' combatants={this.props.combatants} onChange={this.onDefenderUpdate} />
                 <Modifications attackId={this.props.id} />
 
-                <button onClick={this.onRemove}>Remove</button>
+                <button onClick={this.onRemove}>Remove Attack</button>
             </div>
         );
     },

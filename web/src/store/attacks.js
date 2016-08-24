@@ -48,7 +48,7 @@ export const attacks = handleActions({
                 mods: atk.get('mods').push(Immutable.Map({
                     id: uuid.v1(),
                     step: '',
-                    actor: '',
+                    actor: 'attacker',
                     mod: '',
                 })),
             }));

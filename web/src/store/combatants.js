@@ -10,6 +10,7 @@ var CombatantRecord = Immutable.Record({
     focus: 0,
     evade: 0,
     targetlock: '',
+    tokens: Immutable.Map(),
 });
 
 // Actions

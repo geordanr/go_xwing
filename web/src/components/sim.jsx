@@ -55,7 +55,14 @@ export const Params = connect(
                 mods: mods,
             };
         });
-        let combatants = state.combatants.toList();
+        let combatants = state.combatants.valueSeq().map(cbt => {
+            let tokens = Immutable.Map();
+            ['focus', 'evade', 'targetlock'].map(k => {
+                tokens = tokens.set(k, cbt.get(k));
+                cbt = cbt.delete(k);
+            });
+            return cbt.set('tokens', tokens);
+        });
         return {
             params: {
                 iterations: 10000,
