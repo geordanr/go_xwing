@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Highcharts from 'highcharts';
+import Immutable from 'immutable';
 
 import { requestSim } from '../store/sim';
 
@@ -40,9 +41,18 @@ const ParamsBase = React.createClass({
 export const Params = connect(
     (state) => {
         let attack_queue = state.attacks.map(atk => {
+            let mods = Immutable.Map();
+            atk.mods.map(mod => {
+                let step = mod.get('step');
+                if (!mods.has(step)) {
+                    mods = mods.set(step, Immutable.List());
+                }
+                mods = mods.set(step, mods.get(step).push(Immutable.List([mod.get('actor'), mod.get('mod')])));
+            });
             return {
                 attacker: state.combatants.get(atk.get('attackerId')).get('name'),
                 defender: state.combatants.get(atk.get('defenderId')).get('name'),
+                mods: mods,
             };
         });
         let combatants = state.combatants.toList();

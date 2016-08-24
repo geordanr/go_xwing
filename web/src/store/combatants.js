@@ -6,6 +6,10 @@ var CombatantRecord = Immutable.Record({
     ship: '',
     name: '',
     skill: 0,
+    // nested makes merging suck
+    focus: 0,
+    evade: 0,
+    targetlock: '',
 });
 
 // Actions

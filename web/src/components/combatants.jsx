@@ -33,6 +33,18 @@ const Combatant = React.createClass({
             skill: parseInt(e.target.value.trim()),
         });
     },
+    onFocusTokensChange: function (e) {
+        this.props.onUpdate({
+            id: this.props.id,
+            focus: parseInt(e.target.value.trim()),
+        });
+    },
+    onEvadeTokensChange: function (e) {
+        this.props.onUpdate({
+            id: this.props.id,
+            evade: parseInt(e.target.value.trim()),
+        });
+    },
     onRemove: function () {
         this.props.onRemove({id: this.props.id});
     },
@@ -42,6 +54,8 @@ const Combatant = React.createClass({
                 <input type="text" placeholder="Pilot name" onChange={this.onNameChange} />
                 <ShipSelector onChange={this.onShipChange} />
                 <input type="number" placeholder="Pilot skill" onChange={this.onSkillChange} />
+                <input type="number" placeholder="Focus tokens" onChange={this.onFocusTokensChange} />
+                <input type="number" placeholder="Evade tokens" onChange={this.onEvadeTokensChange} />
                 <button onClick={this.onRemove}>Remove</button>
             </div>
         );
@@ -92,13 +106,14 @@ export default connect(
 
 export const CombatantSelector = React.createClass({
     propTypes: {
+        combatantType: React.PropTypes.string.isRequired,
         combatants: React.PropTypes.instanceOf(Immutable.List).isRequired,
         onChange: React.PropTypes.func.isRequired,
     },
     render: function () {
         return (
             <select onChange={this.props.onChange}>
-                <option value=''>Select Combatant</option>
+                <option value=''>Select {this.props.combatantType}</option>
                 {
                     this.props.combatants.valueSeq().map(c => {
                         return (

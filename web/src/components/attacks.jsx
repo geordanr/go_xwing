@@ -5,6 +5,7 @@ import uuid from 'node-uuid';
 
 import { addAttack, updateAttack, removeAttack } from '../store/attacks';
 import { CombatantSelector } from './combatants.jsx';
+import Modifications from './modifications.jsx';
 
 const Attack = React.createClass({
     propTypes: {
@@ -33,15 +34,17 @@ const Attack = React.createClass({
     render: function () {
         return (
             <div>
-                <CombatantSelector ref="attacker" combatants={this.props.combatants} onChange={this.onAttackerUpdate} />
-                <CombatantSelector ref="defender" combatants={this.props.combatants} onChange={this.onDefenderUpdate} />
+                <CombatantSelector ref="attacker" combatantType='Attacker' combatants={this.props.combatants} onChange={this.onAttackerUpdate} />
+                <CombatantSelector ref="defender" combatantType='Defender' combatants={this.props.combatants} onChange={this.onDefenderUpdate} />
+                <Modifications attackId={this.props.id} />
+
                 <button onClick={this.onRemove}>Remove</button>
             </div>
         );
     },
 });
 
-const AttacksBase = React.createClass({
+const Attacks = React.createClass({
     propTypes: {
         attacks: React.PropTypes.instanceOf(Immutable.List).isRequired,
         combatants: React.PropTypes.instanceOf(Immutable.List).isRequired,
@@ -83,4 +86,4 @@ export default connect(
             },
         };
     }
-)(AttacksBase);
+)(Attacks);
