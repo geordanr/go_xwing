@@ -111,7 +111,7 @@ const Combatants = React.createClass({
                             return (<Combatant key={c.get('id')} id={c.get('id')} combatants={this.props.combatants} onUpdate={this.props.onCombatantUpdate} onRemove={this.props.onCombatantRemove} ship={c.get('ship')} name={c.get('name')} skill={c.get('skill')} targetlock={c.get('targetlock')} />);
                         })
                     }
-                    <Button onClick={this.props.addCombatant}><i className="xwing-miniatures-font xwing-miniatures-font-xwing"></i> Add Combatant</Button>
+                    <Button onClick={this.props.addCombatant}><i className="xwing-miniatures-ship xwing-miniatures-ship-t70xwing"></i> Add Combatant</Button>
                 </Col>
             </Row>
         );
