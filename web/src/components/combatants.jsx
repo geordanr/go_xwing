@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, ControlLabel, FormControl, FormGroup, Row } from 'react-bootstrap';
+import { Button, Col, ControlLabel, FormControl, FormGroup, Panel, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as Immutable from 'immutable';
 import uuid from 'node-uuid';
@@ -59,33 +59,38 @@ const Combatant = React.createClass({
     },
     render: function () {
         return (
-            <Row>
-                <Col xs={12}>
-                    <FormGroup controlId="pilotName">
-                        <ControlLabel>Pilot Name</ControlLabel>
-                        <FormControl type="text" placeholder="Pilot name" onChange={this.onNameChange} />
-                    </FormGroup>
-                    <ShipSelector onChange={this.onShipChange} />
-                    <FormGroup controlId="pilotSkill">
-                        <ControlLabel>Skill</ControlLabel>
-                        <FormControl type="number" placeholder="Pilot skill" onChange={this.onSkillChange} />
-                    </FormGroup>
-                    <FormGroup controlId="focusTokens">
-                        <ControlLabel>Focus Tokens</ControlLabel>
-                        <FormControl type="number" placeholder="Focus tokens" onChange={this.onFocusTokensChange} />
-                    </FormGroup>
-                    <FormGroup controlId="evadeTokens">
-                        <ControlLabel>Evade Tokens</ControlLabel>
-                        <FormControl type="number" placeholder="Evade tokens" onChange={this.onEvadeTokensChange} />
-                    </FormGroup>
-                    <FormGroup controlId="targetLock">
-                        <ControlLabel>Target Lock</ControlLabel>
-                        <CombatantSelector combatantType="lock target" combatants={this.props.combatants} onChange={this.onTargetLockChange} />
-                    </FormGroup>
-                    <Button onClick={this.onRemove}>Remove</Button>
-                </Col>
-            </Row>
-
+            <Panel>
+                <Row>
+                    <Col xs={5}>
+                        <FormGroup controlId="pilotName">
+                            <ControlLabel>Pilot Name</ControlLabel>
+                            <FormControl type="text" placeholder="Pilot name" onChange={this.onNameChange} />
+                        </FormGroup>
+                        <ShipSelector onChange={this.onShipChange} />
+                        <FormGroup controlId="pilotSkill">
+                            <ControlLabel>Skill</ControlLabel>
+                            <FormControl type="number" placeholder="Pilot skill" onChange={this.onSkillChange} />
+                        </FormGroup>
+                    </Col>
+                    <Col xs={5}>
+                        <FormGroup controlId="focusTokens">
+                            <ControlLabel>Focus Tokens</ControlLabel>
+                            <FormControl type="number" placeholder="Focus tokens" onChange={this.onFocusTokensChange} />
+                        </FormGroup>
+                        <FormGroup controlId="evadeTokens">
+                            <ControlLabel>Evade Tokens</ControlLabel>
+                            <FormControl type="number" placeholder="Evade tokens" onChange={this.onEvadeTokensChange} />
+                        </FormGroup>
+                        <FormGroup controlId="targetLock">
+                            <ControlLabel>Target Lock</ControlLabel>
+                            <CombatantSelector combatantType="lock target" combatants={this.props.combatants} onChange={this.onTargetLockChange} />
+                        </FormGroup>
+                    </Col>
+                    <Col xs={2}>
+                        <Button bsStyle="danger" onClick={this.onRemove}><i className="fa fa-trash"></i></Button>
+                    </Col>
+                </Row>
+            </Panel>
         );
     },
 });
@@ -106,7 +111,7 @@ const Combatants = React.createClass({
                             return (<Combatant key={c.get('id')} id={c.get('id')} combatants={this.props.combatants} onUpdate={this.props.onCombatantUpdate} onRemove={this.props.onCombatantRemove} ship={c.get('ship')} name={c.get('name')} skill={c.get('skill')} targetlock={c.get('targetlock')} />);
                         })
                     }
-                    <Button onClick={this.props.addCombatant}>Add Combatant</Button>
+                    <Button onClick={this.props.addCombatant}><i className="xwing-miniatures-font xwing-miniatures-font-xwing"></i> Add Combatant</Button>
                 </Col>
             </Row>
         );

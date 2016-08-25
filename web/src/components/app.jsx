@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Grid, PageHeader, Row } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
@@ -18,13 +18,30 @@ class App extends React.Component {
     }
     render() {
         return (
-            <Row>
-                <Col xs={12}>
-                    <Combatants />
-                    <Attacks />
-                    <Params />
-                </Col>
-            </Row>
+            <Grid>
+                <Row>
+                    <Col xs={12}>
+                        <PageHeader>Combatants</PageHeader>
+                        <Combatants />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <PageHeader>Attacks</PageHeader>
+                        <Attacks />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        &nbsp;
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <Params />
+                    </Col>
+                </Row>
+            </Grid>
         );
     }
 }

@@ -33,11 +33,17 @@ const Modification = React.createClass({
     render: function () {
         return (
             <Row>
-                <Col xs={12}>
+                <Col xs={4}>
                     <StepSelector onChange={this.onStepChanged} />
+                </Col>
+                <Col xs={3}>
                     <ActorSelector onChange={this.onActorChanged} />
+                </Col>
+                <Col xs={4}>
                     <ModSelector onChange={this.onModChanged} />
-                    <Button onClick={this.onRemove}>Remove Mod</Button>
+                </Col>
+                <Col xs={1}>
+                    <Button bsStyle="danger" onClick={this.onRemove}><i className="fa fa-trash"></i></Button>
                 </Col>
             </Row>
         );
@@ -94,6 +100,7 @@ const ModSelector = React.createClass({
     render: function () {
         return (
             <FormGroup controlId="modSelector">
+                <ControlLabel>Modification</ControlLabel>
                 <FormControl componentClass="select" onChange={this.props.onChange}>
                     {this.context.modifications.map(mod => {
                         return (
@@ -132,7 +139,7 @@ const Modifications = React.createClass({
                             );
                         })
                     }
-                    <Button onClick={this.onAddMod}>Add Mod</Button>
+                    <Button onClick={this.onAddMod}><i className="xwing-miniatures-font xwing-miniatures-font-focus"></i> Add Mod</Button>
                 </Col>
             </Row>
         );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Panel, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as Immutable from 'immutable';
 import uuid from 'node-uuid';
@@ -34,15 +34,28 @@ const Attack = React.createClass({
     },
     render: function () {
         return (
-            <Row>
-                <Col xs={12}>
-                    <CombatantSelector ref="attacker" combatantType='Attacker' combatants={this.props.combatants} onChange={this.onAttackerUpdate} />
-                    <CombatantSelector ref="defender" combatantType='Defender' combatants={this.props.combatants} onChange={this.onDefenderUpdate} />
-                    <Modifications attackId={this.props.id} />
-
-                    <Button onClick={this.onRemove}>Remove Attack</Button>
-                </Col>
-            </Row>
+            <Panel>
+                <Row>
+                    <Col xs={12}>
+                        <Row>
+                            <Col xs={5}>
+                                <CombatantSelector ref="attacker" combatantType='Attacker' combatants={this.props.combatants} onChange={this.onAttackerUpdate} />
+                            </Col>
+                            <Col xs={5}>
+                                <CombatantSelector ref="defender" combatantType='Defender' combatants={this.props.combatants} onChange={this.onDefenderUpdate} />
+                            </Col>
+                            <Col xs={2}>
+                                <Button bsStyle="danger" onClick={this.onRemove}><i className="fa fa-trash"></i></Button>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={12}>
+                                <Modifications attackId={this.props.id} />
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Panel>
         );
     },
 });
@@ -64,7 +77,7 @@ const Attacks = React.createClass({
                             return (<Attack key={a.get('id')} id={a.get('id')} attackerId={a.get('attackerId')} defenderId={a.get('defenderId')} combatants={this.props.combatants} onUpdate={this.props.onAttackUpdate} onRemove={this.props.onAttackRemove} />);
                         })
                     }
-                    <Button onClick={this.props.addAttack}>Add Attack</Button>
+                    <Button onClick={this.props.addAttack}><i className="xwing-miniatures-font xwing-miniatures-font-crit"></i> Add Attack</Button>
                 </Col>
             </Row>
         );

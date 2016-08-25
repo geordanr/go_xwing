@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, ControlLabel, FormControl, FormGroup, Panel, PageHeader, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Highcharts from 'highcharts';
 import Immutable from 'immutable';
@@ -28,15 +28,35 @@ const ParamsBase = React.createClass({
         return (
             <Row>
                 <Col xs={12}>
-                    {/* <pre>{JSON.stringify(this.props.params.combatants)}</pre> */}
-                    {/* <pre>{JSON.stringify(this.props.params.attack_queue)}</pre> */}
-                    <textarea value={JSON.stringify(this.props.params)} />
-                    <Button onClick={this.handleClick}>Simulate</Button>
-                    Results:
-                    <textarea value={JSON.stringify(this.props.results)} />
-                    <SimResults results={this.props.results} />
+                    <Row>
+                        <Col xs={12}>
+                            <Button bsStyle="primary" bsSize="large" onClick={this.handleClick}>Simulate</Button>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={5}>
+                            {/* <pre>{JSON.stringify(this.props.params.combatants)}</pre> */}
+                            {/* <pre>{JSON.stringify(this.props.params.attack_queue)}</pre> */}
+                            <FormGroup controlId="simParams">
+                                <ControlLabel>Parameter JSON</ControlLabel>
+                                <FormControl componentClass="textarea" value={JSON.stringify(this.props.params)} />
+                            </FormGroup>
+                        </Col>
+                        <Col xs={5}>
+                            <FormGroup controlId="simResults">
+                                <ControlLabel>Simulation Response JSON</ControlLabel>
+                                <FormControl componentClass="textarea" value={JSON.stringify(this.props.results)} />
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={12}>
+                            <SimResults results={this.props.results} />
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
+
         );
     },
 });
@@ -92,13 +112,16 @@ export const ShipResult = React.createClass({
     },
     render: function () {
         return (
-            <Row>
-                <Col xs={12}>
-                    <span>{this.props.name}</span>
-                    <Histogram title="Hull" series={this.props.hull.sort(seriesSortHelper)} />
-                    <Histogram title="Shields" series={this.props.shields.sort(seriesSortHelper)} />
-                </Col>
-            </Row>
+            <Panel header={this.props.name}>
+                <Row>
+                    <Col xs={6}>
+                        <Histogram title="Hull" series={this.props.hull.sort(seriesSortHelper)} />
+                    </Col>
+                    <Col xs={6}>
+                        <Histogram title="Shields" series={this.props.shields.sort(seriesSortHelper)} />
+                    </Col>
+                </Row>
+            </Panel>
         );
     }
 });
@@ -147,10 +170,13 @@ export const SimResults = React.createClass({
             else if (a.props.name > b.props.name) { return 1 }
             else { return 0 }
         });
+        if (ships.length === 0) {
+            ships = 'Specify simulation parameters and run the simulation.';
+        }
         return (
             <Row>
                 <Col xs={12}>
-                    <span>Simulation Results</span>
+                    <PageHeader>Simulation Results</PageHeader>
                     {ships}
                 </Col>
             </Row>
