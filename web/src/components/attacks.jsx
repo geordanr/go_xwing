@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as Immutable from 'immutable';
 import uuid from 'node-uuid';
@@ -33,13 +34,15 @@ const Attack = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <CombatantSelector ref="attacker" combatantType='Attacker' combatants={this.props.combatants} onChange={this.onAttackerUpdate} />
-                <CombatantSelector ref="defender" combatantType='Defender' combatants={this.props.combatants} onChange={this.onDefenderUpdate} />
-                <Modifications attackId={this.props.id} />
+            <Row>
+                <Col xs={12}>
+                    <CombatantSelector ref="attacker" combatantType='Attacker' combatants={this.props.combatants} onChange={this.onAttackerUpdate} />
+                    <CombatantSelector ref="defender" combatantType='Defender' combatants={this.props.combatants} onChange={this.onDefenderUpdate} />
+                    <Modifications attackId={this.props.id} />
 
-                <button onClick={this.onRemove}>Remove Attack</button>
-            </div>
+                    <Button onClick={this.onRemove}>Remove Attack</Button>
+                </Col>
+            </Row>
         );
     },
 });
@@ -54,14 +57,16 @@ const Attacks = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                {
-                    this.props.attacks.valueSeq().map(a => {
-                        return (<Attack key={a.get('id')} id={a.get('id')} attackerId={a.get('attackerId')} defenderId={a.get('defenderId')} combatants={this.props.combatants} onUpdate={this.props.onAttackUpdate} onRemove={this.props.onAttackRemove} />);
-                    })
-                }
-                <button onClick={this.props.addAttack}>Add Attack</button>
-            </div>
+            <Row>
+                <Col xs={12}>
+                    {
+                        this.props.attacks.valueSeq().map(a => {
+                            return (<Attack key={a.get('id')} id={a.get('id')} attackerId={a.get('attackerId')} defenderId={a.get('defenderId')} combatants={this.props.combatants} onUpdate={this.props.onAttackUpdate} onRemove={this.props.onAttackRemove} />);
+                        })
+                    }
+                    <Button onClick={this.props.addAttack}>Add Attack</Button>
+                </Col>
+            </Row>
         );
     },
 });

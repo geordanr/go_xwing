@@ -1,4 +1,5 @@
 import React from 'react';
+import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
 const ShipSelector = React.createClass({
     propTypes: {
@@ -9,9 +10,12 @@ const ShipSelector = React.createClass({
     },
     render: function () {
         return (
-            <select ref="sel" onChange={this.props.onChange}>
-                {this.context.ships.map(item => { return <option key={item}>{item}</option> })}
-            </select>
+            <FormGroup controlId="shipSelector">
+                <ControlLabel>Ship</ControlLabel>
+                <FormControl componentClass="select" placeholder="Select ship" onChange={this.props.onChange}>
+                    {this.context.ships.map(item => { return <option key={item}>{item}</option> })}
+                </FormControl>
+            </FormGroup>
         );
     },
 });

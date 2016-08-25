@@ -1,4 +1,5 @@
 import React from 'react';
+import { Col, Row } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
@@ -17,11 +18,13 @@ class App extends React.Component {
     }
     render() {
         return (
-            <div>
-                <Combatants />
-                <Attacks />
-                <Params />
-            </div>
+            <Row>
+                <Col xs={12}>
+                    <Combatants />
+                    <Attacks />
+                    <Params />
+                </Col>
+            </Row>
         );
     }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Col, ControlLabel, FormControl, FormGroup, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as Immutable from 'immutable';
 
@@ -31,12 +32,14 @@ const Modification = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <StepSelector onChange={this.onStepChanged} />
-                <ActorSelector onChange={this.onActorChanged} />
-                <ModSelector onChange={this.onModChanged} />
-                <button onClick={this.onRemove}>Remove Mod</button>
-            </div>
+            <Row>
+                <Col xs={12}>
+                    <StepSelector onChange={this.onStepChanged} />
+                    <ActorSelector onChange={this.onActorChanged} />
+                    <ModSelector onChange={this.onModChanged} />
+                    <Button onClick={this.onRemove}>Remove Mod</Button>
+                </Col>
+            </Row>
         );
     },
 });
@@ -47,12 +50,13 @@ const ActorSelector = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <select onChange={this.props.onChange}>
+            <FormGroup controlId="actorSelector">
+                <ControlLabel>Actor</ControlLabel>
+                <FormControl componentClass="select" onChange={this.props.onChange}>
                     <option value="attacker">Attacker</option>
                     <option value="defender">Defender</option>
-                </select>
-            </div>
+                </FormControl>
+            </FormGroup>
         );
     },
 });
@@ -66,15 +70,16 @@ const StepSelector = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <select onChange={this.props.onChange}>
+            <FormGroup controlId="stepSelector">
+                <ControlLabel>Step</ControlLabel>
+                <FormControl componentClass="select" onChange={this.props.onChange}>
                     {this.context.steps.map(step => {
                         return (
                             <option key={step}>{step}</option>
                         );
                     })}
-                </select>
-            </div>
+                </FormControl>
+            </FormGroup>
         );
     },
 });
@@ -88,15 +93,15 @@ const ModSelector = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <select onChange={this.props.onChange}>
+            <FormGroup controlId="modSelector">
+                <FormControl componentClass="select" onChange={this.props.onChange}>
                     {this.context.modifications.map(mod => {
                         return (
                             <option key={mod}>{mod}</option>
                         );
                     })}
-                </select>
-            </div>
+                </FormControl>
+            </FormGroup>
         );
     },
 });
@@ -118,16 +123,18 @@ const Modifications = React.createClass({
     render: function () {
         let atk = this.props.attacks.find(a => a.get('id') === this.props.attackId);
         return (
-            <div>
-                {
-                    atk.get('mods').map(mod => {
-                        return (
-                            <Modification id={mod.get('id')} key={mod.get('id')} attackId={this.props.attackId} onUpdate={this.props.updateMod} onRemove={this.props.removeMod} />
-                        );
-                    })
-                }
-                <button onClick={this.onAddMod}>Add Mod</button>
-            </div>
+            <Row>
+                <Col xs={12}>
+                    {
+                        atk.get('mods').map(mod => {
+                            return (
+                                <Modification id={mod.get('id')} key={mod.get('id')} attackId={this.props.attackId} onUpdate={this.props.updateMod} onRemove={this.props.removeMod} />
+                            );
+                        })
+                    }
+                    <Button onClick={this.onAddMod}>Add Mod</Button>
+                </Col>
+            </Row>
         );
     },
 });

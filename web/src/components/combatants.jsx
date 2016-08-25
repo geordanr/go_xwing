@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Col, ControlLabel, FormControl, FormGroup, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as Immutable from 'immutable';
 import uuid from 'node-uuid';
@@ -14,6 +15,8 @@ const Combatant = React.createClass({
         ship: React.PropTypes.string.isRequired,
         name: React.PropTypes.string.isRequired,
         skill: React.PropTypes.number.isRequired,
+        targetlock: React.PropTypes.string.isRequired,
+        combatants: React.PropTypes.instanceOf(Immutable.Map).isRequired,
     },
     onShipChange: function (e) {
         this.props.onUpdate({
@@ -45,19 +48,44 @@ const Combatant = React.createClass({
             evade: parseInt(e.target.value.trim()),
         });
     },
+    onTargetLockChange: function (e) {
+        this.props.onUpdate({
+            id: this.props.id,
+            targetlock: this.props.combatants.get(e.target.value.trim()).get('name'),
+        });
+    },
     onRemove: function () {
         this.props.onRemove({id: this.props.id});
     },
     render: function () {
         return (
-            <div>
-                <input type="text" placeholder="Pilot name" onChange={this.onNameChange} />
-                <ShipSelector onChange={this.onShipChange} />
-                <input type="number" placeholder="Pilot skill" onChange={this.onSkillChange} />
-                <input type="number" placeholder="Focus tokens" onChange={this.onFocusTokensChange} />
-                <input type="number" placeholder="Evade tokens" onChange={this.onEvadeTokensChange} />
-                <button onClick={this.onRemove}>Remove</button>
-            </div>
+            <Row>
+                <Col xs={12}>
+                    <FormGroup controlId="pilotName">
+                        <ControlLabel>Pilot Name</ControlLabel>
+                        <FormControl type="text" placeholder="Pilot name" onChange={this.onNameChange} />
+                    </FormGroup>
+                    <ShipSelector onChange={this.onShipChange} />
+                    <FormGroup controlId="pilotSkill">
+                        <ControlLabel>Skill</ControlLabel>
+                        <FormControl type="number" placeholder="Pilot skill" onChange={this.onSkillChange} />
+                    </FormGroup>
+                    <FormGroup controlId="focusTokens">
+                        <ControlLabel>Focus Tokens</ControlLabel>
+                        <FormControl type="number" placeholder="Focus tokens" onChange={this.onFocusTokensChange} />
+                    </FormGroup>
+                    <FormGroup controlId="evadeTokens">
+                        <ControlLabel>Evade Tokens</ControlLabel>
+                        <FormControl type="number" placeholder="Evade tokens" onChange={this.onEvadeTokensChange} />
+                    </FormGroup>
+                    <FormGroup controlId="targetLock">
+                        <ControlLabel>Target Lock</ControlLabel>
+                        <CombatantSelector combatantType="lock target" combatants={this.props.combatants} onChange={this.onTargetLockChange} />
+                    </FormGroup>
+                    <Button onClick={this.onRemove}>Remove</Button>
+                </Col>
+            </Row>
+
         );
     },
 });
@@ -71,14 +99,16 @@ const Combatants = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                {
-                    this.props.combatants.valueSeq().map(c => {
-                        return (<Combatant key={c.get('id')} id={c.get('id')} onUpdate={this.props.onCombatantUpdate} onRemove={this.props.onCombatantRemove} ship={c.get('ship')} name={c.get('name')} skill={c.get('skill')} />);
-                    })
-                }
-                <button onClick={this.props.addCombatant}>Add Combatant</button>
-            </div>
+            <Row>
+                <Col xs={12}>
+                    {
+                        this.props.combatants.valueSeq().map(c => {
+                            return (<Combatant key={c.get('id')} id={c.get('id')} combatants={this.props.combatants} onUpdate={this.props.onCombatantUpdate} onRemove={this.props.onCombatantRemove} ship={c.get('ship')} name={c.get('name')} skill={c.get('skill')} targetlock={c.get('targetlock')} />);
+                        })
+                    }
+                    <Button onClick={this.props.addCombatant}>Add Combatant</Button>
+                </Col>
+            </Row>
         );
     },
 });
@@ -112,16 +142,18 @@ export const CombatantSelector = React.createClass({
     },
     render: function () {
         return (
-            <select onChange={this.props.onChange}>
-                <option value=''>Select {this.props.combatantType}</option>
-                {
-                    this.props.combatants.valueSeq().map(c => {
-                        return (
-                            <option key={c.get('id')} value={c.get('id')}>{c.get('name')}</option>
-                        );
-                    })
-                }
-            </select>
+            <FormGroup controlId="combatantSelector">
+                <FormControl componentClass="select" onChange={this.props.onChange}>
+                    <option value=''>Select {this.props.combatantType}</option>
+                    {
+                        this.props.combatants.valueSeq().map(c => {
+                            return (
+                                <option key={c.get('id')} value={c.get('id')}>{c.get('name')}</option>
+                            );
+                        })
+                    }
+                </FormControl>
+            </FormGroup>
         );
     },
 });

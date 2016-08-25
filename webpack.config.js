@@ -17,7 +17,7 @@ module.exports = {
             {
                 test: /\.sass$/,
                 loaders: ['style', 'css', 'sass'],
-            },
+            }
         ]
     },
     devtool: '#inline-source-map',

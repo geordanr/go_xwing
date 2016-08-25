@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Highcharts from 'highcharts';
 import Immutable from 'immutable';
@@ -25,15 +26,17 @@ const ParamsBase = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                {/* <pre>{JSON.stringify(this.props.params.combatants)}</pre> */}
-                {/* <pre>{JSON.stringify(this.props.params.attack_queue)}</pre> */}
-                <textarea value={JSON.stringify(this.props.params)} />
-                <button onClick={this.handleClick}>Simulate</button>
-                Results:
-                <textarea value={JSON.stringify(this.props.results)} />
-                <SimResults results={this.props.results} />
-            </div>
+            <Row>
+                <Col xs={12}>
+                    {/* <pre>{JSON.stringify(this.props.params.combatants)}</pre> */}
+                    {/* <pre>{JSON.stringify(this.props.params.attack_queue)}</pre> */}
+                    <textarea value={JSON.stringify(this.props.params)} />
+                    <Button onClick={this.handleClick}>Simulate</Button>
+                    Results:
+                    <textarea value={JSON.stringify(this.props.results)} />
+                    <SimResults results={this.props.results} />
+                </Col>
+            </Row>
         );
     },
 });
@@ -89,11 +92,13 @@ export const ShipResult = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <span>{this.props.name}</span>
-                <Histogram title="Hull" series={this.props.hull.sort(seriesSortHelper)} />
-                <Histogram title="Shields" series={this.props.shields.sort(seriesSortHelper)} />
-            </div>
+            <Row>
+                <Col xs={12}>
+                    <span>{this.props.name}</span>
+                    <Histogram title="Hull" series={this.props.hull.sort(seriesSortHelper)} />
+                    <Histogram title="Shields" series={this.props.shields.sort(seriesSortHelper)} />
+                </Col>
+            </Row>
         );
     }
 });
@@ -143,10 +148,12 @@ export const SimResults = React.createClass({
             else { return 0 }
         });
         return (
-            <div>
-                <span>Simulation Results</span>
-                {ships}
-            </div>
+            <Row>
+                <Col xs={12}>
+                    <span>Simulation Results</span>
+                    {ships}
+                </Col>
+            </Row>
         );
     }
 });
