@@ -24,6 +24,16 @@ type GameState struct {
 	defenseDiceModifier int // amount to increase or decrease rolled defense dice
 	hitsLanded          uint
 	critsLanded         uint
+	round               uint
+}
+
+// New creates a new GameState.
+func New() *GameState {
+	state := GameState{
+		attackResults:  &dice.Results{},
+		defenseResults: &dice.Results{},
+	}
+	return &state
 }
 
 // Combatants returns a map of ship names to ships.
@@ -197,4 +207,14 @@ func (state GameState) HasDeadCombatant() bool {
 		}
 	}
 	return false
+}
+
+// Round returns the current number of rounds that have passed since the start of combat.
+func (state GameState) Round() uint {
+	return state.round
+}
+
+// IncrementRound increases the number of rounds that have passed since the start of combat.
+func (state *GameState) SetRound(r uint) {
+	state.round = r
 }

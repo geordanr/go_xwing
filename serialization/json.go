@@ -19,6 +19,9 @@ import (
 // MAX_ITERATIONS is the maximum number of game states to process.
 const MAX_ITERATIONS = 100000
 
+// MAX_ROUNDS is the maximum number of iterative combat rounds we'll simulate.
+const MAX_ROUNDS = 30
+
 // ShipsFromJSONPath reads a JSON file and returns a map of ship names
 // to factory functions.  The factory function accepts a string argument
 // which will be the ship's name.
@@ -72,7 +75,7 @@ func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<
 	}
 	nStates := int(math.Min(float64(MAX_ITERATIONS), float64(data.Iterations)))
 
-	stateTemplate := gamestate.GameState{}
+	stateTemplate := gamestate.New()
 
 	combatants := map[string]interfaces.Ship{}
 	for _, combatant := range data.Combatants {
@@ -156,12 +159,13 @@ func FromJSON(b []byte, shipFactory map[string]func(string, uint) *ship.Ship) (<
 	go func() {
 		for statesOutstanding > 0 {
 			state := <-runnerOut
-			if state.HasDeadCombatant() {
+			if state.HasDeadCombatant() || state.Round() > MAX_ROUNDS {
 				output <- state
 				statesOutstanding--
 			} else {
 				newState := stateTemplate.Copy()
 				newState.ImportCombatants(state.Combatants(), true)
+				newState.SetRound(state.Round() + 1)
 				runner.InjectState(newState)
 			}
 		}

@@ -121,3 +121,61 @@ func TestFromJSON(t *testing.T) {
 		}
 	}
 }
+
+func TestFromJSON_NoDamageDone(t *testing.T) {
+	assert := assert.New(t)
+
+	factoryMap, err := shipsFromJSON([]byte(shipJson))
+
+	paramsJson := ` {
+		"iterations": 1,
+		"combatants": [
+			{
+				"name": "Luke Skywalker",
+				"ship": "X-Wing",
+				"skill": 8,
+				"initiative": true,
+				"tokens": {
+					"focus": 1,
+					"targetlock": "Colonel Vessery"
+				}
+			},
+			{
+				"name": "Howlrunner",
+				"ship": "TIE Fighter",
+				"skill": 8,
+				"initiative": false,
+				"tokens": {
+					"focus": 1,
+					"evade": 1
+				}
+			}
+		],
+		"attack_queue": [
+			{
+				"attacker": "Luke Skywalker",
+				"defender": "Howlrunner",
+				"mods": {
+					"Roll Attack Dice": [
+						["attacker", "Spend Focus Token"]
+					],
+					"Modify Defense Dice": [
+						["defender", "Spend Focus Token"],
+						["defender", "Spend Evade Token"]
+					]
+				}
+			}
+		]
+	}`
+
+	output, err := FromJSON([]byte(paramsJson), factoryMap)
+	assert.Nil(err)
+	for {
+		// fmt.Println("reading from output...")
+		_, more := <-output
+		// fmt.Println("read, more=", more)
+		if !more {
+			break
+		}
+	}
+}

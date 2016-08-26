@@ -44,6 +44,8 @@ type GameState interface {
 	Copy() GameState
 	ImportCombatants(map[string]Ship, bool)
 	HasDeadCombatant() bool
+	Round() uint
+	SetRound(uint)
 }
 
 type Modification interface {
