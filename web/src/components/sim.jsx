@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, ControlLabel, FormControl, FormGroup, Panel, PageHeader, Row } from 'react-bootstrap';
+import { Button, Col, ControlLabel, FormControl, FormGroup, Panel, PageHeader, Row, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Highcharts from 'highcharts';
 import Immutable from 'immutable';
@@ -107,18 +107,44 @@ export const Params = connect(
 export const ShipResult = React.createClass({
     propTypes: {
         name: React.PropTypes.string.isRequired,
-        hull: React.PropTypes.array.isRequired,
-        shields: React.PropTypes.array.isRequired,
+        hull: React.PropTypes.object.isRequired,
+        shields: React.PropTypes.object.isRequired,
     },
     render: function () {
         return (
             <Panel header={this.props.name}>
                 <Row>
                     <Col xs={6}>
-                        <Histogram title="Hull" series={this.props.hull.sort(seriesSortHelper)} />
+                        <Histogram title="Hull" series={this.props.hull.histogram.sort(seriesSortHelper)} />
                     </Col>
                     <Col xs={6}>
-                        <Histogram title="Shields" series={this.props.shields.sort(seriesSortHelper)} />
+                        <Histogram title="Shields" series={this.props.shields.histogram.sort(seriesSortHelper)} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={6}>
+                        <Table bordered>
+                            <tr>
+                                <th>Average</th>
+                                <th>Std. Dev.</th>
+                            </tr>
+                            <tr>
+                                <td>{this.props.hull.average}</td>
+                                <td>{this.props.hull.stddev}</td>
+                            </tr>
+                        </Table>
+                    </Col>
+                    <Col xs={6}>
+                        <Table bordered>
+                            <tr>
+                                <th>Average</th>
+                                <th>Std. Dev.</th>
+                            </tr>
+                            <tr>
+                                <td>{this.props.shields.average}</td>
+                                <td>{this.props.shields.stddev}</td>
+                            </tr>
+                        </Table>
                     </Col>
                 </Row>
             </Panel>
@@ -163,7 +189,7 @@ export const SimResults = React.createClass({
             let shipdata = this.props.results[name];
             // console.log(`render ${name}`);
             // console.dir(shipdata);
-            ships.push(<ShipResult key={name} name={name} hull={shipdata.hull.histogram} shields={shipdata.shields.histogram} />);
+            ships.push(<ShipResult key={name} name={name} hull={shipdata.hull} shields={shipdata.shields} />);
         }
         ships.sort(function (a, b) {
             if (a.props.name < b.props.name) { return -1 }
