@@ -48,7 +48,7 @@ type Context struct{}
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	shipjson := parseArgs()
+	shipjson, port := parseArgs()
 	factory, err := serialization.ShipsFromJSONPath(*shipjson)
 	shipFactory = factory
 	if err != nil {
@@ -67,13 +67,13 @@ func main() {
 		Post("/api/v1/sim", (*Context).Simulate).
 		Error((*Context).Error)
 
-	port := 8080
-	log.Println("Listening on port", port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), router)
+	log.Println("Listening on port", *port)
+	http.ListenAndServe(fmt.Sprintf(":%d", *port), router)
 }
 
-func parseArgs() *string {
+func parseArgs() (*string, *int) {
 	shipjson := flag.String("shipjson", "", "Path to JSON file of ship data")
+	port := flag.Int("port", 80, "Port to listen on")
 
 	flag.Parse()
 
@@ -82,7 +82,7 @@ func parseArgs() *string {
 		os.Exit(1)
 	}
 
-	return shipjson
+	return shipjson, port
 }
 
 var shipFactory map[string]func(string, uint) *ship.Ship
