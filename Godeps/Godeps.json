@@ -1,0 +1,30 @@
+{
+	"ImportPath": "github.com/geordanr/go_xwing",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v74",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/davecgh/go-spew/spew",
+			"Comment": "v1.0.0",
+			"Rev": "6cf5744a041a0022271cefed95ba843f6d87fd51"
+		},
+		{
+			"ImportPath": "github.com/gocraft/web",
+			"Comment": "v1.1-28-g12b4630",
+			"Rev": "12b4630b4fee3e485b334c4d544bd9dd68fb3d4f"
+		},
+		{
+			"ImportPath": "github.com/pmezard/go-difflib/difflib",
+			"Comment": "v1.0.0",
+			"Rev": "792786c7400a136282c1664665ae0a8db921c6c2"
+		},
+		{
+			"ImportPath": "github.com/stretchr/testify/assert",
+			"Comment": "v1.1.3-16-g6cb3b85",
+			"Rev": "6cb3b85ef5a0efef77caef88363ec4d4b5c0976d"
+		}
+	]
+}
