@@ -4,6 +4,7 @@
   "description": "Monte Carlo sim for X-Wing combat",
   "main": "index.js",
   "scripts": {
+    "postinstall": "bower install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
