@@ -13,6 +13,7 @@ import (
 	"os"
 	"path"
 	"sort"
+	"strconv"
 	"time"
 
 	"github.com/geordanr/go_xwing/attack/modification"
@@ -48,7 +49,7 @@ type Context struct{}
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	shipjson, port := parseArgs()
+	shipjson := parseArgs()
 	factory, err := serialization.ShipsFromJSONPath(*shipjson)
 	shipFactory = factory
 	if err != nil {
@@ -67,13 +68,19 @@ func main() {
 		Post("/api/v1/sim", (*Context).Simulate).
 		Error((*Context).Error)
 
-	log.Println("Listening on port", *port)
-	http.ListenAndServe(fmt.Sprintf(":%d", *port), router)
+	port := 8080
+	if os.Getenv("PORT") != "" {
+		port, err = strconv.Atoi(os.Getenv("PORT"))
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	log.Println("Listening on port", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
 }
 
-func parseArgs() (*string, *int) {
+func parseArgs() *string {
 	shipjson := flag.String("shipjson", "", "Path to JSON file of ship data")
-	port := flag.Int("port", 80, "Port to listen on")
 
 	flag.Parse()
 
@@ -82,7 +89,7 @@ func parseArgs() (*string, *int) {
 		os.Exit(1)
 	}
 
-	return shipjson, port
+	return shipjson
 }
 
 var shipFactory map[string]func(string, uint) *ship.Ship
