@@ -1,6 +1,3 @@
-/* global require */
-require('./style.sass');
-
 import store from './store';
 import renderUI from './components/app.jsx';
 
